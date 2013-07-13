@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{81329C6E-9F30-4A35-86E6-0261690EFB75}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DemiTasse</RootNamespace>
+    <AssemblyName>DemiTasse</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AppIDE\AppErrorEventArgs.cs" />
+    <Compile Include="AppIDE\AppExceptionEventArgs.cs" />
+    <Compile Include="AppIDE\AppIDE.cs" />
+    <Compile Include="AppIDE\AppUserErrorException.cs" />
+    <Compile Include="AppIDE\CmdAddFile.cs" />
+    <Compile Include="AppIDE\CmdNewFile.cs" />
+    <Compile Include="AppIDE\CmdNewTestSuite.cs" />
+    <Compile Include="AppIDE\CmdNotYetImplemented.cs" />
+    <Compile Include="AppIDE\CmdOpenTestSuite.cs" />
+    <Compile Include="AppIDE\CmdOpenTestSuiteFile.cs" />
+    <Compile Include="AppIDE\Command.cs" />
+    <Compile Include="AppIDE\CmdOpenFile.cs" />
+    <Compile Include="AppIDE\IAppIDECommand.cs" />
+    <Compile Include="AppIDE\CmdRunStartSingleFile.cs" />
+    <Compile Include="AppIDE\CmdRunStartTestSuite.cs" />
+    <Compile Include="AppIDE\OpenFileEventArgs.cs" />
+    <Compile Include="AppIDE\OpenTestSuiteEventArgs.cs" />
+    <Compile Include="AppIDE\OpenTestSuiteFileEventArgs.cs" />
+    <Compile Include="AppIDE\TestSuite.cs" />
+    <Compile Include="AppIDE\TestSuiteEntry.cs" />
+    <Compile Include="AppIDE\TestSuiteFileEntry.cs" />
+    <Compile Include="AppIDE\TestSuiteManager.cs" />
+    <Compile Include="AppIDE\TestSuiteSuiteEntry.cs" />
+    <Compile Include="IDEForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="IDEForm.Designer.cs">
+      <DependentUpon>IDEForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="irpsr\Error.cs" />
+    <Compile Include="irpsr\InputStream.cs" />
+    <Compile Include="interp\InterpException.cs" />
+    <Compile Include="interp\InterpVisitor.cs" />
+    <Compile Include="interp\TestInterp.cs" />
+    <Compile Include="irpsr\irParser.cs" />
+    <Compile Include="irpsr\irParserConstants.cs" />
+    <Compile Include="irpsr\irParserTokenManager.cs" />
+    <Compile Include="irpsr\ParseException.cs" />
+    <Compile Include="irpsr\SimpleCharStream.cs" />
+    <Compile Include="irpsr\Token.cs" />
+    <Compile Include="irpsr\TokenMgrError.cs" />
+    <Compile Include="irpsr\UnsupportedEncodingException.cs" />
+    <Compile Include="ir\BINOP.cs" />
+    <Compile Include="ir\CALL.cs" />
+    <Compile Include="ir\CALLST.cs" />
+    <Compile Include="ir\CJUMP.cs" />
+    <Compile Include="ir\CONST.cs" />
+    <Compile Include="ir\ESEQ.cs" />
+    <Compile Include="ir\EXP.cs" />
+    <Compile Include="ir\EXPlist.cs" />
+    <Compile Include="ir\FIELD.cs" />
+    <Compile Include="ir\FUNC.cs" />
+    <Compile Include="ir\FUNClist.cs" />
+    <Compile Include="ir\IIntVI.cs" />
+    <Compile Include="ir\IIrVI.cs" />
+    <Compile Include="ir\IR.cs" />
+    <Compile Include="ir\JUMP.cs" />
+    <Compile Include="ir\LABEL.cs" />
+    <Compile Include="ir\MEM.cs" />
+    <Compile Include="ir\MOVE.cs" />
+    <Compile Include="ir\NAME.cs" />
+    <Compile Include="ir\PARAM.cs" />
+    <Compile Include="ir\PROG.cs" />
+    <Compile Include="ir\RETURN.cs" />
+    <Compile Include="ir\STMT.cs" />
+    <Compile Include="ir\STMTlist.cs" />
+    <Compile Include="ir\STRING.cs" />
+    <Compile Include="ir\TEMP.cs" />
+    <Compile Include="ir\VAR.cs" />
+    <Compile Include="OpenTestSuiteForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OpenTestSuiteForm.Designer.cs">
+      <DependentUpon>OpenTestSuiteForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="IDEForm.resx">
+      <DependentUpon>IDEForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OpenTestSuiteForm.resx">
+      <DependentUpon>OpenTestSuiteForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
