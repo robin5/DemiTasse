@@ -1,9 +1,51 @@
-﻿using System;
+﻿// **********************************************************************************
+// * Copyright (c) 2013 Robin Murray
+// **********************************************************************************
+// *
+// * File: irParser.cs
+// *
+// * Description: 
+// *
+// * Author: Robin Murray
+// *
+// **********************************************************************************
+// *
+// * Granting License: The MIT License (MIT)
+// * 
+// *   Permission is hereby granted, free of charge, to any person obtaining a copy
+// *   of this software and associated documentation files (the "Software"), to deal
+// *   in the Software without restriction, including without limitation the rights
+// *   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// *   copies of the Software, and to permit persons to whom the Software is
+// *   furnished to do so, subject to the following conditions:
+// *   The above copyright notice and this permission notice shall be included in
+// *   all copies or substantial portions of the Software.
+// *   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// *   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// *   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// *   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// *   THE SOFTWARE.
+// * 
+// **********************************************************************************
+
+// **********************************************************************************
+// * Using
+// **********************************************************************************
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+
 using DemiTasse.ir;
+using DemiTasse.psrutil;
+
+// **********************************************************************************
+// * Implementation
+// **********************************************************************************
 
 namespace DemiTasse.irpsr
 {
@@ -15,7 +57,7 @@ namespace DemiTasse.irpsr
 
         public static FUNC FUNC() /* throws ParseException */ 
         {
-            Token t; int vc, tc, ac; STMTlist sl=new STMTlist(); STMT s;
+            IrToken t; int vc, tc, ac; STMTlist sl=new STMTlist(); STMT s;
             t = jj_consume_token(RegExpId.ID);
             jj_consume_token(RegExpId.kw32);
             jj_consume_token(RegExpId.kwVARCNT);
@@ -32,7 +74,7 @@ namespace DemiTasse.irpsr
             jj_consume_token(RegExpId.kw35);
             jj_consume_token(RegExpId.kw36);
 
-            label_2:
+            // label_2:
             while (true) 
             {
                 switch ((jj_ntk == RegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
@@ -94,7 +136,7 @@ namespace DemiTasse.irpsr
                     default:
                         jj_la1[2] = jj_gen;
                         jj_consume_token(RegExpId.UNDEFINED);
-                        throw new ParseException();
+                        throw new irParseException();
                 }
                 {
                     if (true) return n;
@@ -105,7 +147,7 @@ namespace DemiTasse.irpsr
 
         public static STMT STMT() /* throws ParseException */
         {
-            Token t; 
+            IrToken t; 
             CJUMP.OP n; 
             STMT s; 
             EXP e1 = null, e2, e3;
@@ -195,15 +237,14 @@ namespace DemiTasse.irpsr
                     default:
                         jj_la1[5] = jj_gen;
                         jj_consume_token(RegExpId.UNDEFINED);
-                        throw new ParseException();
+                        throw new irParseException();
                 }
 
             jj_consume_token(RegExpId.kw45);
-                {
-                    if (true) return s;
-                }
-                throw new Error("Missing return statement in function");
-            return s;
+                return s;
+
+            //throw new Error("Missing return statement in function");
+            //return s;
             }
 
         public static BINOP.OP binopCode() /* throws ParseException */
@@ -250,7 +291,7 @@ namespace DemiTasse.irpsr
                     default:
                         jj_la1[6] = jj_gen;
                         jj_consume_token(RegExpId.UNDEFINED);
-                        throw new ParseException();
+                        throw new irParseException();
                     }
             #if false
                     {if (true) return n;}
@@ -261,7 +302,7 @@ namespace DemiTasse.irpsr
 
         public static EXP EXP() /* throws ParseException */
         {
-            Token t; 
+            IrToken t; 
             int n; 
             String str;
             STMT s; 
@@ -375,7 +416,7 @@ namespace DemiTasse.irpsr
 
                     jj_la1[8] = jj_gen;
                     jj_consume_token(RegExpId.UNDEFINED);
-                    throw new ParseException();
+                    throw new irParseException();
             }
 
             jj_consume_token(RegExpId.kw35);
@@ -385,7 +426,7 @@ namespace DemiTasse.irpsr
 
         public static int INT() /* throws ParseException */
         {
-            Token t;
+            IrToken t;
 
             t = jj_consume_token(RegExpId.INTVAL);
             {if (true) return int.Parse(t.image);}
@@ -394,7 +435,7 @@ namespace DemiTasse.irpsr
 
         public static String STR() /* throws ParseException */ 
         {
-            Token t; 
+            IrToken t; 
             String s;
 
             t = jj_consume_token(RegExpId.STRVAL);
@@ -409,10 +450,10 @@ namespace DemiTasse.irpsr
         public static SimpleCharStream jj_input_stream = null;
 
         /** Current token. */
-        public static Token token;
+        public static IrToken token;
 
         /** Next token. */
-        public static Token jj_nt;
+        public static IrToken jj_nt;
         private static RegExpId jj_ntk;
         private static int jj_gen;
         private static readonly int[] jj_la1 = new int[9];
@@ -455,7 +496,7 @@ namespace DemiTasse.irpsr
 
             //token_source.ReInit(jj_input_stream);
             irParserTokenManager.ReInit(jj_input_stream);
-            token = new Token();
+            token = new IrToken();
             jj_ntk = RegExpId.UNDEFINED;
             jj_gen = 0;
             for (int i = 0; i < 9; i++) jj_la1[i] = -1;
@@ -467,15 +508,15 @@ namespace DemiTasse.irpsr
             jj_input_stream.ReInit(streamReader, 1, 1);
             //token_source.ReInit(jj_input_stream);
             irParserTokenManager.ReInit(jj_input_stream);
-            token = new Token();
+            token = new IrToken();
             jj_ntk = RegExpId.UNDEFINED;
             jj_gen = 0;
             for (int i = 0; i < 9; i++) jj_la1[i] = -1;
         }
 
-        private static Token jj_consume_token(RegExpId kind) /* throws ParseException */
+        private static IrToken jj_consume_token(irParserConstants.RegExpId kind) /* throws ParseException */
         {
-            Token oldToken;
+            IrToken oldToken;
             if ((oldToken = token).next != null)
                 token = token.next;
             else
@@ -496,7 +537,7 @@ namespace DemiTasse.irpsr
         }
 
         /** Get the next Token. */
-        public static Token getNextToken()
+        public static IrToken getNextToken()
         {
             if (token.next != null)
                 token = token.next;
@@ -509,9 +550,9 @@ namespace DemiTasse.irpsr
         }
 
         /** Get the specific Token. */
-        public static Token getToken(int index)
+        public static IrToken getToken(int index)
         {
-            Token t = token;
+            IrToken t = token;
             for (int i = 0; i < index; i++)
             {
                 if (t.next != null)
@@ -538,7 +579,7 @@ namespace DemiTasse.irpsr
         private static irParserConstants.RegExpId jj_kind = irParserConstants.RegExpId.UNDEFINED;
 
         /** Generate ParseException. */
-        public static ParseException generateParseException()
+        public static irParseException generateParseException()
         {
             jj_expentries.Clear();
             bool[] la1tokens = new bool[52];
@@ -584,7 +625,7 @@ namespace DemiTasse.irpsr
                 exptokseq[i] = jj_expentries[i];
             }
 
-            return new ParseException(token, exptokseq, irParserConstants.tokenImage);
+            return new irParseException(token, exptokseq, tokenImage);
         }
 
         /** Enable tracing. */
@@ -635,7 +676,7 @@ namespace DemiTasse.irpsr
                 token_source = new irParserTokenManager(jj_input_stream);
             }
 
-            token = new Token();
+            token = new IrToken();
             jj_ntk = RegExpId.UNDEFINED;
             jj_gen = 0;
             for (int i = 0; i < 9; i++) jj_la1[i] = -1;
@@ -655,7 +696,7 @@ namespace DemiTasse.irpsr
             jj_initialized_once = true;
             jj_input_stream = new SimpleCharStream(stream, 1, 1);
             token_source = new irParserTokenManager(jj_input_stream);
-            token = new Token();
+            token = new IrToken();
             jj_ntk = RegExpId.UNDEFINED;
             jj_gen = 0;
             for (int i = 0; i < 9; i++) jj_la1[i] = -1;
@@ -674,7 +715,7 @@ namespace DemiTasse.irpsr
             }
             jj_initialized_once = true;
             token_source = tm;
-            token = new Token();
+            token = new IrToken();
             jj_ntk = RegExpId.UNDEFINED;
             jj_gen = 0;
             for (int i = 0; i < 9; i++) jj_la1[i] = -1;
@@ -686,7 +727,7 @@ namespace DemiTasse.irpsr
         public void ReInit(irParserTokenManager tm)
         {
             token_source = tm;
-            token = new Token();
+            token = new IrToken();
             jj_ntk = RegExpId.UNDEFINED;
             jj_gen = 0;
             for (int i = 0; i < 9; i++) jj_la1[i] = -1;

@@ -1,0 +1,34 @@
+
+lexer
+------------------
+parser
+ast
+------------------
+ast
+astpsr
+------------------
+symbol
+typechk
+------------------
+ir
+irgen
+------------------
+ir
+irpsr
+------------------
+interp
+
+Added major headings and MIT license link.
+
+
+## Welcome to DemiTasse
+
+## Getting Started
+
+## Contributing
+
+## Code Status
+
+## License
+
+DemiTasse is released under the [MIT License](http://www.opensource.org/licenses/MIT).

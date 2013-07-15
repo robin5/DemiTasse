@@ -1,7 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿// **********************************************************************************
+// * Copyright (c) 2013 Robin Murray
+// **********************************************************************************
+// *
+// * File: BINOP.cs
+// *
+// * Author:  Jingke Li
+// *
+// **********************************************************************************
+// *
+// * Granting License: TBD
+// * 
+// **********************************************************************************
+
+// **********************************************************************************
+// * Using
+// **********************************************************************************
+
+using System.Diagnostics;
+
+using DemiTasse.ast;
+
+// **********************************************************************************
+// * Implementation
+// **********************************************************************************
 
 namespace DemiTasse.ir
 {
@@ -14,10 +35,26 @@ namespace DemiTasse.ir
 
         public CJUMP(OP o, EXP l, EXP r, NAME t)
         {
-            op=o; left=l; right=r; target=t;
+            op = o; left = l; right = r; target = t;
         }
 
-        private void dumpOp(OP op) {
+        public CJUMP(Relop.OP o, EXP l, EXP r, NAME t)
+        {
+            left = l; right = r; target = t;
+            switch (o)
+            {
+                case Relop.OP.EQ: op = OP.EQ; break;
+                case Relop.OP.NE: op = OP.NE; break;
+                case Relop.OP.LT: op = OP.LT; break;
+                case Relop.OP.LE: op = OP.LE; break;
+                case Relop.OP.GT: op = OP.GT; break;
+                case Relop.OP.GE: op = OP.GE; break;
+                default: Debug.Assert(false, "Encountered unknown binary operator: value = " + o.ToString()); break;
+            }
+        }
+
+        private void dumpOp(OP op)
+        {
         switch (op)
         {
             case OP.EQ: DUMP("=="); break;
