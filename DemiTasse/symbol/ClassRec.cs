@@ -118,16 +118,20 @@ namespace DemiTasse.symbol
 
         public MethodRec getMethod(Id mid)
         {
+            if (!methods.ContainsKey(mid.s))
+                return null;
+
             return methods[mid.s]; // may return null
         }
 
         public void addMethod(Id mid, DemiTasse.ast.Type rtype) /* throws SymbolException */
         {
-            MethodRec m = new MethodRec(mid, rtype);
-            methods.Add(mid.s, m);
-
-            if (m != null)
+            if (methods.ContainsKey(mid.s))
                 throw new SymbolException("Method " + mid.s + " already defined");
+
+            MethodRec m = new MethodRec(mid, rtype);
+
+            methods.Add(mid.s, m);
         }
   
         public void show()

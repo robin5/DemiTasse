@@ -43,6 +43,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
+using System.Diagnostics;
 
 using DemiTasse.ir;
 using DemiTasse.interp;
@@ -100,7 +101,6 @@ namespace DemiTasse
             cmdClose = new CmdNotYetImplemented();
             cmdCloseTestSuite = new CmdNotYetImplemented();
             cmdRunStartSingleFile = new CmdRunStartSingleFile(app);
-            cmdRunStartTestSuite = new CmdRunStartTestSuite(app);
             cmdRunPause = new CmdNotYetImplemented();
             cmdRunContinue = new CmdNotYetImplemented();
             cmdRunStop = new CmdNotYetImplemented();
@@ -224,17 +224,73 @@ namespace DemiTasse
 
         private void mnuRunStart_Click(object sender, EventArgs e)
         {
-            txtConsole.Clear();
-            if (IDEMode == IDEModes.SingleFile)
+            try
             {
-                cmdRunStartSingleFile.Execute(_fileName);
+                txtConsole.Clear();
+                if (IDEMode == IDEModes.SingleFile)
+                {
+                    cmdRunStartSingleFile.Execute(_fileName);
+                }
+                else
+                {
+                    if (tvTestSuite.Nodes.Count > 0)
+                    {
+                        ExecuteTestSuiteItems(tvTestSuite.Nodes[0]);
+                    }
+                }
             }
-            else
+            catch (Exception ex)
             {
-                cmdRunStartTestSuite.Execute(_testSuite.Name);
+                DisplayException(ex);
             }
         }
 
+#if false
+        private void ExecuteTestSuiteItems(IList<TestSuiteEntry> Items)
+        {
+            TestSuiteSuiteEntry suiteEntry;
+            TestSuiteFileEntry fileEntry;
+
+            foreach (TestSuiteEntry item in Items)
+            {
+                if (null != (suiteEntry = item as TestSuiteSuiteEntry))
+                {
+                    TestSuite testSuite = TestSuiteManager.TestSuites[item.Name];
+                    ExecuteTestSuiteItems(testSuite.Items);
+                }
+                else
+                {
+                    fileEntry = item as TestSuiteFileEntry;
+                    cmdRunStartSingleFile.Execute(fileEntry.FileName);
+                }
+            }
+        }
+#endif
+
+        private void ExecuteTestSuiteItems(TreeNode parent)
+        {
+            TestSuiteFileEntry fileEntry;
+
+            if (parent.Checked)
+            {
+                foreach (TreeNode node in parent.Nodes)
+                {
+                    if (node.Checked)
+                    {
+                        if (null != (fileEntry = (node.Tag as TestSuiteFileEntry)))
+                        {
+                            txtConsole.Text += (fileEntry.FileName + " ----------------------------------------------------\r\n");
+                            Debug.WriteLine( (fileEntry.FileName + " ----------------------------------------------------\r\n"));
+                            cmdRunStartSingleFile.Execute(fileEntry.FileName);
+                        }
+                        else if (null != (node.Tag as TestSuiteSuiteEntry))
+                        {
+                            ExecuteTestSuiteItems(node);
+                        }
+                    }
+                }
+            }
+        }
         private void mnuRunPause_Click(object sender, EventArgs e)
         {
             try
@@ -334,10 +390,13 @@ namespace DemiTasse
             TestSuiteSuiteEntry suiteEntry;
             TreeNode node;
 
+            parent.Checked = true;
+
             foreach (TestSuiteEntry item in Items)
             {
                 node = parent.Nodes.Add(item.Name);
                 node.Tag = item;
+                node.Checked = true;
                 if (null != (suiteEntry = item as TestSuiteSuiteEntry))
                 {
                     TestSuite testSuite = TestSuiteManager.TestSuites[item.Name];

@@ -1,0 +1,14 @@
+IR_PROGRAM
+main (varCnt=1, tmpCnt=3, argCnt=1) {
+ [MOVE (TEMP 1) (CALL (NAME malloc) ( (NAME wSZ)))]
+ [MOVE (VAR 1) (TEMP 1)]
+ [MOVE (TEMP 2) (CALL (NAME A_go) ( (VAR 1)))]
+ [CALLST (NAME print) ( (TEMP 2))]
+}
+B_back (varCnt=0, tmpCnt=0, argCnt=0) {
+ [RETURN (PARAM 1)]
+}
+A_go (varCnt=0, tmpCnt=1, argCnt=2) {
+ [MOVE (TEMP 1) (CALL (NAME B_back) ( (PARAM 0) (CONST 2)))]
+ [RETURN (TEMP 1)]
+}

@@ -1,0 +1,20 @@
+(Program (ClassDeclList
+ (ClassDecl (Id test) (NullExp) 
+ (VarDeclList ) 
+ (MethodDeclList
+ (MethodDecl (NullType) (Id main) (FormalList ) (VarDeclList (VarDecl (ObjType (Id A) ) (Id a) (NewObj (Id A) (ExpList ) ) ) ) (StmtList 
+ (Print (Call (Id a) (Id go) (ExpList ) ) ) ) )
+ ) )
+ (ClassDecl (Id B) (NullExp) 
+ (VarDeclList ) 
+ (MethodDeclList
+ (MethodDecl (BasicType int) (Id back) (FormalList (Formal (BasicType int) (Id a) ) ) (VarDeclList ) (StmtList 
+ (Return (Id a) ) ) )
+ ) )
+ (ClassDecl (Id A) (Id B) 
+ (VarDeclList ) 
+ (MethodDeclList
+ (MethodDecl (BasicType int) (Id go) (FormalList ) (VarDeclList ) (StmtList 
+ (Return (Call (This) (Id back) (ExpList (IntVal 2) ) ) ) ) )
+ ) )
+ ) )

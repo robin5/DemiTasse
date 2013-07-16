@@ -1,0 +1,9 @@
+IR_PROGRAM
+main (varCnt=1, tmpCnt=2, argCnt=1) {
+ [MOVE (TEMP 1) (CALL (NAME malloc) ( (NAME wSZ)))]
+ [MOVE (VAR 1) (TEMP 1)]
+ [CALLST (NAME Body_go) ( (VAR 1))]
+}
+Body_go (varCnt=0, tmpCnt=0, argCnt=0) {
+ [CALLST (NAME print) ( (STRING "Go!"))]
+}

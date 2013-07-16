@@ -48,7 +48,6 @@ namespace DemiTasse.AppIDE
         void Close();
         void CloseTestSuite();
         void RunStartSingleFile(string fileName);
-        void RunStartTestSuite(string name);
         void RunPause();
         void RunContinue();
         void RunStop();

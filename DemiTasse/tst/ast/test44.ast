@@ -1,0 +1,9 @@
+(Program (ClassDeclList
+ (ClassDecl (Id Body) (NullExp) 
+ (VarDeclList (VarDecl (BasicType int) (Id i) (IntVal 5) ) (VarDecl (BasicType int) (Id j) (Binop + (Id i) (IntVal 2) ) ) ) 
+ (MethodDeclList
+ ) ) (ClassDecl (Id test) (NullExp) 
+ (VarDeclList ) 
+ (MethodDeclList
+ (MethodDecl (NullType) (Id main) (FormalList ) (VarDeclList (VarDecl (ObjType (Id Body) ) (Id b) (NewObj (Id Body) (ExpList ) ) ) ) (StmtList 
+ (Print (Binop + (Field (Id b) (Id i) ) (Field (Id b) (Id j) ) ) ) ) ) ) ) ) )

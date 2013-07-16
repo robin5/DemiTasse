@@ -30,10 +30,19 @@
 // * 
 // **********************************************************************************
 
+// **********************************************************************************
+// * Using
+// **********************************************************************************
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
+
+// **********************************************************************************
+// * Implementation
+// **********************************************************************************
 
 namespace DemiTasse.AppIDE
 {
@@ -42,25 +51,41 @@ namespace DemiTasse.AppIDE
         public static void Init(string serializationFileName)
         {
             TestSuite ts;
+            string[] files = null;
 
-            ts = Create("IR Validation Tests (Good)");
-            for (int i = 1; i < 10; ++i)
+            try
             {
-                ts.AddTestFile(@"C:\Users\Robin\Documents\Visual Studio 2010\Projects\PSU\DemiTasse\DemiTasse\bin\Debug\tst\test0" + i.ToString() + ".ir");
-            }
+                ts = Create("IR Validation Tests (Good)");
+                files = Directory.GetFiles(@"C:\Users\Robin\Documents\GitHub\DemiTasse\DemiTasse\tst\ir\", "*.ir", SearchOption.TopDirectoryOnly);
+                for (int i = 0; i < files.Length; ++i)
+                {
+                    ts.AddTestFile(files[i]);
+                }
 
-            ts = Create("IR Validation Tests (Bad First Test)");
-            for (int i = 0; i < 10; ++i)
-            {
-                ts.AddTestFile(@"C:\Users\Robin\Documents\Visual Studio 2010\Projects\PSU\DemiTasse\DemiTasse\bin\Debug\tst\test0" + i.ToString() + ".ir");
-            }
+                ts = Create("IR Validation Tests (Bad First Test)");
+                ts.AddTestFile(@"C:\Users\Robin\Documents\GitHub\DemiTasse\DemiTasse\tst\ir\test00.ir");
+                for (int i = 0; ((i < files.Length) && (i < 10)); ++i)
+                {
+                    ts.AddTestFile(files[i]);
+                }
 
-            ts = Create("Lexical Tests");
-            for (int i = 0; i < 10; ++i)
-            {
-                ts.AddTestFile(@"C:\Users\Robin\Documents\Visual Studio 2010\Projects\PSU\DemiTasse\DemiTasse\bin\Debug\tst\test1" + i.ToString() + ".ir");
+                ts = Create("Misc Tests + additional test suite");
+                for (int i = 0; i < 10; ++i)
+                {
+                    ts.AddTestFile(files[i]);
+                }
+                ts.AddTestSuite("IR Validation Tests (Good)");
+
+                files = Directory.GetFiles(@"C:\Users\Robin\Documents\GitHub\DemiTasse\DemiTasse\tst\ast\", "*.ast", SearchOption.TopDirectoryOnly);
+                ts = Create("Abstract Syntax Tree Tests");
+                for (int i = 0; i < files.Length; ++i)
+                {
+                    ts.AddTestFile(files[i]);
+                }
             }
-            ts.AddTestSuite("IR Validation Tests (Good)");
+            catch (Exception ex)
+            {
+            }
         }
 
         public static TestSuite Create(string name)

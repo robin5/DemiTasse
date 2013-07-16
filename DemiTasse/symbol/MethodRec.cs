@@ -52,20 +52,20 @@ namespace DemiTasse.symbol
         private Id _id;
         private DemiTasse.ast.Type _rtype;
         private List<VarRec> _params;
-        private List<VarRec> locals;
+        private List<VarRec> _locals;
 
         public MethodRec(Id id, DemiTasse.ast.Type type)
         {
             _id = id;
             _rtype = type;
             _params = new List<VarRec>();
-            locals = new List<VarRec>();
+            _locals = new List<VarRec>();
         }
 
         public Id id()   	   { return _id; }
         public DemiTasse.ast.Type rtype() { return _rtype; }
         public int paramCnt()    { return _params.Count; }
-        public int localCnt()    { return locals.Count; }
+        public int localCnt()    { return _locals.Count; }
 
         public VarRec getParam(Id vid)
         {
@@ -86,9 +86,9 @@ namespace DemiTasse.symbol
 
         public VarRec getLocal(Id vid)
         {
-            for (int i=0; i<locals.Count; i++)
+            for (int i=0; i<_locals.Count; i++)
             {
-                VarRec v = locals[i];
+                VarRec v = _locals[i];
                 if (v.id().s.Equals(vid.s)) return v;
             }
             return null;
@@ -96,8 +96,8 @@ namespace DemiTasse.symbol
     
         public VarRec getLocalAt(int i)
         {
-            if (i<locals.Count)
-                return locals[i];
+            if (i<_locals.Count)
+                return _locals[i];
             return null;
         }
 
@@ -113,8 +113,8 @@ namespace DemiTasse.symbol
             if(getLocal(vid) != null) 
                 throw new SymbolException("Var " + vid.s + " already defined");
 
-            locals.Add(new VarRec(vid, type, VarRec.LOCAL, 
-            locals.Count+1));
+            _locals.Add(new VarRec(vid, type, VarRec.LOCAL, 
+            _locals.Count+1));
         }
     
         public void show()
@@ -129,10 +129,10 @@ namespace DemiTasse.symbol
                 _params[i].show();
             }
 
-            for (int i = 0; i < locals.Count; i++)
+            for (int i = 0; i < _locals.Count; i++)
             {
                 Debug.Write("  [local] ");
-                locals[i].show();
+                _locals[i].show();
             }
         }
     }

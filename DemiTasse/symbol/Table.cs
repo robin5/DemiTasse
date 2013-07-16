@@ -71,12 +71,10 @@ namespace DemiTasse.symbol
 
         public ClassRec getClass(Id cid) /* throws SymbolException */
         {
-            ClassRec c = classes[cid.s];
-
-            if (c == null)
+            if (!classes.ContainsKey(cid.s))
                 throw new SymbolException("Class " + cid.s + " not defined");
-            
-            return c;
+
+            return classes[cid.s];
         }
 
         public MethodRec getMethod(ClassRec c, Id mid) /* throws SymbolException */

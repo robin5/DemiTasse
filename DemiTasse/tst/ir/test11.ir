@@ -1,0 +1,10 @@
+IR_PROGRAM
+main (varCnt=1, tmpCnt=2, argCnt=0) {
+ [MOVE (TEMP 1) (CALL (NAME malloc) ( (BINOP * (CONST 3) (NAME wSZ))))]
+ [MOVE (MEM (TEMP 1)) (CONST 2)]
+ [MOVE (VAR 1) (TEMP 1)]
+ [MOVE (MEM (BINOP + (VAR 1) (NAME wSZ))) (CONST 1)]
+ [MOVE (MEM (BINOP + (VAR 1) (BINOP * (CONST 2) (NAME wSZ)))) (CONST 2)]
+ [CALLST (NAME print) ( (MEM (BINOP + (VAR 1) (NAME wSZ))))]
+ [CALLST (NAME print) ( (MEM (BINOP + (VAR 1) (BINOP * (CONST 2) (NAME wSZ)))))]
+}

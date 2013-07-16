@@ -1,0 +1,16 @@
+IR_PROGRAM
+main (varCnt=1, tmpCnt=3, argCnt=1) {
+ [MOVE (TEMP 1) (CALL (NAME malloc) ( (BINOP * (CONST 1) (NAME wSZ))))]
+ [MOVE (VAR 1) (TEMP 1)]
+ [MOVE (TEMP 2) (CALL (NAME Body_go) ( (VAR 1)))]
+ [CALLST (NAME print) ( (TEMP 2))]
+}
+Body_go (varCnt=1, tmpCnt=3, argCnt=4) {
+ [MOVE (TEMP 1) (CALL (NAME malloc) ( (BINOP * (CONST 1) (NAME wSZ))))]
+ [MOVE (VAR 1) (TEMP 1)]
+ [MOVE (TEMP 2) (CALL (NAME Body2_value) ( (VAR 1) (CONST 1) (CONST 2) (CONST 3)))]
+ [RETURN (TEMP 2)]
+}
+Body2_value (varCnt=0, tmpCnt=0, argCnt=0) {
+ [RETURN (BINOP + (BINOP + (PARAM 1) (PARAM 2)) (PARAM 3))]
+}

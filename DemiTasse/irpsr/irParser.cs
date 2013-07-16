@@ -663,7 +663,6 @@ namespace DemiTasse.irpsr
             else
             {
                 jj_initialized_once = true;
-
                 try
                 {
                     jj_input_stream = new SimpleCharStream(stream, encoding, 1, 1);

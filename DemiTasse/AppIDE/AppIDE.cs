@@ -310,6 +310,18 @@ namespace DemiTasse.AppIDE
 
         public void RunStartSingleFile(string fileName)
         {
+            if (fileName.EndsWith(".ir", StringComparison.OrdinalIgnoreCase))
+            {
+                ExecuteIrTest(fileName);
+            }
+            else if (fileName.EndsWith(".ast", StringComparison.OrdinalIgnoreCase))
+            {
+                ExecuteAstTest(fileName);
+            }
+        }
+
+        private void ExecuteIrTest(string fileName)
+        {
             FileStream stream = null;
             PROG p = null;
 
@@ -347,31 +359,7 @@ namespace DemiTasse.AppIDE
             }
         }
 
-        public void RunStartTestSuite(string name)
-        {
-            Debug.Assert(false == string.IsNullOrEmpty(name), "Null Exception: name");
-            TestSuite testSuite = null;
-
-            try
-            {
-                testSuite = TestSuiteManager.TestSuites[name];
-            }
-            catch (Exception ex)
-            {
-                OnAppException(new AppExceptionEventArgs(ex));
-                return;
-            }
-
-            if (null == testSuite)
-            {
-                OnAppError(new AppErrorEventArgs("Test suite not found: " + name));
-                return;
-            }
-
-            ExecuteTestSuiteItems(testSuite.Items);
-        }
-
-        public void RunTypeTest(string fileName)
+        public void ExecuteAstTest(string fileName)
         {
             try 
             {
@@ -383,24 +371,25 @@ namespace DemiTasse.AppIDE
                 stream.Close();
                 SymbolVisitor sv = new SymbolVisitor();
                 sv.visit(p);
+                sv.symTable.show();
                 TypeVisitor tv = new TypeVisitor(sv.symTable);
                 tv.visit(p);
             }
-            catch (TypeException e) 
+            catch (TypeException ex) 
             {
-                Debug.WriteLine(e.ToString() + ": " + e.Message);
+                OnAppException(new AppExceptionEventArgs(ex));
             }
-            catch (SymbolException e)
+            catch (SymbolException ex)
             {
-                Debug.WriteLine(e.ToString() + ": " + e.Message);
+                OnAppException(new AppExceptionEventArgs(ex));
             }
-            catch (Exception e) 
+            catch (Exception ex) 
             {
-                Debug.WriteLine(e.ToString());
+                OnAppException(new AppExceptionEventArgs(ex));
             }
         }
 
-        public void RunSymbolTest(string fileName)
+        public void ExecuteSymbolTest(string fileName)
         {
             try
             {
@@ -421,37 +410,6 @@ namespace DemiTasse.AppIDE
             {
                 Debug.WriteLine(e.ToString() + ": " + e.Message);
             }
-        }
-
-
-
-        private void ExecuteTestSuiteItems(IList<TestSuiteEntry> Items)
-        {
-            // [REVISIT] NEED CATCH FOR INFINITE RECURSION
-            TestSuiteSuiteEntry suiteEntry;
-            TestSuiteFileEntry fileEntry;
-
-            foreach (TestSuiteEntry item in Items)
-            {
-                if (null != (suiteEntry = item as TestSuiteSuiteEntry))
-                {
-                    TestSuite testSuite = TestSuiteManager.TestSuites[item.Name];
-                    ExecuteTestSuiteItems(testSuite.Items);
-                }
-                else
-                {
-                    fileEntry = item as TestSuiteFileEntry;
-                    RunStartSingleFile(fileEntry.FileName);
-                }
-            }
-        }
-
-        private void ExecuteTestSuite(TestSuiteSuiteEntry entry)
-        {
-        }
-
-        private void ExecuteTestFile(TestSuiteFileEntry entry)
-        {
         }
 
         public void RunPause()
@@ -487,7 +445,6 @@ namespace DemiTasse.AppIDE
         {
             OnSystemOut(e);
         }
-
     }
 
 

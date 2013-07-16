@@ -1,0 +1,10 @@
+(Program (ClassDeclList
+ (ClassDecl (Id test) (NullExp) 
+ (VarDeclList ) 
+ (MethodDeclList
+ (MethodDecl (NullType) (Id main) (FormalList ) (VarDeclList (VarDecl (BasicType int) (Id i) (IntVal 2) ) (VarDecl (BasicType int) (Id j) (IntVal 3) ) (VarDecl (BasicType int) (Id k) (Binop + (Id i) (Id j) ) ) ) (StmtList 
+ (Print (Id k) ) 
+ (If (Relop == (Id k) (IntVal 5) ) 
+ (Print (StrVal "OK") ) (NullStmt) ) ) )
+ ) )
+ ) )

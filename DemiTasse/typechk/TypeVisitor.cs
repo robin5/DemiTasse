@@ -105,8 +105,8 @@ namespace DemiTasse.typechk
                 int bt2 = ((BasicType)t2).typ;
                 if (bt1 == bt2)
                 return true;
-            } 
-            else if ((null != (t1 as BasicType)) && (null != (t2 as ObjType)))
+            }
+            else if ((null != (t1 as ObjType)) && (null != (t2 as ObjType)))
             {
                 Id cid1 = ((ObjType) t1).cid;
                 Id cid2 = ((ObjType) t2).cid;

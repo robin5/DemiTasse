@@ -1,0 +1,7 @@
+IR_PROGRAM
+main (varCnt=0, tmpCnt=0, argCnt=0) {
+ [CALLST (NAME print) ( (STRING "123"))]
+ [CALLST (NAME print) ( (CONST 123))]
+ [CALLST (NAME print) ()]
+ [CALLST (NAME print) ( (CONST 1))]
+}

@@ -220,6 +220,10 @@ namespace DemiTasse.astpsr
 
         static private int jjMoveStringLiteralDfa0_0()
         {
+            if (curChar == 'r')
+            {
+            }
+
             switch ((int)curChar)
             {
                 case 33:
@@ -359,7 +363,7 @@ namespace DemiTasse.astpsr
                 case 121:
                     return jjMoveStringLiteralDfa2_0(active0, 0x80000000000L, active1, 0L);
                 case 124:
-                    if ((active0 & unchecked((int)0x8000000000000000L)) != 0L)
+                    if ((active0 & unchecked((long)0x8000000000000000L)) != 0L)
                         return jjStopAtPos(1, AstRegExpId.kw63);
                     break;
                 default:
@@ -962,7 +966,7 @@ namespace DemiTasse.astpsr
                 }
                 else if (curChar < 128)
                 {
-                    long l = 1L << (curChar & 077);
+                    long l = 1L << (curChar & /* 077*/ 0x3F);
                     do
                     {
                         switch (jjstateSet[--i])
@@ -991,7 +995,7 @@ namespace DemiTasse.astpsr
                 else
                 {
                     int i2 = (curChar & 0xff) >> 6;
-                    long l2 = 1L << (curChar & 077);
+                    long l2 = 1L << (curChar & /* 077*/ 0x3F);
                     do
                     {
                         switch (jjstateSet[--i])
@@ -1278,7 +1282,7 @@ null,
                     if (jjmatchedPos + 1 < curPos)
                         SimpleCharStream.backup(curPos - jjmatchedPos - 1);
 
-                    if ((jjtoToken[(uint)jjmatchedKind >> 6] & (1L << ((int)jjmatchedKind & 0x3F))) != 0L)
+                    if ((jjtoToken[(int)jjmatchedKind >> 6] & (1L << ((int)jjmatchedKind & 0x3F))) != 0L)
                     {
                         matchedToken = jjFillToken();
                         TokenLexicalActions(matchedToken);

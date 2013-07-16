@@ -1,0 +1,13 @@
+(Program (ClassDeclList
+ (ClassDecl (Id prog) (NullExp) 
+ (VarDeclList ) 
+ (MethodDeclList
+ (MethodDecl (NullType) (Id main) (FormalList ) (VarDeclList (VarDecl (ArrayType (BasicType int) ) (Id a) (NewArray (BasicType int) 2) ) (VarDecl (BasicType int) (Id i) (IntVal 0) ) ) (StmtList 
+ (Assign (ArrayElm (Id a) (IntVal 0) ) (IntVal 3) ) 
+ (Assign (ArrayElm (Id a) (IntVal 1) ) (IntVal 5) ) 
+ (While (Relop < (Id i) (IntVal 2) ) 
+ (Block (StmtList 
+ (Print (ArrayElm (Id a) (Id i) ) ) 
+ (Assign (Id i) (Binop + (Id i) (IntVal 1) ) ) ) ) ) ) )
+ ) )
+ ) )

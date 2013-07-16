@@ -1,0 +1,9 @@
+IR_PROGRAM
+main (varCnt=3, tmpCnt=0, argCnt=0) {
+ [MOVE (VAR 1) (CONST 1)]
+ [MOVE (VAR 2) (BINOP + (CONST 1) (CONST 1))]
+ [MOVE (VAR 3) (BINOP * (CONST 3) (VAR 2))]
+ [CALLST (NAME print) ( (VAR 1))]
+ [CALLST (NAME print) ( (VAR 2))]
+ [CALLST (NAME print) ( (VAR 3))]
+}

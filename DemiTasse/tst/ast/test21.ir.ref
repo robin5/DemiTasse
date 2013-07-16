@@ -1,0 +1,13 @@
+IR_PROGRAM
+main (varCnt=3, tmpCnt=1, argCnt=3) {
+ [MOVE (VAR 1) (CONST 1)]
+ [MOVE (TEMP 1) (CALL (NAME test_foo) ( (PARAM 0) (CONST 1) (CONST 2)))]
+ [MOVE (VAR 2) (TEMP 1)]
+ [MOVE (VAR 3) (BINOP * (CONST 2) (CONST 3))]
+ [CALLST (NAME print) ( (VAR 1))]
+ [CALLST (NAME print) ( (VAR 2))]
+ [CALLST (NAME print) ( (VAR 3))]
+}
+test_foo (varCnt=0, tmpCnt=0, argCnt=0) {
+ [RETURN (BINOP + (PARAM 1) (PARAM 2))]
+}

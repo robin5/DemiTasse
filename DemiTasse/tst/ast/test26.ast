@@ -1,0 +1,14 @@
+(Program (ClassDeclList
+ (ClassDecl (Id test) (NullExp) 
+ (VarDeclList ) 
+ (MethodDeclList
+ (MethodDecl (NullType) (Id main) (FormalList ) (VarDeclList (VarDecl (BasicType int) (Id i) (Call (This) (Id foo) (ExpList (IntVal 2) ) ) ) ) (StmtList 
+ (Print (Id i) ) ) )
+ (MethodDecl (BasicType int) (Id foo) (FormalList (Formal (BasicType int) (Id i) ) ) (VarDeclList ) (StmtList 
+ (If (Relop > (Id i) (IntVal 1) ) 
+ (Return (Call (This) (Id bar) (ExpList ) ) ) 
+ (Return (IntVal 3) ) ) ) )
+ (MethodDecl (BasicType int) (Id bar) (FormalList ) (VarDeclList ) (StmtList 
+ (Return (Call (This) (Id foo) (ExpList (IntVal 1) ) ) ) ) )
+ ) )
+ ) )

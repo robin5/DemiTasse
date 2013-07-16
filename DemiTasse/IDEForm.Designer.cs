@@ -81,6 +81,7 @@
             // 
             // tvTestSuite
             // 
+            this.tvTestSuite.CheckBoxes = true;
             this.tvTestSuite.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tvTestSuite.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F);
             this.tvTestSuite.Location = new System.Drawing.Point(0, 0);

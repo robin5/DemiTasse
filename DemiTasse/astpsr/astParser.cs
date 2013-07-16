@@ -687,6 +687,7 @@ namespace DemiTasse.astpsr
         {
             if (jj_initialized_once)
             {
+                ReInit(stream, encoding);
                 //System.Out.println("ERROR: Second call to constructor of static parser.  ");
                 //System.Out.println("       You must either use ReInit() or set the JavaCC option STATIC to false");
                 //System.Out.println("       during parser generation.");

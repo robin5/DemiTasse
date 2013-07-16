@@ -1,0 +1,21 @@
+IR_PROGRAM
+main (varCnt=1, tmpCnt=3, argCnt=2) {
+ [MOVE (TEMP 1) (CALL (NAME malloc) ( (BINOP * (CONST 1) (NAME wSZ))))]
+ [MOVE (VAR 1) (TEMP 1)]
+ [MOVE (TEMP 2) (CALL (NAME A_go) ( (VAR 1) (CONST 5)))]
+ [CALLST (NAME print) ( (TEMP 2))]
+}
+A_go (varCnt=1, tmpCnt=1, argCnt=2) {
+ [MOVE (VAR 1) (CONST 0)]
+ [CJUMP <= (PARAM 1) (CONST 0) (NAME L0)]
+ [CALLST (NAME print) ( (PARAM 1))]
+ [MOVE (TEMP 1) (CALL (NAME A_back) ( (PARAM 0) (BINOP - (PARAM 1) (CONST 1))))]
+ [MOVE (VAR 1) (TEMP 1)]
+ [LABEL L0]
+ [RETURN (VAR 1)]
+}
+A_back (varCnt=1, tmpCnt=1, argCnt=2) {
+ [MOVE (TEMP 1) (CALL (NAME A_go) ( (PARAM 0) (PARAM 1)))]
+ [MOVE (VAR 1) (TEMP 1)]
+ [RETURN (CONST 0)]
+}

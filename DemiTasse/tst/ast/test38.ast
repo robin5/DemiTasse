@@ -1,0 +1,34 @@
+(Program (ClassDeclList
+ (ClassDecl (Id prog) (NullExp) 
+ (VarDeclList ) 
+ (MethodDeclList
+ (MethodDecl (NullType) (Id main) (FormalList ) (VarDeclList (VarDecl (ArrayType (BasicType int) ) (Id numbers) (NewArray (BasicType int) 10) ) (VarDecl (BasicType int) (Id cnt) (IntVal 0) ) ) (StmtList 
+ (While (Relop < (Id cnt) (IntVal 10) ) 
+ (Block (StmtList 
+ (Assign (ArrayElm (Id numbers) (Id cnt) ) (Binop - (IntVal 10) (Id cnt) ) ) 
+ (Assign (Id cnt) (Binop + (Id cnt) (IntVal 1) ) ) ) ) ) 
+ (CallStmt (This) (Id selectionSort) (ExpList (Id numbers) (Id cnt) ) ) 
+ (Print (StrVal "Your numbers in sorted order are:") ) 
+ (Assign (Id cnt) (IntVal 0) ) 
+ (While (Relop < (Id cnt) (IntVal 10) ) 
+ (Block (StmtList 
+ (Print (ArrayElm (Id numbers) (Id cnt) ) ) 
+ (Assign (Id cnt) (Binop + (Id cnt) (IntVal 1) ) ) ) ) ) ) )
+ (MethodDecl (NullType) (Id selectionSort) (FormalList (Formal (ArrayType (BasicType int) ) (Id A) ) (Formal (BasicType int) (Id count) ) ) (VarDeclList (VarDecl (BasicType int) (Id temp) (NullExp) ) (VarDecl (BasicType int) (Id i) (Binop - (Id count) (IntVal 1) ) ) (VarDecl (BasicType int) (Id j) (NullExp) ) (VarDecl (BasicType int) (Id k) (NullExp) ) ) (StmtList 
+ (While (Relop >= (Id i) (IntVal 0) ) 
+ (Block (StmtList 
+ (Assign (Id j) (IntVal 0) ) 
+ (Assign (Id k) (IntVal 0) ) 
+ (While (Relop <= (Id j) (Id i) ) 
+ (Block (StmtList 
+ (If (Relop > (ArrayElm (Id A) (Id j) ) (ArrayElm (Id A) (Id k) ) ) 
+ (Assign (Id k) (Id j) ) (NullStmt) ) 
+ (Assign (Id j) (Binop + (Id j) (IntVal 1) ) ) ) ) ) 
+ (If (Relop != (Id k) (Id i) ) 
+ (Block (StmtList 
+ (Assign (Id temp) (ArrayElm (Id A) (Id k) ) ) 
+ (Assign (ArrayElm (Id A) (Id k) ) (ArrayElm (Id A) (Id i) ) ) 
+ (Assign (ArrayElm (Id A) (Id i) ) (Id temp) ) ) ) (NullStmt) ) 
+ (Assign (Id i) (Binop - (Id i) (IntVal 1) ) ) ) ) ) ) )
+ ) )
+ ) )

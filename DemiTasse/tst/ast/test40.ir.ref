@@ -1,0 +1,16 @@
+IR_PROGRAM
+main (varCnt=1, tmpCnt=2, argCnt=2) {
+ [MOVE (TEMP 1) (CALL (NAME malloc) ( (BINOP * (CONST 4) (NAME wSZ))))]
+ [MOVE (MEM (TEMP 1)) (CONST 2)]
+ [MOVE (MEM (BINOP + (TEMP 1) (BINOP * (CONST 1) (NAME wSZ)))) (FIELD (TEMP 1) 0)]
+ [MOVE (MEM (BINOP + (TEMP 1) (BINOP * (CONST 2) (NAME wSZ)))) (CONST 3)]
+ [MOVE (MEM (BINOP + (TEMP 1) (BINOP * (CONST 3) (NAME wSZ)))) (FIELD (TEMP 1) 2)]
+ [MOVE (VAR 1) (TEMP 1)]
+ [CALLST (NAME A_setk) ( (VAR 1) (CONST 5))]
+ [CALLST (NAME print) ( (FIELD (VAR 1) 1))]
+ [CALLST (NAME print) ( (FIELD (VAR 1) 2))]
+ [CALLST (NAME print) ( (FIELD (VAR 1) 3))]
+}
+A_setk (varCnt=0, tmpCnt=0, argCnt=0) {
+ [MOVE (FIELD (PARAM 0) 2) (PARAM 1)]
+}
