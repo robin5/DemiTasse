@@ -1,0 +1,15 @@
+C:\Users\Robin\Documents\Visual Studio 2010\Projects\PSU\DemiTasse\DemiTasse\obj\x86\Debug\DemiTasse.IDEForm.resources
+C:\Users\Robin\Documents\Visual Studio 2010\Projects\PSU\DemiTasse\DemiTasse\obj\x86\Debug\DemiTasse.Properties.Resources.resources
+C:\Users\Robin\Documents\Visual Studio 2010\Projects\PSU\DemiTasse\DemiTasse\obj\x86\Debug\DemiTasse.csproj.GenerateResource.Cache
+C:\Users\Robin\Documents\Visual Studio 2010\Projects\PSU\DemiTasse\DemiTasse\bin\Debug\DemiTasse.exe
+C:\Users\Robin\Documents\Visual Studio 2010\Projects\PSU\DemiTasse\DemiTasse\bin\Debug\DemiTasse.pdb
+C:\Users\Robin\Documents\Visual Studio 2010\Projects\PSU\DemiTasse\DemiTasse\obj\x86\Debug\DemiTasse.exe
+C:\Users\Robin\Documents\Visual Studio 2010\Projects\PSU\DemiTasse\DemiTasse\obj\x86\Debug\DemiTasse.pdb
+C:\Users\Robin\Documents\GitHub\DemiTasse\DemiTasse\obj\x86\Debug\DemiTasse.IDEForm.resources
+C:\Users\Robin\Documents\GitHub\DemiTasse\DemiTasse\obj\x86\Debug\DemiTasse.OpenTestSuiteForm.resources
+C:\Users\Robin\Documents\GitHub\DemiTasse\DemiTasse\obj\x86\Debug\DemiTasse.Properties.Resources.resources
+C:\Users\Robin\Documents\GitHub\DemiTasse\DemiTasse\obj\x86\Debug\DemiTasse.csproj.GenerateResource.Cache
+C:\Users\Robin\Documents\GitHub\DemiTasse\DemiTasse\bin\Debug\DemiTasse.exe
+C:\Users\Robin\Documents\GitHub\DemiTasse\DemiTasse\bin\Debug\DemiTasse.pdb
+C:\Users\Robin\Documents\GitHub\DemiTasse\DemiTasse\obj\x86\Debug\DemiTasse.exe
+C:\Users\Robin\Documents\GitHub\DemiTasse\DemiTasse\obj\x86\Debug\DemiTasse.pdb

@@ -120,9 +120,11 @@
     <Compile Include="IDEForm.Designer.cs">
       <DependentUpon>IDEForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="interp\InterpOutEventArgs.cs" />
     <Compile Include="irgen\Canon.cs" />
     <Compile Include="irgen\IrgenVisitor.cs" />
     <Compile Include="irpsr\IrToken.cs" />
+    <Compile Include="ir\IrOut.cs" />
     <Compile Include="psrutil\Error.cs" />
     <Compile Include="interp\InterpException.cs" />
     <Compile Include="interp\InterpVisitor.cs" />

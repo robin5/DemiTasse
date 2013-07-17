@@ -61,9 +61,11 @@ namespace DemiTasse.ir
         }
 
         public override void dump()
-        { 
-            for (int i=0; i<size(); i++)
-            DUMP(elementAt(i));
+        {
+            for (int i = 0; i < size(); i++)
+            {
+                DUMP(elementAt(i));
+            }
         }
 
         public override STMT accept(IIrVI v)

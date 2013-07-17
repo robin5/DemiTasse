@@ -63,6 +63,7 @@ namespace DemiTasse
         private IDEModes _ideMode;
         private string _fileName;
         private bool _lockEdit = false;
+        private StringBuilder _intermediateRepresentation = new StringBuilder();
 
         private Command cmdNewFile = null;
         private Command cmdNewTestSuite = null;
@@ -91,6 +92,7 @@ namespace DemiTasse
             app.AddOnOpenTestSuite(OnOpenTestSuite);
             app.AddOnOpenTestSuiteFile(OnOpenTestSuiteFile);
             app.AddOnSystemOut(OnSystemOut);
+            app.AddOnIrOut(OnIrOut);
 
             cmdNewFile = new CmdNewFile(app);
             cmdNewTestSuite = new CmdNewTestSuite(app);
@@ -224,6 +226,7 @@ namespace DemiTasse
 
         private void mnuRunStart_Click(object sender, EventArgs e)
         {
+            txtIntRep.Text = "";
             try
             {
                 txtConsole.Clear();
@@ -338,9 +341,14 @@ namespace DemiTasse
             txtConsole.Text += msg;
         }
 
-        private void OnSystemOut(object sender, SystemOutEventArgs e)
+        private void OnSystemOut(object sender, InterpOutEventArgs e)
         {
             txtConsole.Text += e.Message;
+        }
+
+        private void OnIrOut(object sender, IrOutEventArgs e)
+        {
+            txtIntRep.Text += e.Message;
         }
 
         private void OnErrorOut(object sender, AppErrorEventArgs e)

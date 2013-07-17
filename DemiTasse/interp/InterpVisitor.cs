@@ -69,7 +69,7 @@ namespace DemiTasse.interp
         private STMTlist stmts = null;  // keeping a copy of current statement list
         private Stack<STMTlist> stmtLists = new Stack<STMTlist>();
 
-        public delegate void SystemOutEventHandler(object sender, SystemOutEventArgs e);
+        public delegate void SystemOutEventHandler(object sender, InterpOutEventArgs e);
 
         public event SystemOutEventHandler OnSystemOutHandler;
 
@@ -83,7 +83,7 @@ namespace DemiTasse.interp
             OnSystemOutHandler -= handler;
         }
 
-        protected void OnSystemOut(SystemOutEventArgs e)
+        protected void OnSystemOut(InterpOutEventArgs e)
         {
             if (OnSystemOutHandler != null)
                 OnSystemOutHandler(this, e);
@@ -264,7 +264,7 @@ namespace DemiTasse.interp
             // Print the argument
             if (0 == s.args.size()) 
             {
-                OnSystemOut(new SystemOutEventArgs());
+                OnSystemOut(new InterpOutEventArgs());
             }
             else 
             {
@@ -272,12 +272,12 @@ namespace DemiTasse.interp
 
                 if (arg0 is STRING)
                 {
-                    OnSystemOut(new SystemOutEventArgs(((STRING)arg0).s));
+                    OnSystemOut(new InterpOutEventArgs(((STRING)arg0).s));
                 }
                 else
                 {
                     int val = arg0.accept(this);
-                    OnSystemOut(new SystemOutEventArgs(val.ToString()));
+                    OnSystemOut(new InterpOutEventArgs(val.ToString()));
                 }
             }
 
@@ -416,22 +416,5 @@ namespace DemiTasse.interp
     public int visit(STRING t) {
 		return STATUS_DEFAULT;
 	}
-    }
-
-    public class SystemOutEventArgs : EventArgs
-    {
-        private string _message = null;
-
-        public SystemOutEventArgs()
-        {
-            _message = "\r\n";
-        }
-
-        public SystemOutEventArgs(string message)
-        {
-            _message = message + "\r\n";
-        }
-
-        public string Message { get { return _message; } }
     }
 }

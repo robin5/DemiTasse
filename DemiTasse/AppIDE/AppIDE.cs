@@ -37,13 +37,14 @@ using System.IO;
 using System.Xml.Serialization;
 using System.Diagnostics;
 
-using DemiTasse.ir;
-using DemiTasse.interp;
-using DemiTasse.irpsr;
 using DemiTasse.ast;
 using DemiTasse.astpsr;
 using DemiTasse.symbol;
 using DemiTasse.typechk;
+using DemiTasse.irgen;
+using DemiTasse.ir;
+using DemiTasse.interp;
+using DemiTasse.irpsr;
 
 namespace DemiTasse.AppIDE
 {
@@ -169,7 +170,7 @@ namespace DemiTasse.AppIDE
         #endregion OpenTestSuite Event
 
         #region SystemOut Event
-        public delegate void SystemOutEventHandler(object sender, SystemOutEventArgs e);
+        public delegate void SystemOutEventHandler(object sender, InterpOutEventArgs e);
 
         public event SystemOutEventHandler OnSystemOutHandler;
 
@@ -183,12 +184,34 @@ namespace DemiTasse.AppIDE
             OnSystemOutHandler -= handler;
         }
 
-        protected void OnSystemOut(SystemOutEventArgs e)
+        protected void OnSystemOut(InterpOutEventArgs e)
         {
             if (OnSystemOutHandler != null)
                 OnSystemOutHandler(this, e);
         }
         #endregion SystemOut Event
+
+        #region IrOut Event
+        public delegate void IrOutEventHandler(object sender, IrOutEventArgs e);
+
+        public event IrOutEventHandler OnIrOutHandler;
+
+        public void AddOnIrOut(IrOutEventHandler handler)
+        {
+            OnIrOutHandler += handler;
+        }
+
+        public void RemoveOnIrOut(IrOutEventHandler handler)
+        {
+            OnIrOutHandler -= handler;
+        }
+
+        protected void OnIrOut(IrOutEventArgs e)
+        {
+            if (OnIrOutHandler != null)
+                OnIrOutHandler(this, e);
+        }
+        #endregion IrOut Event
 
         #endregion Event Definitions
 
@@ -367,13 +390,20 @@ namespace DemiTasse.AppIDE
                 //DemiTasse.ast.Program p = (new astParser(stream)).Program();
                 astParser psr = new astParser(stream);
                 DemiTasse.ast.Program p = astParser.Program();
-
                 stream.Close();
                 SymbolVisitor sv = new SymbolVisitor();
                 sv.visit(p);
-                sv.symTable.show();
+                //sv.symTable.show();
                 TypeVisitor tv = new TypeVisitor(sv.symTable);
                 tv.visit(p);
+                IrgenVisitor iv = new IrgenVisitor(sv.symTable, tv);
+                PROG ir0 = iv.visit(p);
+                Canon cv = new Canon();
+                IR.Clear();
+                PROG ir = cv.visit(ir0);
+                ir.dump();
+                IR.AddOnIrOut(IR_OnIrOut);
+                IR.go(this);
             }
             catch (TypeException ex) 
             {
@@ -386,29 +416,6 @@ namespace DemiTasse.AppIDE
             catch (Exception ex) 
             {
                 OnAppException(new AppExceptionEventArgs(ex));
-            }
-        }
-
-        public void ExecuteSymbolTest(string fileName)
-        {
-            try
-            {
-                FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read);
-                //DemiTasse.ast.Program p = new astParser(stream).Program();
-                astParser psr = new astParser(stream);
-                DemiTasse.ast.Program p = astParser.Program();
-                stream.Close();
-                SymbolVisitor v = new SymbolVisitor();
-                p.accept(v);
-                v.symTable.show();
-            }
-            catch (SymbolException e)
-            {
-                Debug.WriteLine(e.ToString() + ": " + e.Message);
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.ToString() + ": " + e.Message);
             }
         }
 
@@ -441,10 +448,16 @@ namespace DemiTasse.AppIDE
             } 
         }
 
-        private void Interpreter_OnSystemOut(object sender, SystemOutEventArgs e)
+        private void Interpreter_OnSystemOut(object sender, InterpOutEventArgs e)
         {
             OnSystemOut(e);
         }
+
+        private void IR_OnIrOut(object sender, IrOutEventArgs e)
+        {
+            OnIrOut(e);
+        }
+
     }
 
 
