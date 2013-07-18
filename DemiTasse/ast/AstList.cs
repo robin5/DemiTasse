@@ -64,9 +64,8 @@ namespace DemiTasse.ast
             set { list[i] = value; }
         }
 
-
         public override void accept(VoidVI v) { v.visit(this); }
-        public void accept(TypeVI v) { v.visit(this); } /* throws Exception */
+        //public void accept(TypeVI v) { v.visit(this); } /* throws Exception */
     }
 
 }

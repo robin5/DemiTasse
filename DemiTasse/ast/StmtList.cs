@@ -32,7 +32,7 @@ namespace DemiTasse.ast
             base.add(n); 
         }
         
-        public Stmt elementAt(int i)
+        new public Stmt elementAt(int i)
         {
             return (Stmt)base.elementAt(i);
         }

@@ -1,0 +1,14 @@
+(Program (ClassDeclList
+ (ClassDecl (Id test) (NullExp) 
+ (VarDeclList ) 
+ (MethodDeclList
+ (MethodDecl (NullType) (Id main) (FormalList ) (VarDeclList (VarDecl (ObjType (Id Body) ) (Id b) (NewObj (Id Body) (ExpList ) ) ) ) (StmtList 
+ (CallStmt (Id b) (Id go) (ExpList ) ) ) )
+ ) )
+ (ClassDecl (Id Body) (NullExp) 
+ (VarDeclList ) 
+ (MethodDeclList
+ (MethodDecl (NullType) (Id go) (FormalList ) (VarDeclList ) (StmtList 
+ (Print (StrVal "Go!") ) ) )
+ ) )
+ ) )

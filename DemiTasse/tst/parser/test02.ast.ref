@@ -1,0 +1,13 @@
+(Program (ClassDeclList
+ (ClassDecl (Id test) (NullExp) 
+ (VarDeclList ) 
+ (MethodDeclList
+ (MethodDecl (NullType) (Id main) (FormalList ) (VarDeclList (VarDecl (BasicType boolean) (Id b) (NullExp) ) (VarDecl (BasicType int) (Id i) (NullExp) ) (VarDecl (BasicType int) (Id j) (NullExp) ) ) (StmtList 
+ (Assign (Id b) (BoolVal true) ) 
+ (Assign (Id i) (Binop + (IntVal 1) (IntVal 1) ) ) 
+ (Assign (Id j) (Binop * (IntVal 3) (Id i) ) ) 
+ (Print (Id b) ) 
+ (Print (Id i) ) 
+ (Print (Id j) ) ) )
+ ) )
+ ) )

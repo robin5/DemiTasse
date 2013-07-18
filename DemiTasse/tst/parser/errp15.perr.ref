@@ -1,0 +1,4 @@
+parser.ParseException: Encountered " "=" "= "" at line 4, column 15.
+Was expecting:
+    ";" ...
+    

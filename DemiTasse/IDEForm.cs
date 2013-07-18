@@ -144,6 +144,8 @@ namespace DemiTasse
             {
                 using (OpenFileDialog dialog = new OpenFileDialog())
                 {
+                    dialog.Filter = "MiniJava files (*.java)|*.java|Abstract Syntax Tree files (*.ast)|*.ast|Intermediate Representation files (*.ir)|*.ir|All files (*.*)|*.*";
+
                     if (DialogResult.OK == dialog.ShowDialog())
                     {
                         txtFile.Clear();
@@ -242,6 +244,10 @@ namespace DemiTasse
                     }
                 }
             }
+            catch (AppUserErrorException ex)
+            {
+                DisplayAppUserException(ex);
+            }
             catch (Exception ex)
             {
                 DisplayException(ex);
@@ -333,6 +339,12 @@ namespace DemiTasse
         private void DisplayException(Exception ex)
         {
             MessageBox.Show(ex.Message, "Exception", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            //txtConsole.Text += ex.ToString() + ":" + ex.Message;
+        }
+
+        private void DisplayAppUserException(Exception ex)
+        {
+            MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
             //txtConsole.Text += ex.ToString() + ":" + ex.Message;
         }
 

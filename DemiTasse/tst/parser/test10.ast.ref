@@ -1,0 +1,26 @@
+(Program (ClassDeclList
+ (ClassDecl (Id test) (NullExp) 
+ (VarDeclList ) 
+ (MethodDeclList
+ (MethodDecl (NullType) (Id main) (FormalList ) (VarDeclList (VarDecl (ObjType (Id Body) ) (Id b) (NewObj (Id Body) (ExpList ) ) ) ) (StmtList 
+ (Print (Call (Id b) (Id go) (ExpList ) ) ) ) )
+ ) )
+ (ClassDecl (Id Body) (NullExp) 
+ (VarDeclList ) 
+ (MethodDeclList
+ (MethodDecl (BasicType int) (Id go) (FormalList ) (VarDeclList (VarDecl (ObjType (Id Body2) ) (Id b) (NullExp) ) ) (StmtList 
+ (Assign (Id b) (NewObj (Id Body2) (ExpList ) ) ) 
+ (Return (Call (Id b) (Id value) (ExpList (BoolVal true) ) ) ) ) )
+ ) )
+ (ClassDecl (Id Body2) (NullExp) 
+ (VarDeclList (VarDecl (BasicType int) (Id i) (NullExp) ) ) 
+ (MethodDeclList
+ (MethodDecl (BasicType int) (Id value) (FormalList (Formal (BasicType boolean) (Id cond) ) ) (VarDeclList (VarDecl (BasicType int) (Id j) (NullExp) ) (VarDecl (BasicType int) (Id k) (NullExp) ) ) (StmtList 
+ (Assign (Id i) (IntVal 5) ) 
+ (Assign (Id j) (IntVal 6) ) 
+ (If (Id cond) 
+ (Assign (Id k) (Id i) ) 
+ (Assign (Id k) (Id j) ) ) 
+ (Return (Id k) ) ) )
+ ) )
+ ) )

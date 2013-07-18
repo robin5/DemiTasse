@@ -37,6 +37,7 @@ using System.IO;
 using System.Xml.Serialization;
 using System.Diagnostics;
 
+using DemiTasse.minipsr;
 using DemiTasse.ast;
 using DemiTasse.astpsr;
 using DemiTasse.symbol;
@@ -341,6 +342,12 @@ namespace DemiTasse.AppIDE
             {
                 ExecuteAstTest(fileName);
             }
+            else if (fileName.EndsWith(".java", StringComparison.OrdinalIgnoreCase))
+            {
+                ExecuteAstTest(fileName);
+            }
+            else 
+                throw new AppUserErrorException("Attempt to execute unknown file type: " + fileName);
         }
 
         private void ExecuteIrTest(string fileName)
@@ -414,6 +421,31 @@ namespace DemiTasse.AppIDE
                 OnAppException(new AppExceptionEventArgs(ex));
             }
             catch (Exception ex) 
+            {
+                OnAppException(new AppExceptionEventArgs(ex));
+            }
+        }
+
+
+        private void ExecuteParserTest(string fileName)
+        {
+            try
+            {
+                FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read);
+                miniParser psr = new miniParser(stream);
+                DemiTasse.ast.Program p = miniParser.Program();
+                stream.Close();
+                p.dump();
+            }
+            catch (TypeException ex)
+            {
+                OnAppException(new AppExceptionEventArgs(ex));
+            }
+            catch (SymbolException ex)
+            {
+                OnAppException(new AppExceptionEventArgs(ex));
+            }
+            catch (Exception ex)
             {
                 OnAppException(new AppExceptionEventArgs(ex));
             }

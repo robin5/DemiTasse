@@ -1244,7 +1244,7 @@ null,
             AstToken matchedToken;
             int curPos = 0;
 
-            EOFLoop :
+            // EOFLoop :
             for (;;)
             {
                 try

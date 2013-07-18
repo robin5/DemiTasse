@@ -1,0 +1,4 @@
+parser.ParseException: Encountered " "main" "main "" at line 3, column 17.
+Was expecting:
+    "void" ...
+    

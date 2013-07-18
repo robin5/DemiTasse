@@ -125,6 +125,11 @@
     <Compile Include="irgen\IrgenVisitor.cs" />
     <Compile Include="irpsr\IrToken.cs" />
     <Compile Include="ir\IrOut.cs" />
+    <Compile Include="minipsr\miniParser.cs" />
+    <Compile Include="minipsr\miniParserConstants.cs" />
+    <Compile Include="minipsr\miniParserTokenManager.cs" />
+    <Compile Include="minipsr\miniParseException.cs" />
+    <Compile Include="minipsr\PsrToken.cs" />
     <Compile Include="psrutil\Error.cs" />
     <Compile Include="interp\InterpException.cs" />
     <Compile Include="interp\InterpVisitor.cs" />

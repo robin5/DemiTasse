@@ -341,7 +341,7 @@ namespace DemiTasse.irpsr
                     jj_consume_token(RegExpId.kwCALL);
                     e = EXP();
                     jj_consume_token(RegExpId.kw32);
-                    label_4:
+                    // label_4:
                     while (true)
                     {
                         switch ((jj_ntk == RegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)

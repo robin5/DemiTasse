@@ -40,7 +40,6 @@ using System.Text;
 
 namespace DemiTasse.astpsr
 {
-
     /**
      * This exception is thrown when parse errors are encountered.
      * You can explicitly create objects of this exception type by
@@ -253,9 +252,6 @@ namespace DemiTasse.astpsr
             else
                 throw new Exception("System_getProperty fucntion not yet implemented");
         }
-
-
-
     }
     /* JavaCC - OriginalChecksum=e55596c3272f3b161c6a662f1ea55cb7 (do not edit this line) */
 }

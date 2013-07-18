@@ -33,7 +33,7 @@ namespace DemiTasse.ast
             base.add(n); 
         }
 
-        public MethodDecl elementAt(int i)
+        new public MethodDecl elementAt(int i)
         {
             return (MethodDecl)base.elementAt(i);
         }
