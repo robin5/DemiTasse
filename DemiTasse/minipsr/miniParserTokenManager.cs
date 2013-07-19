@@ -1038,6 +1038,7 @@ namespace DemiTasse.minipsr
         /** Token literal values. */
 
         public static readonly string[] jjstrLiteralImages = {
+            "",   // <empty string>
             null, // 
             null, // 
             null, // 

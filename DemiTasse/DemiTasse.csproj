@@ -77,6 +77,7 @@
     <Compile Include="ast\Assign.cs" />
     <Compile Include="ast\Ast.cs" />
     <Compile Include="ast\AstList.cs" />
+    <Compile Include="ast\AstOutEventArgs.cs" />
     <Compile Include="ast\BasicType.cs" />
     <Compile Include="ast\Binop.cs" />
     <Compile Include="ast\Block.cs" />
@@ -124,7 +125,7 @@
     <Compile Include="irgen\Canon.cs" />
     <Compile Include="irgen\IrgenVisitor.cs" />
     <Compile Include="irpsr\IrToken.cs" />
-    <Compile Include="ir\IrOut.cs" />
+    <Compile Include="ir\IrOutEventArgs.cs" />
     <Compile Include="minipsr\miniParser.cs" />
     <Compile Include="minipsr\miniParserConstants.cs" />
     <Compile Include="minipsr\miniParserTokenManager.cs" />

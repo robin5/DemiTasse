@@ -54,6 +54,8 @@ namespace DemiTasse.AppIDE
         public AppIDE()
         {
             TestSuiteManager.Init("");
+            Ast.AddOnAstOut(AST_OnAstOut);
+            IR.AddOnIrOut(IR_OnIrOut);
         }
 
         #region Event Definitions
@@ -214,6 +216,28 @@ namespace DemiTasse.AppIDE
         }
         #endregion IrOut Event
 
+        #region AstOut Event
+        public delegate void AstOutEventHandler(object sender, AstOutEventArgs e);
+
+        public event AstOutEventHandler OnAstOutHandler;
+
+        public void AddOnAstOut(AstOutEventHandler handler)
+        {
+            OnAstOutHandler += handler;
+        }
+
+        public void RemoveOnAstOut(AstOutEventHandler handler)
+        {
+            OnAstOutHandler -= handler;
+        }
+
+        protected void OnAstOut(AstOutEventArgs e)
+        {
+            if (OnAstOutHandler != null)
+                OnAstOutHandler(this, e);
+        }
+        #endregion AstOut Event
+
         #endregion Event Definitions
 
         #region IAppIDECommand
@@ -344,7 +368,7 @@ namespace DemiTasse.AppIDE
             }
             else if (fileName.EndsWith(".java", StringComparison.OrdinalIgnoreCase))
             {
-                ExecuteAstTest(fileName);
+                ExecuteParserTest(fileName);
             }
             else 
                 throw new AppUserErrorException("Attempt to execute unknown file type: " + fileName);
@@ -409,8 +433,8 @@ namespace DemiTasse.AppIDE
                 IR.Clear();
                 PROG ir = cv.visit(ir0);
                 ir.dump();
-                IR.AddOnIrOut(IR_OnIrOut);
-                IR.go(this);
+                IR.Dump(this);
+                IR.Clear();
             }
             catch (TypeException ex) 
             {
@@ -426,7 +450,6 @@ namespace DemiTasse.AppIDE
             }
         }
 
-
         private void ExecuteParserTest(string fileName)
         {
             try
@@ -436,6 +459,8 @@ namespace DemiTasse.AppIDE
                 DemiTasse.ast.Program p = miniParser.Program();
                 stream.Close();
                 p.dump();
+                Ast.Dump(this);
+                Ast.Clear();
             }
             catch (TypeException ex)
             {
@@ -490,7 +515,9 @@ namespace DemiTasse.AppIDE
             OnIrOut(e);
         }
 
+        private void AST_OnAstOut(object sender, AstOutEventArgs e)
+        {
+            OnAstOut(e);
+        }
     }
-
-
 }

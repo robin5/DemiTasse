@@ -32,6 +32,13 @@
             this.tvTestSuite = new System.Windows.Forms.TreeView();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.txtFile = new System.Windows.Forms.TextBox();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.txtConsole = new System.Windows.Forms.TextBox();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.txtIntRep = new System.Windows.Forms.TextBox();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.txtAST = new System.Windows.Forms.TextBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.mnuFile = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuFileNew = new System.Windows.Forms.ToolStripMenuItem();
@@ -52,25 +59,22 @@
             this.mnuRunPause = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuRunContinue = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuRunStop = new System.Windows.Forms.ToolStripMenuItem();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.txtConsole = new System.Windows.Forms.TextBox();
-            this.txtIntRep = new System.Windows.Forms.TextBox();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
-            this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.tabPage3.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
             // 
+            this.splitContainer1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.Location = new System.Drawing.Point(0, 24);
             this.splitContainer1.Name = "splitContainer1";
@@ -82,8 +86,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
-            this.splitContainer1.Size = new System.Drawing.Size(508, 372);
-            this.splitContainer1.SplitterDistance = 169;
+            this.splitContainer1.Size = new System.Drawing.Size(664, 482);
+            this.splitContainer1.SplitterDistance = 220;
             this.splitContainer1.TabIndex = 0;
             // 
             // tvTestSuite
@@ -93,13 +97,14 @@
             this.tvTestSuite.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F);
             this.tvTestSuite.Location = new System.Drawing.Point(0, 0);
             this.tvTestSuite.Name = "tvTestSuite";
-            this.tvTestSuite.Size = new System.Drawing.Size(169, 372);
+            this.tvTestSuite.Size = new System.Drawing.Size(218, 480);
             this.tvTestSuite.TabIndex = 0;
             this.tvTestSuite.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvTestSuite_NodeMouseClick);
             this.tvTestSuite.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tvTestSuite_KeyUp);
             // 
             // splitContainer2
             // 
+            this.splitContainer2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer2.Location = new System.Drawing.Point(0, 0);
             this.splitContainer2.Name = "splitContainer2";
@@ -112,8 +117,8 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.tabControl1);
-            this.splitContainer2.Size = new System.Drawing.Size(335, 372);
-            this.splitContainer2.SplitterDistance = 267;
+            this.splitContainer2.Size = new System.Drawing.Size(440, 482);
+            this.splitContainer2.SplitterDistance = 277;
             this.splitContainer2.TabIndex = 0;
             // 
             // txtFile
@@ -124,11 +129,92 @@
             this.txtFile.Multiline = true;
             this.txtFile.Name = "txtFile";
             this.txtFile.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtFile.Size = new System.Drawing.Size(335, 267);
+            this.txtFile.Size = new System.Drawing.Size(438, 275);
             this.txtFile.TabIndex = 0;
             this.txtFile.WordWrap = false;
             this.txtFile.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtFile_KeyDown);
             this.txtFile.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtFile_KeyPress);
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(438, 199);
+            this.tabControl1.TabIndex = 0;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.txtConsole);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(430, 173);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "Output";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // txtConsole
+            // 
+            this.txtConsole.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtConsole.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtConsole.Location = new System.Drawing.Point(3, 3);
+            this.txtConsole.Multiline = true;
+            this.txtConsole.Name = "txtConsole";
+            this.txtConsole.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.txtConsole.Size = new System.Drawing.Size(424, 167);
+            this.txtConsole.TabIndex = 1;
+            this.txtConsole.WordWrap = false;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.txtIntRep);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(432, 107);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Intermediate Representation";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // txtIntRep
+            // 
+            this.txtIntRep.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtIntRep.Font = new System.Drawing.Font("Courier New", 11.25F);
+            this.txtIntRep.Location = new System.Drawing.Point(3, 3);
+            this.txtIntRep.Multiline = true;
+            this.txtIntRep.Name = "txtIntRep";
+            this.txtIntRep.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.txtIntRep.Size = new System.Drawing.Size(426, 101);
+            this.txtIntRep.TabIndex = 0;
+            this.txtIntRep.WordWrap = false;
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.txtAST);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(432, 107);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Abstract Syntax Tree";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // txtAST
+            // 
+            this.txtAST.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtAST.Font = new System.Drawing.Font("Courier New", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtAST.Location = new System.Drawing.Point(3, 3);
+            this.txtAST.Multiline = true;
+            this.txtAST.Name = "txtAST";
+            this.txtAST.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.txtAST.Size = new System.Drawing.Size(426, 101);
+            this.txtAST.TabIndex = 0;
+            this.txtAST.WordWrap = false;
             // 
             // menuStrip1
             // 
@@ -137,7 +223,7 @@
             this.mnuRun});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(508, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(664, 24);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -285,68 +371,11 @@
             this.mnuRunStop.Text = "Stop";
             this.mnuRunStop.Click += new System.EventHandler(this.mnuRunStop_Click);
             // 
-            // tabControl1
-            // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(335, 101);
-            this.tabControl1.TabIndex = 0;
-            // 
-            // tabPage1
-            // 
-            this.tabPage1.Controls.Add(this.txtConsole);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(327, 75);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Output";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.Controls.Add(this.txtIntRep);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(327, 75);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Intermediate Representation";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // txtConsole
-            // 
-            this.txtConsole.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtConsole.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtConsole.Location = new System.Drawing.Point(3, 3);
-            this.txtConsole.Multiline = true;
-            this.txtConsole.Name = "txtConsole";
-            this.txtConsole.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtConsole.Size = new System.Drawing.Size(321, 69);
-            this.txtConsole.TabIndex = 1;
-            this.txtConsole.WordWrap = false;
-            // 
-            // txtIntRep
-            // 
-            this.txtIntRep.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtIntRep.Font = new System.Drawing.Font("Courier New", 11.25F);
-            this.txtIntRep.Location = new System.Drawing.Point(3, 3);
-            this.txtIntRep.Multiline = true;
-            this.txtIntRep.Name = "txtIntRep";
-            this.txtIntRep.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtIntRep.Size = new System.Drawing.Size(321, 69);
-            this.txtIntRep.TabIndex = 0;
-            this.txtIntRep.WordWrap = false;
-            // 
             // IDEForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(508, 396);
+            this.ClientSize = new System.Drawing.Size(664, 506);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
@@ -360,13 +389,15 @@
             this.splitContainer2.Panel1.PerformLayout();
             this.splitContainer2.Panel2.ResumeLayout(false);
             this.splitContainer2.ResumeLayout(false);
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -403,6 +434,8 @@
         private System.Windows.Forms.TextBox txtConsole;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.TextBox txtIntRep;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.TextBox txtAST;
     }
 }
 

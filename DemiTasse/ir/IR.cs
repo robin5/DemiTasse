@@ -71,7 +71,7 @@ namespace DemiTasse.ir
             if (e != null) e.dump(); else DUMP(" (null)");
         }
 
-        public static void go(Object sender)
+        public static void Dump(Object sender)
         {
             OnIrOut(sender, new IrOutEventArgs(text.ToString()));
         }

@@ -45,6 +45,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Diagnostics;
 
+using DemiTasse.ast;
 using DemiTasse.ir;
 using DemiTasse.interp;
 using DemiTasse.irpsr;
@@ -93,6 +94,7 @@ namespace DemiTasse
             app.AddOnOpenTestSuiteFile(OnOpenTestSuiteFile);
             app.AddOnSystemOut(OnSystemOut);
             app.AddOnIrOut(OnIrOut);
+            app.AddOnAstOut(OnAstOut);
 
             cmdNewFile = new CmdNewFile(app);
             cmdNewTestSuite = new CmdNewTestSuite(app);
@@ -228,10 +230,12 @@ namespace DemiTasse
 
         private void mnuRunStart_Click(object sender, EventArgs e)
         {
-            txtIntRep.Text = "";
             try
             {
+                txtIntRep.Clear();
+                txtAST.Clear();
                 txtConsole.Clear();
+
                 if (IDEMode == IDEModes.SingleFile)
                 {
                     cmdRunStartSingleFile.Execute(_fileName);
@@ -300,6 +304,7 @@ namespace DemiTasse
                 }
             }
         }
+        
         private void mnuRunPause_Click(object sender, EventArgs e)
         {
             try
@@ -360,7 +365,14 @@ namespace DemiTasse
 
         private void OnIrOut(object sender, IrOutEventArgs e)
         {
-            txtIntRep.Text += e.Message;
+            string data = e.Data.Replace("\n", "\r\n");
+            txtIntRep.Text += data;
+        }
+
+        private void OnAstOut(object sender, AstOutEventArgs e)
+        {
+            string data = e.Data.Replace("\n", "\r\n");
+            txtAST.Text += data;
         }
 
         private void OnErrorOut(object sender, AppErrorEventArgs e)
