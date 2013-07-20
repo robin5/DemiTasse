@@ -61,7 +61,7 @@ namespace DemiTasse.minipsr
  * You can modify this class to customize your error reporting
  * mechanisms so long as you retain the public fields.
  */
-    public class ParseException : Exception
+    public class miniParseException : Exception
     {
         /**
          * The version identifier for this Serializable class.
@@ -76,7 +76,7 @@ namespace DemiTasse.minipsr
          * a new object of this type with the fields "currentToken",
          * "expectedTokenSequences", and "tokenImage" set.
          */
-        public ParseException(PsrToken currentTokenVal,
+        public miniParseException(PsrToken currentTokenVal,
                               int[][] expectedTokenSequencesVal,
                               string[] tokenImageVal
                              )
@@ -98,13 +98,13 @@ namespace DemiTasse.minipsr
          * these constructors.
          */
 
-        public ParseException()
+        public miniParseException()
             : base()
         {
         }
 
         /** Constructor with message. */
-        public ParseException(string message)
+        public miniParseException(string message)
             : base(message)
         {
         }

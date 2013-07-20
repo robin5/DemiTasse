@@ -241,6 +241,7 @@ namespace DemiTasse.minipsr
         /// MainMethod  -> "public" "static" "void" "main" "(" "String" "[" "]" <ID> ")" "{" {VarDecl} {Statement} "}"
         /// </summary>
         /// <returns></returns>
+        
         static /* final */ public MethodDecl MainMethod() /* throws ParseException */
         {
             DemiTasse.ast.Type t = null;
@@ -336,7 +337,7 @@ namespace DemiTasse.minipsr
                 default:
                     jj_la1[7] = jj_gen;
                     jj_consume_token(MpRegExpId.UNDEFINED);
-                    throw new ParseException();
+                    throw new miniParseException();
             }
             
             id = Id();
@@ -402,9 +403,9 @@ namespace DemiTasse.minipsr
             return new MethodDecl( t, id, fl, vl, sl );
         }
 
-// --------------------------------------------------------------------------
-// Formals  ->  Type <ID> {"," Type <ID>}
-// --------------------------------------------------------------------------
+        // --------------------------------------------------------------------------
+        // Formals  ->  Type <ID> {"," Type <ID>}
+        // --------------------------------------------------------------------------
 
         static /* final */ public FormalList Formals() /* throws ParseException */
         {
@@ -439,33 +440,36 @@ namespace DemiTasse.minipsr
             throw new Error("Missing return statement in function");
 }
 
-// --------------------------------------------------------------------------
-// VarDec  ->  Type <ID> ["=" InitExpr] ";"
-// --------------------------------------------------------------------------
-  static /* final */ public VarDecl VarDecl() /* throws ParseException */ {
-      DemiTasse.ast.Type t = null;
-    Id id = null;
-    Exp e = null;
-    t = Type();
-    id = Id();
-    switch ((jj_ntk == MpRegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk) {
-        case MpRegExpId.ASSIGN:
-            jj_consume_token(MpRegExpId.ASSIGN);
-      e = InitExpr();
-      break;
-    default:
-      jj_la1[11] = jj_gen;
-      ;
-      break;
-    }
-    jj_consume_token(MpRegExpId.SEMICOLON);
-        {if (true) return new VarDecl( t, id, e );}
-    throw new Error("Missing return statement in function");
-  }
+        // --------------------------------------------------------------------------
+        // VarDec  ->  Type <ID> ["=" InitExpr] ";"
+        // --------------------------------------------------------------------------
+
+        static /* final */ public VarDecl VarDecl() /* throws ParseException */
+        {
+            DemiTasse.ast.Type t = null;
+            Id id = null;
+            Exp e = null;
+            t = Type();
+            id = Id();
+            switch ((jj_ntk == MpRegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
+            {
+                case MpRegExpId.ASSIGN:
+                    jj_consume_token(MpRegExpId.ASSIGN);
+                    e = InitExpr();
+                    break;
+                default:
+                    jj_la1[11] = jj_gen;
+                    ;
+                    break;
+            }
+            jj_consume_token(MpRegExpId.SEMICOLON);
+            return new VarDecl( t, id, e );
+        }
 
         // --------------------------------------------------------------------------
         // Type  ->  BasicType ["[" "]"] | <ID>
         // --------------------------------------------------------------------------
+        
         static /* final */ public DemiTasse.ast.Type Type() /* throws ParseException */
         {
             DemiTasse.ast.Type t = null;
@@ -512,7 +516,7 @@ namespace DemiTasse.minipsr
                 default:
                     jj_la1[13] = jj_gen;
                     jj_consume_token(MpRegExpId.UNDEFINED);
-                    throw new ParseException();
+                    throw new miniParseException();
             }
         throw new Error("Missing return statement in function");
         }
@@ -538,7 +542,7 @@ namespace DemiTasse.minipsr
                 default:
                     jj_la1[14] = jj_gen;
                     jj_consume_token(MpRegExpId.UNDEFINED);
-                    throw new ParseException();
+                    throw new miniParseException();
             }
             throw new Error("Missing return statement in function");
         }
@@ -588,7 +592,7 @@ namespace DemiTasse.minipsr
                 default:
                     jj_la1[15] = jj_gen;
                     jj_consume_token(MpRegExpId.UNDEFINED);
-                    throw new ParseException();
+                    throw new miniParseException();
                 }
             throw new Error("Missing return statement in function");
         }
@@ -596,6 +600,7 @@ namespace DemiTasse.minipsr
         // --------------------------------------------------------------------------
         // BlockStmt  ->  <LBRACE> ( Statement() )* <RBRACE>
         // --------------------------------------------------------------------------
+        
         static /* final */ public Block BlockStmt() /* throws ParseException */
         {
             Stmt s = null;
@@ -641,6 +646,7 @@ namespace DemiTasse.minipsr
         // --------------------------------------------------------------------------
         // ReturnStmt  ->  <RETURN> [ Expr() ] <SEMICOLON>
         // --------------------------------------------------------------------------
+        
         static /* final */ public Return ReturnStmt() /* throws ParseException */
         {
             Exp e = null;
@@ -736,7 +742,7 @@ namespace DemiTasse.minipsr
 
                     jj_la1[19] = jj_gen;
                     jj_consume_token(MpRegExpId.UNDEFINED);
-                    throw new ParseException();
+                    throw new miniParseException();
             }
 
             jj_consume_token(MpRegExpId.SEMICOLON);
@@ -791,20 +797,21 @@ namespace DemiTasse.minipsr
             return new If( e, s1, s2);
         }
 
-// --------------------------------------------------------------------------
-// WhileStmt  ->  <WHILE> <LPAREN> e = Expr() <RPAREN> s = Statement()
-// --------------------------------------------------------------------------
-  static /* final */ public While WhileStmt() /* throws ParseException */ {
-    Exp e = null;
-    Stmt s = null;
-    jj_consume_token(MpRegExpId.WHILE);
-    jj_consume_token(MpRegExpId.LPAREN);
-    e = Expr();
-    jj_consume_token(MpRegExpId.RPAREN);
-    s = Statement();
-        {if (true) return new While( e, s );}
-    throw new Error("Missing return statement in function");
-  }
+        // --------------------------------------------------------------------------
+        // WhileStmt  ->  <WHILE> <LPAREN> e = Expr() <RPAREN> s = Statement()
+        // --------------------------------------------------------------------------
+
+        static /* final */ public While WhileStmt() /* throws ParseException */
+        {
+            Exp e = null;
+            Stmt s = null;
+            jj_consume_token(MpRegExpId.WHILE);
+            jj_consume_token(MpRegExpId.LPAREN);
+            e = Expr();
+            jj_consume_token(MpRegExpId.RPAREN);
+            s = Statement();
+            return new While( e, s );
+        }
 
         // --------------------------------------------------------------------------------------
         // PrintStmt  ->  <SYSTEM_OUT_PRINTLN> <LPAREN> [ Expr() | <STRVAL> ] <RPAREN> <SEMICOLON>
@@ -846,7 +853,7 @@ namespace DemiTasse.minipsr
                         default:
                             jj_la1[21] = jj_gen;
                             jj_consume_token(MpRegExpId.UNDEFINED);
-                            throw new ParseException();
+                            throw new miniParseException();
                     }
                     break;
 
@@ -893,11 +900,11 @@ namespace DemiTasse.minipsr
             return el;
         }
 
-            // --------------------------------------------------------------------------
-            // InitExpr -> "new" BasicType "[" <INTVAL> "]" 
-            //           | "new" <ID> "(" [Args] ")"
-            //           |  Expr 
-            // --------------------------------------------------------------------------
+        // --------------------------------------------------------------------------
+        // InitExpr -> "new" BasicType "[" <INTVAL> "]" 
+        //           | "new" <ID> "(" [Args] ")"
+        //           |  Expr 
+        // --------------------------------------------------------------------------
 
         static /* final */ public Exp InitExpr() /* throws ParseException */
         {
@@ -951,7 +958,7 @@ namespace DemiTasse.minipsr
                         default:
                             jj_la1[25] = jj_gen;
                             jj_consume_token(MpRegExpId.UNDEFINED);
-                            throw new ParseException();
+                            throw new miniParseException();
                     }
                     //break;
 
@@ -967,26 +974,28 @@ namespace DemiTasse.minipsr
                 default:
                     jj_la1[26] = jj_gen;
                     jj_consume_token(MpRegExpId.UNDEFINED);
-                    throw new ParseException();
+                    throw new miniParseException();
             }
             throw new Error("Missing return statement in function");
         }
 
-// ----------------------------------------------------------------
-// Expr -> AndExpr OrTail
-// ----------------------------------------------------------------
-  static /* final */ public Exp Expr() /* throws ParseException */ {
-    Exp e1 = null;
-    Exp e2 = null;
-    e1 = AndExpr();
-    e2 = OrTail(e1);
-        {if (true) return e2 == null ? e1 : e2;}
-    throw new Error("Missing return statement in function");
-  }
+        // ----------------------------------------------------------------
+        // Expr -> AndExpr OrTail
+        // ----------------------------------------------------------------
+
+        static /* final */ public Exp Expr() /* throws ParseException */
+        {
+            Exp e1 = null;
+            Exp e2 = null;
+            e1 = AndExpr();
+            e2 = OrTail(e1);
+            return e2 == null ? e1 : e2;
+        }
 
         // ----------------------------------------------------------------
         // OrTail  ->  [ "||" AndExpr OrTail ]
         // ----------------------------------------------------------------
+        
         static /* final */ public Exp OrTail(Exp e0) /* throws ParseException */
         {
             Exp e1 = null;
@@ -1137,7 +1146,7 @@ namespace DemiTasse.minipsr
                         default:
                             jj_la1[30] = jj_gen;
                             jj_consume_token(MpRegExpId.UNDEFINED);
-                            throw new ParseException();
+                            throw new miniParseException();
                     }
                     e1 = Term();
                     e1 = new Binop(op, e0, e1);
@@ -1159,7 +1168,7 @@ namespace DemiTasse.minipsr
                         default:
                             jj_la1[30] = jj_gen;
                             jj_consume_token(MpRegExpId.UNDEFINED);
-                            throw new ParseException();
+                            throw new miniParseException();
                     }
                     e1 = Term();
                     e1 = new Binop( op, e0, e1 );
@@ -1214,7 +1223,7 @@ namespace DemiTasse.minipsr
                         default:
                             jj_la1[32] = jj_gen;
                             jj_consume_token(MpRegExpId.UNDEFINED);
-                            throw new ParseException();
+                            throw new miniParseException();
                     }
                     e1 = Factor();
                     e1 = new Binop(op, e0, e1);
@@ -1237,7 +1246,7 @@ namespace DemiTasse.minipsr
                         default:
                             jj_la1[32] = jj_gen;
                             jj_consume_token(MpRegExpId.UNDEFINED);
-                            throw new ParseException();
+                            throw new miniParseException();
                     }
                     e1 = Factor();
                     e1 = new Binop( op, e0, e1 );
@@ -1284,7 +1293,7 @@ namespace DemiTasse.minipsr
                         default:
                             jj_la1[34] = jj_gen;
                             jj_consume_token(MpRegExpId.UNDEFINED);
-                            throw new ParseException();
+                            throw new miniParseException();
                     }
                     factor = Factor();
                     if ( neg )
@@ -1333,7 +1342,7 @@ namespace DemiTasse.minipsr
                                 default:
                                     jj_la1[36] = jj_gen;
                                     jj_consume_token(MpRegExpId.UNDEFINED);
-                                    throw new ParseException();
+                                    throw new miniParseException();
                             }
                             break;
                         default:
@@ -1368,10 +1377,10 @@ namespace DemiTasse.minipsr
                 default:
                     jj_la1[38] = jj_gen;
                     jj_consume_token(MpRegExpId.UNDEFINED);
-                    throw new ParseException();
-    }
-    throw new Error("Missing return statement in function");
-  }
+                    throw new miniParseException();
+            }
+            throw new Error("Missing return statement in function");
+        }
 
         // --------------------------------------------------------------------------
         // Lvalue   -> ["this" "."] <ID> {"." <ID>} ["[" Expr "]"]
@@ -1440,26 +1449,28 @@ namespace DemiTasse.minipsr
             return e == null ? (Exp)id : (Exp)(new Field(e, id));
         }
 
-// --------------------------------------------------------------------------
-// ArrayElm  ->  "[" Expr "]"
-// --------------------------------------------------------------------------
-  static /* final */ public Exp ArrayElm(Exp pid) /* throws ParseException */ {
-    Exp e;
-    jj_consume_token(MpRegExpId.LBRACKET);
-    e = Expr();
-    jj_consume_token(MpRegExpId.RBRACKET);
-        {if (true) return new ArrayElm( pid, e );}
-    throw new Error("Missing return statement in function");
-  }
+        // --------------------------------------------------------------------------
+        // ArrayElm  ->  "[" Expr "]"
+        // --------------------------------------------------------------------------
+  
+        static /* final */ public Exp ArrayElm(Exp pid) /* throws ParseException */
+        {
+            Exp e;
+            jj_consume_token(MpRegExpId.LBRACKET);
+            e = Expr();
+            jj_consume_token(MpRegExpId.RBRACKET);
+            return new ArrayElm( pid, e );
+        }
 
-// --------------------------------------------------------------------------
-// This  -> <THIS>
-// --------------------------------------------------------------------------
-  static /* final */ public Exp This() /* throws ParseException */ {
-      jj_consume_token(MpRegExpId.THIS);
-        {if (true) return new This();}
-    throw new Error("Missing return statement in function");
-  }
+        // --------------------------------------------------------------------------
+        // This  -> <THIS>
+        // --------------------------------------------------------------------------
+
+        static /* final */ public Exp This() /* throws ParseException */
+        {
+            jj_consume_token(MpRegExpId.THIS);
+            return new This();
+        }
 
         // --------------------------------------------------------------------------
         // Literal  ->  IntVal | BoolVal
@@ -1479,7 +1490,7 @@ namespace DemiTasse.minipsr
                 default:
                     jj_la1[41] = jj_gen;
                     jj_consume_token(MpRegExpId.UNDEFINED);
-                    throw new ParseException();
+                    throw new miniParseException();
             }
             throw new Error("Missing return statement in function");
         }
@@ -1497,7 +1508,7 @@ namespace DemiTasse.minipsr
                 default:
                     jj_la1[42] = jj_gen;
                     jj_consume_token(MpRegExpId.UNDEFINED);
-                    throw new ParseException();
+                    throw new miniParseException();
             }
             throw new Error("Missing return statement in function");
         }
@@ -1515,17 +1526,18 @@ namespace DemiTasse.minipsr
             return new IntVal( i[0] );
         }
 
-// --------------------------------------------------------------------------
-// StrVal  ->  <STRVAL>
-// --------------------------------------------------------------------------
-  static /* final */ public StrVal StrVal() /* throws ParseException */ {
-    string s;
-    jj_consume_token(MpRegExpId.STRVAL);
-        s = token.image;
-        s = s.Substring( 1, s.Length - 1 );
-        {if (true) return new StrVal( s );}
-    throw new Error("Missing return statement in function");
-  }
+        // --------------------------------------------------------------------------
+        // StrVal  ->  <STRVAL>
+        // --------------------------------------------------------------------------
+  
+        static /* final */ public StrVal StrVal() /* throws ParseException */
+        {
+            string s;
+            jj_consume_token(MpRegExpId.STRVAL);
+            s = token.image;
+            s = s.Substring( 1, s.Length - 1 );
+            return new StrVal( s );
+        }
 
         // --------------------------------------------------------------------------
         // RelOp  ->  <EQ> | <NE> | <LT> | <LE> | <GT> | <GE>
@@ -1562,7 +1574,7 @@ namespace DemiTasse.minipsr
                 default:
                     jj_la1[43] = jj_gen;
                     jj_consume_token(MpRegExpId.UNDEFINED);
-                    throw new ParseException();
+                    throw new miniParseException();
             }
             throw new Error("Missing return statement in function");
         }
@@ -1609,7 +1621,7 @@ namespace DemiTasse.minipsr
                 default:
                     jj_la1[44] = jj_gen;
                     jj_consume_token(MpRegExpId.UNDEFINED);
-                    throw new ParseException();
+                    throw new miniParseException();
             }
             throw new Error("Missing return statement in function");
         }
@@ -1804,18 +1816,21 @@ namespace DemiTasse.minipsr
                 // System.out.println("       during parser generation.");
                 // throw new Error();
             }
-
-            jj_initialized_once = true;
-            
-            try
-            { 
-                jj_input_stream = new SimpleCharStream(stream, encoding, 1, 1);
-            } catch(UnsupportedEncodingException e)
+            else
             {
-                throw new RuntimeException(e);
+                jj_initialized_once = true;
+
+                try
+                {
+                    jj_input_stream = new SimpleCharStream(stream, encoding, 1, 1);
+                }
+                catch (UnsupportedEncodingException e)
+                {
+                    throw new RuntimeException(e);
+                }
+                token_source = new miniParserTokenManager(jj_input_stream);
             }
 
-            token_source = new miniParserTokenManager(jj_input_stream);
             token = new PsrToken();
             jj_ntk = MpRegExpId.UNDEFINED;
             jj_gen = 0;
@@ -1869,8 +1884,7 @@ namespace DemiTasse.minipsr
             for (int i = 0; i < 45; i++) jj_la1[i] = -1;
             for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
         }
-#endif
-#if false
+
         /** Reinitialise. */
         static public void ReInit(java.io.Reader stream) {
         jj_input_stream.ReInit(stream, 1, 1);
@@ -1986,8 +2000,10 @@ namespace DemiTasse.minipsr
         /** Get the next Token. */
         static /* final */ public PsrToken getNextToken()
         {
-            if (token.next != null) token = token.next;
-            else token = token.next = miniParserTokenManager.getNextToken();
+            if (token.next != null)
+                token = token.next;
+            else
+                token = token.next = miniParserTokenManager.getNextToken();
             jj_ntk = MpRegExpId.UNDEFINED;
             jj_gen++;
             return token;
@@ -1999,8 +2015,10 @@ namespace DemiTasse.minipsr
             PsrToken t = token;
             for (int i = 0; i < index; i++)
             {
-                if (t.next != null) t = t.next;
-                else t = t.next = miniParserTokenManager.getNextToken();
+                if (t.next != null)
+                    t = t.next;
+                else
+                    t = t.next = miniParserTokenManager.getNextToken();
             }
             return t;
         }
@@ -2070,7 +2088,7 @@ namespace DemiTasse.minipsr
         }
 
         /** Generate ParseException. */
-        static public ParseException generateParseException()
+        static public miniParseException generateParseException()
         {
             jj_expentries.Clear();
             bool[] la1tokens = new bool[53];
@@ -2111,7 +2129,7 @@ namespace DemiTasse.minipsr
             {
                 exptokseq[i] = jj_expentries[i];
             }
-        return new ParseException(token, exptokseq, tokenImage);
+        return new miniParseException(token, exptokseq, tokenImage);
         }
 
         /** Enable tracing. */
@@ -2159,10 +2177,15 @@ namespace DemiTasse.minipsr
             JJCalls p = jj_2_rtns[index];
             while (p.gen > jj_gen)
             {
-                if (p.next == null) { p = p.next = new JJCalls(); break; }
+                if (p.next == null)
+                {
+                    p = p.next = new JJCalls();
+                    break;
+                }
                 p = p.next;
             }
-            p.gen = jj_gen + xla - jj_la; p.first = token; p.arg = xla;
+            p.gen = jj_gen + xla - jj_la;
+            p.first = token; p.arg = xla;
         }
 
         /*static*/ /* final */ public class JJCalls

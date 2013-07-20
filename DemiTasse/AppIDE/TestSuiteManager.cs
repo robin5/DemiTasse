@@ -55,6 +55,27 @@ namespace DemiTasse.AppIDE
 
             try
             {
+                files = Directory.GetFiles(@"C:\Users\Robin\Documents\GitHub\DemiTasse\DemiTasse\tst\parser\", "test*.java", SearchOption.TopDirectoryOnly);
+                ts = Create("Parser Tests");
+                for (int i = 0; i < files.Length; ++i)
+                {
+                    ts.AddTestFile(files[i]);
+                }
+
+                files = Directory.GetFiles(@"C:\Users\Robin\Documents\GitHub\DemiTasse\DemiTasse\tst\parser\", "err*.java", SearchOption.TopDirectoryOnly);
+                ts = Create("Error Parser Tests");
+                for (int i = 0; i < files.Length; ++i)
+                {
+                    ts.AddTestFile(files[i]);
+                }
+
+                files = Directory.GetFiles(@"C:\Users\Robin\Documents\GitHub\DemiTasse\DemiTasse\tst\ast\", "*.ast", SearchOption.TopDirectoryOnly);
+                ts = Create("Abstract Syntax Tree Tests");
+                for (int i = 0; i < files.Length; ++i)
+                {
+                    ts.AddTestFile(files[i]);
+                }
+
                 ts = Create("IR Validation Tests (Good)");
                 files = Directory.GetFiles(@"C:\Users\Robin\Documents\GitHub\DemiTasse\DemiTasse\tst\ir\", "*.ir", SearchOption.TopDirectoryOnly);
                 for (int i = 0; i < files.Length; ++i)
@@ -76,12 +97,6 @@ namespace DemiTasse.AppIDE
                 }
                 ts.AddTestSuite("IR Validation Tests (Good)");
 
-                files = Directory.GetFiles(@"C:\Users\Robin\Documents\GitHub\DemiTasse\DemiTasse\tst\ast\", "*.ast", SearchOption.TopDirectoryOnly);
-                ts = Create("Abstract Syntax Tree Tests");
-                for (int i = 0; i < files.Length; ++i)
-                {
-                    ts.AddTestFile(files[i]);
-                }
             }
             catch (Exception ex)
             {

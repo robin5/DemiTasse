@@ -715,27 +715,29 @@ namespace DemiTasse.astpsr
                 jj_la1[i] = -1;
         }
 
-  /** Reinitialise. */
-  static public void ReInit(Stream stream) {
-     ReInit(stream, null);
-  }
-  /** Reinitialise. */
-  static public void ReInit(Stream stream, Encoding encoding)
-  {
-    try 
-    { 
-        jj_input_stream.ReInit(stream, encoding, 1, 1); 
-    } 
-    catch(UnsupportedEncodingException e) 
-    { 
-        throw new RuntimeException(e); 
-    }
-    astParserTokenManager.ReInit(jj_input_stream);
-    token = new AstToken();
-    jj_ntk = AstRegExpId.UNDEFINED;
-    jj_gen = 0;
-    for (int i = 0; i < 14; i++) jj_la1[i] = -1;
-  }
+        /** Reinitialise. */
+        static public void ReInit(Stream stream)
+        {
+            ReInit(stream, Encoding.ASCII);
+        }
+
+        /** Reinitialise. */
+        static public void ReInit(Stream stream, Encoding encoding)
+        {
+            try 
+            { 
+                jj_input_stream.ReInit(stream, encoding, 1, 1); 
+            } 
+            catch(UnsupportedEncodingException e) 
+            { 
+                throw new RuntimeException(e); 
+            }
+            astParserTokenManager.ReInit(jj_input_stream);
+            token = new AstToken();
+            jj_ntk = AstRegExpId.UNDEFINED;
+            jj_gen = 0;
+            for (int i = 0; i < 14; i++) jj_la1[i] = -1;
+        }
 
 #if false
   /** Constructor. */
@@ -754,10 +756,8 @@ namespace DemiTasse.astpsr
     jj_gen = 0;
     for (int i = 0; i < 14; i++) jj_la1[i] = -1;
   }
-#endif
 
-#if false
-  /** Reinitialise. */
+        /** Reinitialise. */
   static public void ReInit(java.io.Reader stream) {
     jj_input_stream.ReInit(stream, 1, 1);
     token_source.ReInit(jj_input_stream);
@@ -766,8 +766,6 @@ namespace DemiTasse.astpsr
     jj_gen = 0;
     for (int i = 0; i < 14; i++) jj_la1[i] = -1;
   }
-#endif
-#if false
         /** Constructor with generated Token Manager. */
         public astParser(astParserTokenManager tm)
         {
@@ -786,8 +784,6 @@ namespace DemiTasse.astpsr
             for (int i = 0; i < 14; i++)
                 jj_la1[i] = -1;
         }
-#endif
-#if false
         /** Reinitialise. */
         public void ReInit(astParserTokenManager tm)
         {
@@ -799,6 +795,7 @@ namespace DemiTasse.astpsr
                 jj_la1[i] = -1;
         }
 #endif
+
         static private AstToken jj_consume_token(astParserConstants.AstRegExpId kind) /* throws ParseException */
         {
             AstToken oldToken;
@@ -830,28 +827,32 @@ namespace DemiTasse.astpsr
             return token;
         }
 
-/** Get the specific Token. */
+        /** Get the specific Token. */
         static /* final */ public AstToken getToken(int index)
         {
-    AstToken t = token;
-    for (int i = 0; i < index; i++) {
-      if (t.next != null) t = t.next;
-      else t = t.next = astParserTokenManager.getNextToken();
-    }
-    return t;
-  }
+            AstToken t = token;
+            for (int i = 0; i < index; i++)
+            {
+                if (t.next != null)
+                    t = t.next;
+                else 
+                    t = t.next = astParserTokenManager.getNextToken();
+            }
+            return t;
+        }
 
-  static private AstRegExpId jj_ntk_fn() {
-    if ((jj_nt=token.next) == null)
-        return (jj_ntk = (token.next = astParserTokenManager.getNextToken()).kind);
-    else
-      return (jj_ntk = jj_nt.kind);
-  }
+        static private AstRegExpId jj_ntk_fn()
+        {
+            if ((jj_nt=token.next) == null)
+                return (jj_ntk = (token.next = astParserTokenManager.getNextToken()).kind);
+            else
+                return (jj_ntk = jj_nt.kind);
+        }
 
-  //private static java.util.List<int[]> jj_expentries = new java.util.ArrayList<int[]>();
-  private static List<int[]> jj_expentries = new List<int[]>();
-  static private int[] jj_expentry;
-  static private AstRegExpId jj_kind = AstRegExpId.UNDEFINED;
+        //private static java.util.List<int[]> jj_expentries = new java.util.ArrayList<int[]>();
+        private static List<int[]> jj_expentries = new List<int[]>();
+        static private int[] jj_expentry;
+        static private AstRegExpId jj_kind = AstRegExpId.UNDEFINED;
 
         /** Generate ParseException. */
         static public astParseException generateParseException()

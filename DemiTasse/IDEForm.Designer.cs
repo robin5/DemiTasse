@@ -138,8 +138,8 @@
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
@@ -176,7 +176,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(432, 107);
+            this.tabPage2.Size = new System.Drawing.Size(430, 173);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Intermediate Representation";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -189,7 +189,7 @@
             this.txtIntRep.Multiline = true;
             this.txtIntRep.Name = "txtIntRep";
             this.txtIntRep.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtIntRep.Size = new System.Drawing.Size(426, 101);
+            this.txtIntRep.Size = new System.Drawing.Size(424, 167);
             this.txtIntRep.TabIndex = 0;
             this.txtIntRep.WordWrap = false;
             // 
@@ -199,7 +199,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(432, 107);
+            this.tabPage3.Size = new System.Drawing.Size(430, 173);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Abstract Syntax Tree";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -212,7 +212,7 @@
             this.txtAST.Multiline = true;
             this.txtAST.Name = "txtAST";
             this.txtAST.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtAST.Size = new System.Drawing.Size(426, 101);
+            this.txtAST.Size = new System.Drawing.Size(424, 167);
             this.txtAST.TabIndex = 0;
             this.txtAST.WordWrap = false;
             // 
