@@ -216,6 +216,7 @@ namespace DemiTasse.minipsr
             }
 
             /* label_5: */
+            done = false;
             while (!done) 
             {
                 switch ((jj_ntk==MpRegExpId.UNDEFINED)?jj_ntk_fn():jj_ntk)

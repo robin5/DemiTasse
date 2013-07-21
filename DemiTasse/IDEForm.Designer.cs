@@ -35,10 +35,10 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.txtConsole = new System.Windows.Forms.TextBox();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.txtIntRep = new System.Windows.Forms.TextBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.txtAST = new System.Windows.Forms.TextBox();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.txtIntRep = new System.Windows.Forms.TextBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.mnuFile = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuFileNew = new System.Windows.Forms.ToolStripMenuItem();
@@ -67,8 +67,8 @@
             this.splitContainer2.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
+            this.tabPage2.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -170,29 +170,6 @@
             this.txtConsole.TabIndex = 1;
             this.txtConsole.WordWrap = false;
             // 
-            // tabPage2
-            // 
-            this.tabPage2.Controls.Add(this.txtIntRep);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(430, 173);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Intermediate Representation";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // txtIntRep
-            // 
-            this.txtIntRep.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtIntRep.Font = new System.Drawing.Font("Courier New", 11.25F);
-            this.txtIntRep.Location = new System.Drawing.Point(3, 3);
-            this.txtIntRep.Multiline = true;
-            this.txtIntRep.Name = "txtIntRep";
-            this.txtIntRep.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtIntRep.Size = new System.Drawing.Size(424, 167);
-            this.txtIntRep.TabIndex = 0;
-            this.txtIntRep.WordWrap = false;
-            // 
             // tabPage3
             // 
             this.tabPage3.Controls.Add(this.txtAST);
@@ -215,6 +192,29 @@
             this.txtAST.Size = new System.Drawing.Size(424, 167);
             this.txtAST.TabIndex = 0;
             this.txtAST.WordWrap = false;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.txtIntRep);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(428, 173);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Intermediate Representation";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // txtIntRep
+            // 
+            this.txtIntRep.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtIntRep.Font = new System.Drawing.Font("Courier New", 11.25F);
+            this.txtIntRep.Location = new System.Drawing.Point(3, 3);
+            this.txtIntRep.Multiline = true;
+            this.txtIntRep.Name = "txtIntRep";
+            this.txtIntRep.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.txtIntRep.Size = new System.Drawing.Size(422, 167);
+            this.txtIntRep.TabIndex = 0;
+            this.txtIntRep.WordWrap = false;
             // 
             // menuStrip1
             // 
@@ -392,10 +392,10 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
-            this.tabPage2.ResumeLayout(false);
-            this.tabPage2.PerformLayout();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
+            this.tabPage2.ResumeLayout(false);
+            this.tabPage2.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);

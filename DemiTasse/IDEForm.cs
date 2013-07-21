@@ -293,7 +293,8 @@ namespace DemiTasse
                         if (null != (fileEntry = (node.Tag as TestSuiteFileEntry)))
                         {
                             txtConsole.Text += (fileEntry.FileName + " ----------------------------------------------------\r\n");
-                            Debug.WriteLine( (fileEntry.FileName + " ----------------------------------------------------\r\n"));
+                            txtAST.Text += (fileEntry.FileName + " ----------------------------------------------------\r\n");
+                            Debug.WriteLine((fileEntry.FileName + " ----------------------------------------------------\r\n"));
                             cmdRunStartSingleFile.Execute(fileEntry.FileName);
                         }
                         else if (null != (node.Tag as TestSuiteSuiteEntry))
