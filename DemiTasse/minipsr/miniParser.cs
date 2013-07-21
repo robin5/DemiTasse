@@ -329,8 +329,10 @@ namespace DemiTasse.minipsr
                     jj_consume_token(MpRegExpId.VOID);
                     break;
                 case MpRegExpId.BOOLEAN:
+                    t = Type();
                     break;
                 case MpRegExpId.INT:
+                    t = Type();
                     break;
                 case MpRegExpId.ID:
                     t = Type();
@@ -347,8 +349,10 @@ namespace DemiTasse.minipsr
             switch ((jj_ntk == MpRegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
             {
                 case MpRegExpId.BOOLEAN:
+                    fl = Formals();
                     break;
                 case MpRegExpId.INT:
+                    fl = Formals();
                     break;
                 case MpRegExpId.ID:
                     fl = Formals();
@@ -657,22 +661,30 @@ namespace DemiTasse.minipsr
             switch ((jj_ntk == MpRegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
             {
                 case MpRegExpId.FALSE:
+                    e = Expr();
                     break;
                 case MpRegExpId.THIS:
+                    e = Expr();
                     break;
                 case MpRegExpId.TRUE:
+                    e = Expr();
                     break;
                 case MpRegExpId.ID:
+                    e = Expr();
                     break;
                 case MpRegExpId.LPAREN:
+                    e = Expr();
                     break;
                 case MpRegExpId.SUB:
+                    e = Expr();
                     break;
                 case MpRegExpId.NOT:
+                    e = Expr();
                     break;
                 case MpRegExpId.INTVAL:
                     e = Expr();
                     break;
+
                 default:
                     jj_la1[17] = jj_gen;
                     ;
@@ -828,33 +840,138 @@ namespace DemiTasse.minipsr
             switch ((jj_ntk == MpRegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
             {
                 case MpRegExpId.FALSE:
+                    switch ((jj_ntk == MpRegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
+                    {
+                        case MpRegExpId.FALSE: e = Expr(); break;
+                        case MpRegExpId.THIS: e = Expr(); break;
+                        case MpRegExpId.TRUE: e = Expr(); break;
+                        case MpRegExpId.ID: e = Expr(); break;
+                        case MpRegExpId.LPAREN: e = Expr(); break;
+                        case MpRegExpId.SUB: e = Expr(); break;
+                        case MpRegExpId.NOT: e = Expr(); break;
+                        case MpRegExpId.INTVAL: e = Expr(); break;
+                        case MpRegExpId.STRVAL: e = StrVal(); break;
+                        default: jj_la1[21] = jj_gen; jj_consume_token(MpRegExpId.UNDEFINED); throw new miniParseException();
+                    }
+                    break;
                 case MpRegExpId.THIS:
+                    switch ((jj_ntk == MpRegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
+                    {
+                        case MpRegExpId.FALSE: e = Expr(); break;
+                        case MpRegExpId.THIS: e = Expr(); break;
+                        case MpRegExpId.TRUE: e = Expr(); break;
+                        case MpRegExpId.ID: e = Expr(); break;
+                        case MpRegExpId.LPAREN: e = Expr(); break;
+                        case MpRegExpId.SUB: e = Expr(); break;
+                        case MpRegExpId.NOT: e = Expr(); break;
+                        case MpRegExpId.INTVAL: e = Expr(); break;
+                        case MpRegExpId.STRVAL: e = StrVal(); break;
+                        default: jj_la1[21] = jj_gen; jj_consume_token(MpRegExpId.UNDEFINED); throw new miniParseException();
+                    }
+                    break;
                 case MpRegExpId.TRUE:
+                    switch ((jj_ntk == MpRegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
+                    {
+                        case MpRegExpId.FALSE: e = Expr(); break;
+                        case MpRegExpId.THIS: e = Expr(); break;
+                        case MpRegExpId.TRUE: e = Expr(); break;
+                        case MpRegExpId.ID: e = Expr(); break;
+                        case MpRegExpId.LPAREN: e = Expr(); break;
+                        case MpRegExpId.SUB: e = Expr(); break;
+                        case MpRegExpId.NOT: e = Expr(); break;
+                        case MpRegExpId.INTVAL: e = Expr(); break;
+                        case MpRegExpId.STRVAL: e = StrVal(); break;
+                        default: jj_la1[21] = jj_gen; jj_consume_token(MpRegExpId.UNDEFINED); throw new miniParseException();
+                    }
+                    break;
                 case MpRegExpId.ID:
+                    switch ((jj_ntk == MpRegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
+                    {
+                        case MpRegExpId.FALSE: e = Expr(); break;
+                        case MpRegExpId.THIS: e = Expr(); break;
+                        case MpRegExpId.TRUE: e = Expr(); break;
+                        case MpRegExpId.ID: e = Expr(); break;
+                        case MpRegExpId.LPAREN: e = Expr(); break;
+                        case MpRegExpId.SUB: e = Expr(); break;
+                        case MpRegExpId.NOT: e = Expr(); break;
+                        case MpRegExpId.INTVAL: e = Expr(); break;
+                        case MpRegExpId.STRVAL: e = StrVal(); break;
+                        default: jj_la1[21] = jj_gen; jj_consume_token(MpRegExpId.UNDEFINED); throw new miniParseException();
+                    }
+                    break;
                 case MpRegExpId.LPAREN:
+                    switch ((jj_ntk == MpRegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
+                    {
+                        case MpRegExpId.FALSE: e = Expr(); break;
+                        case MpRegExpId.THIS: e = Expr(); break;
+                        case MpRegExpId.TRUE: e = Expr(); break;
+                        case MpRegExpId.ID: e = Expr(); break;
+                        case MpRegExpId.LPAREN: e = Expr(); break;
+                        case MpRegExpId.SUB: e = Expr(); break;
+                        case MpRegExpId.NOT: e = Expr(); break;
+                        case MpRegExpId.INTVAL: e = Expr(); break;
+                        case MpRegExpId.STRVAL: e = StrVal(); break;
+                        default: jj_la1[21] = jj_gen; jj_consume_token(MpRegExpId.UNDEFINED); throw new miniParseException();
+                    }
+                    break;
                 case MpRegExpId.SUB:
+                    switch ((jj_ntk == MpRegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
+                    {
+                        case MpRegExpId.FALSE: e = Expr(); break;
+                        case MpRegExpId.THIS: e = Expr(); break;
+                        case MpRegExpId.TRUE: e = Expr(); break;
+                        case MpRegExpId.ID: e = Expr(); break;
+                        case MpRegExpId.LPAREN: e = Expr(); break;
+                        case MpRegExpId.SUB: e = Expr(); break;
+                        case MpRegExpId.NOT: e = Expr(); break;
+                        case MpRegExpId.INTVAL: e = Expr(); break;
+                        case MpRegExpId.STRVAL: e = StrVal(); break;
+                        default: jj_la1[21] = jj_gen; jj_consume_token(MpRegExpId.UNDEFINED); throw new miniParseException();
+                    }
+                    break;
                 case MpRegExpId.NOT:
+                    switch ((jj_ntk == MpRegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
+                    {
+                        case MpRegExpId.FALSE: e = Expr(); break;
+                        case MpRegExpId.THIS: e = Expr(); break;
+                        case MpRegExpId.TRUE: e = Expr(); break;
+                        case MpRegExpId.ID: e = Expr(); break;
+                        case MpRegExpId.LPAREN: e = Expr(); break;
+                        case MpRegExpId.SUB: e = Expr(); break;
+                        case MpRegExpId.NOT: e = Expr(); break;
+                        case MpRegExpId.INTVAL: e = Expr(); break;
+                        case MpRegExpId.STRVAL: e = StrVal(); break;
+                        default: jj_la1[21] = jj_gen; jj_consume_token(MpRegExpId.UNDEFINED); throw new miniParseException();
+                    }
+                    break;
                 case MpRegExpId.INTVAL:
+                    switch ((jj_ntk == MpRegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
+                    {
+                        case MpRegExpId.FALSE: e = Expr(); break;
+                        case MpRegExpId.THIS: e = Expr(); break;
+                        case MpRegExpId.TRUE: e = Expr(); break;
+                        case MpRegExpId.ID: e = Expr(); break;
+                        case MpRegExpId.LPAREN: e = Expr(); break;
+                        case MpRegExpId.SUB: e = Expr(); break;
+                        case MpRegExpId.NOT: e = Expr(); break;
+                        case MpRegExpId.INTVAL: e = Expr(); break;
+                        case MpRegExpId.STRVAL: e = StrVal(); break;
+                        default: jj_la1[21] = jj_gen; jj_consume_token(MpRegExpId.UNDEFINED); throw new miniParseException();
+                    }
+                    break;
                 case MpRegExpId.STRVAL:
                     switch ((jj_ntk == MpRegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
                     {
-                        case MpRegExpId.FALSE:
-                        case MpRegExpId.THIS:
-                        case MpRegExpId.TRUE:
-                        case MpRegExpId.ID:
-                        case MpRegExpId.LPAREN:
-                        case MpRegExpId.SUB:
-                        case MpRegExpId.NOT:
-                        case MpRegExpId.INTVAL:
-                            e = Expr();
-                            break;
-                        case MpRegExpId.STRVAL:
-                            e = StrVal();
-                            break;
-                        default:
-                            jj_la1[21] = jj_gen;
-                            jj_consume_token(MpRegExpId.UNDEFINED);
-                            throw new miniParseException();
+                        case MpRegExpId.FALSE: e = Expr(); break;
+                        case MpRegExpId.THIS: e = Expr(); break;
+                        case MpRegExpId.TRUE: e = Expr(); break;
+                        case MpRegExpId.ID: e = Expr(); break;
+                        case MpRegExpId.LPAREN: e = Expr(); break;
+                        case MpRegExpId.SUB: e = Expr(); break;
+                        case MpRegExpId.NOT: e = Expr(); break;
+                        case MpRegExpId.INTVAL: e = Expr(); break;
+                        case MpRegExpId.STRVAL: e = StrVal(); break;
+                        default: jj_la1[21] = jj_gen; jj_consume_token(MpRegExpId.UNDEFINED); throw new miniParseException();
                     }
                     break;
 
@@ -1279,6 +1396,30 @@ namespace DemiTasse.minipsr
             switch ((jj_ntk == MpRegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
             {
                 case MpRegExpId.SUB:
+
+                    switch ((jj_ntk == MpRegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
+                    {
+                        case MpRegExpId.SUB:
+                            jj_consume_token(MpRegExpId.SUB);
+                            neg = true;
+                            break;
+                        case MpRegExpId.NOT:
+                            jj_consume_token(MpRegExpId.NOT);
+                            not = true;
+                            break;
+                        default:
+                            jj_la1[34] = jj_gen;
+                            jj_consume_token(MpRegExpId.UNDEFINED);
+                            throw new miniParseException();
+                    }
+                    factor = Factor();
+                    if (neg)
+                        return new Unop(Unop.OP.NEG, factor);
+                    else if (not)
+                        return new Unop(Unop.OP.NOT, factor);
+                    else
+                        return factor;
+
                 case MpRegExpId.NOT:
                     
                     switch ((jj_ntk == MpRegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
@@ -1305,11 +1446,139 @@ namespace DemiTasse.minipsr
                         return factor;
 
                 case MpRegExpId.THIS:
+                    e = Lvalue();
+                    switch ((jj_ntk == MpRegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
+                    {
+                        case MpRegExpId.LPAREN:
+                            switch ((jj_ntk == MpRegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
+                            {
+                                case MpRegExpId.DOT:
+
+                                    jj_consume_token(MpRegExpId.DOT);
+                                    jj_consume_token(MpRegExpId.LENGTH);
+                                    jj_consume_token(MpRegExpId.LPAREN);
+                                    jj_consume_token(MpRegExpId.RPAREN);
+                                    e = new ArrayLen(e);
+                                    break;
+
+                                case MpRegExpId.LPAREN:
+
+                                    jj_consume_token(MpRegExpId.LPAREN);
+                                    isCall = true;
+                                    switch ((jj_ntk == MpRegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
+                                    {
+                                        case MpRegExpId.FALSE: args = Args(); break;
+                                        case MpRegExpId.THIS: args = Args(); break;
+                                        case MpRegExpId.TRUE: args = Args(); break;
+                                        case MpRegExpId.ID: args = Args(); break;
+                                        case MpRegExpId.LPAREN: args = Args(); break;
+                                        case MpRegExpId.SUB: args = Args(); break;
+                                        case MpRegExpId.NOT: args = Args(); break;
+                                        case MpRegExpId.INTVAL: args = Args(); break;
+                                        default: jj_la1[35] = jj_gen; break;
+                                    }
+                                    jj_consume_token(MpRegExpId.RPAREN);
+                                    break;
+                                default:
+                                    jj_la1[36] = jj_gen;
+                                    jj_consume_token(MpRegExpId.UNDEFINED);
+                                    throw new miniParseException();
+                            }
+                            break;
+                        case MpRegExpId.DOT:
+                            switch ((jj_ntk == MpRegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
+                            {
+                                case MpRegExpId.DOT:
+
+                                    jj_consume_token(MpRegExpId.DOT);
+                                    jj_consume_token(MpRegExpId.LENGTH);
+                                    jj_consume_token(MpRegExpId.LPAREN);
+                                    jj_consume_token(MpRegExpId.RPAREN);
+                                    e = new ArrayLen(e);
+                                    break;
+
+                                case MpRegExpId.LPAREN:
+
+                                    jj_consume_token(MpRegExpId.LPAREN);
+                                    isCall = true;
+                                    switch ((jj_ntk == MpRegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
+                                    {
+                                        case MpRegExpId.FALSE: args = Args(); break;
+                                        case MpRegExpId.THIS: args = Args(); break;
+                                        case MpRegExpId.TRUE: args = Args(); break;
+                                        case MpRegExpId.ID: args = Args(); break;
+                                        case MpRegExpId.LPAREN: args = Args(); break;
+                                        case MpRegExpId.SUB: args = Args(); break;
+                                        case MpRegExpId.NOT: args = Args(); break;
+                                        case MpRegExpId.INTVAL: args = Args(); break;
+                                        default: jj_la1[35] = jj_gen; break;
+                                    }
+                                    jj_consume_token(MpRegExpId.RPAREN);
+                                    break;
+                                default:
+                                    jj_la1[36] = jj_gen;
+                                    jj_consume_token(MpRegExpId.UNDEFINED);
+                                    throw new miniParseException();
+                            }
+                            break;
+                        default:
+                            jj_la1[37] = jj_gen;
+                            break;
+                    }
+                    if (isCall)
+                    {
+                        if (null != (e as Id))
+                            return new Call(new This(), (Id)e, args);
+                        if (null != (e as Field))
+                            return new Call(((Field)e).obj, ((Field)e).var, args);
+                        else
+                            return null;
+                    }
+                    else
+                    {
+                        return e;
+                    }
+
                 case MpRegExpId.ID:
                     e = Lvalue();
                     switch ((jj_ntk == MpRegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
                     {
                         case MpRegExpId.LPAREN:
+                            switch ((jj_ntk == MpRegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
+                            {
+                                case MpRegExpId.DOT:
+
+                                    jj_consume_token(MpRegExpId.DOT);
+                                    jj_consume_token(MpRegExpId.LENGTH);
+                                    jj_consume_token(MpRegExpId.LPAREN);
+                                    jj_consume_token(MpRegExpId.RPAREN);
+                                    e = new ArrayLen(e);
+                                    break;
+
+                                case MpRegExpId.LPAREN:
+
+                                    jj_consume_token(MpRegExpId.LPAREN);
+                                    isCall = true;
+                                    switch ((jj_ntk == MpRegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
+                                    {
+                                        case MpRegExpId.FALSE: args = Args(); break;
+                                        case MpRegExpId.THIS: args = Args(); break;
+                                        case MpRegExpId.TRUE: args = Args(); break;
+                                        case MpRegExpId.ID: args = Args(); break;
+                                        case MpRegExpId.LPAREN: args = Args(); break;
+                                        case MpRegExpId.SUB: args = Args(); break;
+                                        case MpRegExpId.NOT: args = Args(); break;
+                                        case MpRegExpId.INTVAL: args = Args(); break;
+                                        default: jj_la1[35] = jj_gen; break;
+                                    }
+                                    jj_consume_token(MpRegExpId.RPAREN);
+                                    break;
+                                default:
+                                    jj_la1[36] = jj_gen;
+                                    jj_consume_token(MpRegExpId.UNDEFINED);
+                                    throw new miniParseException();
+                            }
+                            break;
                         case MpRegExpId.DOT:
                             switch ((jj_ntk == MpRegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
                             {
