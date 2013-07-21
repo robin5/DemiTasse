@@ -435,11 +435,13 @@ namespace DemiTasse.minipsr
                         done = true;
                         break /* label_10 */;
                 }
-
-                jj_consume_token(MpRegExpId.COMMA);
-                t = Type();
-                id = Id();
-                fl.add( new Formal( t, id ) );
+                if (!done)
+                {
+                    jj_consume_token(MpRegExpId.COMMA);
+                    t = Type();
+                    id = Id();
+                    fl.add(new Formal(t, id));
+                }
             }
             {if (true) return fl;}
             throw new Error("Missing return statement in function");
