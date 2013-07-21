@@ -39,17 +39,24 @@ namespace DemiTasse.AppIDE
 {
     class TestSuiteFileEntry : TestSuiteEntry
     {
-        public TestSuiteFileEntry(string fileName)
+        public TestSuiteFileEntry(string fileName, string refFileName)
             : base((new FileInfo(fileName)).Name)
         {
             _fileName = fileName;
+            _refFileName = refFileName;
         }
 
-        public string FileName 
-        { 
-            get { return _fileName; } 
+        public string FileName
+        {
+            get { return _fileName; }
+        }
+
+        public string ReferenceFileName
+        {
+            get { return _refFileName; }
         }
 
         private string _fileName;
+        private string _refFileName;
     }
 }

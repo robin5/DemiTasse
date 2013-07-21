@@ -27,7 +27,7 @@ namespace DemiTasse.ast
 
         public BoolVal(bool ab) { b = ab; }
 
-        public override void dump() { DUMP("(BoolVal " + b + ") "); }
+        public override void dump() { DUMP("(BoolVal " + (b ? "true":"false") + ") "); }
 
         public override void accept(VoidVI v) { v.visit(this); }
         public override Type accept(TypeVI v) { return v.visit(this); }

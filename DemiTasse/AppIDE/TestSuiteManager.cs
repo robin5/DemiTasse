@@ -59,41 +59,41 @@ namespace DemiTasse.AppIDE
                 ts = Create("Parser Tests");
                 for (int i = 0; i < files.Length; ++i)
                 {
-                    ts.AddTestFile(files[i]);
+                    ts.AddTestFile(files[i], files[i].Replace(".java", ".ast.ref"));
                 }
 
                 files = Directory.GetFiles(@"C:\Users\Robin\Documents\GitHub\DemiTasse\DemiTasse\tst\parser\", "err*.java", SearchOption.TopDirectoryOnly);
                 ts = Create("Error Parser Tests");
                 for (int i = 0; i < files.Length; ++i)
                 {
-                    ts.AddTestFile(files[i]);
+                    ts.AddTestFile(files[i], files[i].Replace(".java", ".perr.ref"));
                 }
 
                 files = Directory.GetFiles(@"C:\Users\Robin\Documents\GitHub\DemiTasse\DemiTasse\tst\ast\", "*.ast", SearchOption.TopDirectoryOnly);
                 ts = Create("Abstract Syntax Tree Tests");
                 for (int i = 0; i < files.Length; ++i)
                 {
-                    ts.AddTestFile(files[i]);
+                    ts.AddTestFile(files[i], files[i].Replace(".java", ".ir.ref"));
                 }
 
                 ts = Create("IR Validation Tests (Good)");
                 files = Directory.GetFiles(@"C:\Users\Robin\Documents\GitHub\DemiTasse\DemiTasse\tst\ir\", "*.ir", SearchOption.TopDirectoryOnly);
                 for (int i = 0; i < files.Length; ++i)
                 {
-                    ts.AddTestFile(files[i]);
+                    ts.AddTestFile(files[i], "");
                 }
 
                 ts = Create("IR Validation Tests (Bad First Test)");
-                ts.AddTestFile(@"C:\Users\Robin\Documents\GitHub\DemiTasse\DemiTasse\tst\ir\test00.ir");
+                ts.AddTestFile(@"C:\Users\Robin\Documents\GitHub\DemiTasse\DemiTasse\tst\ir\test00.ir", "");
                 for (int i = 0; ((i < files.Length) && (i < 10)); ++i)
                 {
-                    ts.AddTestFile(files[i]);
+                    ts.AddTestFile(files[i], "");
                 }
 
                 ts = Create("Misc Tests + additional test suite");
                 for (int i = 0; i < 10; ++i)
                 {
-                    ts.AddTestFile(files[i]);
+                    ts.AddTestFile(files[i], "");
                 }
                 ts.AddTestSuite("IR Validation Tests (Good)");
 

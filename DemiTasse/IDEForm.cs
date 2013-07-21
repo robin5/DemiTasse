@@ -65,6 +65,8 @@ namespace DemiTasse
         private string _fileName;
         private bool _lockEdit = false;
         private StringBuilder _intermediateRepresentation = new StringBuilder();
+        private TestSuiteFileEntry _currentTestFileEntry;
+
 
         private Command cmdNewFile = null;
         private Command cmdNewTestSuite = null;
@@ -282,20 +284,17 @@ namespace DemiTasse
 
         private void ExecuteTestSuiteItems(TreeNode parent)
         {
-            TestSuiteFileEntry fileEntry;
-
             if (parent.Checked)
             {
                 foreach (TreeNode node in parent.Nodes)
                 {
                     if (node.Checked)
                     {
-                        if (null != (fileEntry = (node.Tag as TestSuiteFileEntry)))
+                        if (null != (_currentTestFileEntry = (node.Tag as TestSuiteFileEntry)))
                         {
-                            txtConsole.Text += (fileEntry.FileName + " ----------------------------------------------------\r\n");
-                            txtAST.Text += (fileEntry.FileName + " ----------------------------------------------------\r\n");
-                            Debug.WriteLine((fileEntry.FileName + " ----------------------------------------------------\r\n"));
-                            cmdRunStartSingleFile.Execute(fileEntry.FileName);
+                            txtConsole.Text += (_currentTestFileEntry.FileName + " ----------------------------------------------------\r\n");
+                            txtAST.Text += Header(_currentTestFileEntry.FileName);
+                            cmdRunStartSingleFile.Execute(_currentTestFileEntry.FileName);
                         }
                         else if (null != (node.Tag as TestSuiteSuiteEntry))
                         {
@@ -304,6 +303,18 @@ namespace DemiTasse
                     }
                 }
             }
+        }
+
+        private string Header(string title)
+        {
+            int len = title.Length;
+            StringBuilder s = new StringBuilder(3 * title.Length);
+            s.Append('-', len);
+            s.AppendLine();
+            s.AppendLine(title);
+            s.Append('-', len);
+            s.AppendLine();
+            return s.ToString();
         }
         
         private void mnuRunPause_Click(object sender, EventArgs e)
@@ -374,6 +385,37 @@ namespace DemiTasse
         {
             string data = e.Data.Replace("\n", "\r\n");
             txtAST.Text += data;
+
+            CompareAst(_currentTestFileEntry.ReferenceFileName, e.Data);
+        }
+
+        private void CompareAst(string AstRefFileName, string AstData)
+        {
+            string refData = File.ReadAllText(AstRefFileName, Encoding.ASCII);
+            refData = refData.Replace("\r", "");
+            refData = refData.Replace("\n", "");
+            //refData = refData.Replace(" ", "");
+            
+            string astData = AstData.Replace("\r", "");
+            astData = astData.Replace("\n", "");
+            //astData = astData.Replace(" ", "");
+
+            Debug.Write(astData.Length);
+            Debug.Write(refData.Length);
+
+            int comparisonResult = string.Compare(astData, refData);
+
+            int min = Math.Min(astData.Length, refData.Length);
+
+            for (int i = 0; i < min; ++i)
+            {
+                if (astData[i] != refData[i])
+                {
+                    Debug.WriteLine("Index = " + i.ToString() + ": " + astData[i].ToString() + ", " + refData[i].ToString());
+                    break;
+                }
+            }
+
         }
 
         private void OnErrorOut(object sender, AppErrorEventArgs e)

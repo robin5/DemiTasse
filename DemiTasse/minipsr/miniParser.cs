@@ -1807,8 +1807,9 @@ namespace DemiTasse.minipsr
             string s;
             jj_consume_token(MpRegExpId.STRVAL);
             s = token.image;
-            s = s.Substring( 1, s.Length - 1 );
-            return new StrVal( s );
+            //s = s.Substring(1, s.Length - 1);
+            s = s.Substring(1, s.Length - 2);
+            return new StrVal(s);
         }
 
         // --------------------------------------------------------------------------
