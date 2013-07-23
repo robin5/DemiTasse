@@ -161,7 +161,7 @@
             // txtConsole
             // 
             this.txtConsole.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtConsole.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtConsole.Font = new System.Drawing.Font("Courier New", 11.25F);
             this.txtConsole.Location = new System.Drawing.Point(3, 3);
             this.txtConsole.Multiline = true;
             this.txtConsole.Name = "txtConsole";
@@ -199,7 +199,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(428, 173);
+            this.tabPage2.Size = new System.Drawing.Size(430, 173);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Intermediate Representation";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -212,7 +212,7 @@
             this.txtIntRep.Multiline = true;
             this.txtIntRep.Name = "txtIntRep";
             this.txtIntRep.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtIntRep.Size = new System.Drawing.Size(422, 167);
+            this.txtIntRep.Size = new System.Drawing.Size(424, 167);
             this.txtIntRep.TabIndex = 0;
             this.txtIntRep.WordWrap = false;
             // 

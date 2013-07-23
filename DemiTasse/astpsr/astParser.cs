@@ -620,7 +620,7 @@ namespace DemiTasse.astpsr
       jj_consume_token(AstRegExpId.kwStrVal);
       n = jj_consume_token(AstRegExpId.STRVAL);
                                   String s = n.image;
-                                  e = new StrVal(s.Substring(1, s.Length-1));
+                                  e = new StrVal(s.Substring(1, s.Length-2));
       break;
     case AstRegExpId.kwThis:
       jj_consume_token(AstRegExpId.kwThis);
@@ -650,7 +650,7 @@ namespace DemiTasse.astpsr
   static private bool jj_initialized_once = false;
   /** Generated Token Manager. */
   static public astParserTokenManager token_source;
-  static SimpleCharStream jj_input_stream;
+  static SimpleCharStream jj_input_stream = null;
   /** Current token. */
   static public AstToken token;
   /** Next token. */

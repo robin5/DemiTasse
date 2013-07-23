@@ -51,11 +51,11 @@ namespace DemiTasse.AppIDE
 {
     class AppIDE : IAppIDECommand
     {
-        public AppIDE()
+        private ITestSuiteManager _testSuiteManager = null;
+
+        public AppIDE(ITestSuiteManager testSuiteManager)
         {
-            TestSuiteManager.Init("");
-            Ast.AddOnAstOut(AST_OnAstOut);
-            IR.AddOnIrOut(IR_OnIrOut);
+            _testSuiteManager = testSuiteManager;
         }
 
         #region Event Definitions
@@ -252,7 +252,7 @@ namespace DemiTasse.AppIDE
         {
             try
             {
-                OpenTestSuiteEventArgs e = new OpenTestSuiteEventArgs(TestSuiteManager.Create(name));
+                OpenTestSuiteEventArgs e = new OpenTestSuiteEventArgs(_testSuiteManager.Create(name));
                 OnOpenTestSuite(e);
             }
             catch (AppUserErrorException ex)
@@ -301,7 +301,7 @@ namespace DemiTasse.AppIDE
         {
             try
             {
-                OpenTestSuiteEventArgs e = new OpenTestSuiteEventArgs(TestSuiteManager.TestSuites[name]);
+                OpenTestSuiteEventArgs e = new OpenTestSuiteEventArgs(_testSuiteManager.TestSuites[name]);
                 OnOpenTestSuite(e);
             }
             catch (Exception ex)
@@ -433,7 +433,6 @@ namespace DemiTasse.AppIDE
                 IR.Clear();
                 PROG ir = cv.visit(ir0);
                 ir.dump();
-                IR.Dump(this);
                 IR.Clear();
             }
             catch (TypeException ex) 
@@ -452,15 +451,84 @@ namespace DemiTasse.AppIDE
 
         private void ExecuteParserTest(string fileName)
         {
+            string astData;
+            Stream astDataStream = null;
+            string irData;
+            Stream irDataStream = null;
+
             try
             {
-                FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read);
-                miniParser psr = new miniParser(stream);
-                DemiTasse.ast.Program p = miniParser.Program();
-                stream.Close();
-                p.dump();
-                Ast.Dump(this);
                 Ast.Clear();
+                FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read);
+                miniParser MiniPsr = new miniParser(stream);
+                DemiTasse.ast.Program astProgram = miniParser.Program();
+                stream.Close();
+                astProgram.dump();
+
+                // Output AST data to UI
+                OnAstOut(new AstOutEventArgs(astData = Ast.getAst()));
+                Ast.Clear();
+
+                // Present AST data to AST parser as a stream
+                astParser astPsr = new astParser(astDataStream = CreateMemoryStream(astData));
+                DemiTasse.ast.Program p2 = astParser.Program();
+                astDataStream.Close();
+
+                // -------------------------------------------------------
+
+                SymbolVisitor sv = new SymbolVisitor();
+                sv.visit(p2); //sv.symTable.show();
+
+                TypeVisitor tv = new TypeVisitor(sv.symTable);
+                tv.visit(p2);
+                
+                IrgenVisitor iv = new IrgenVisitor(sv.symTable, tv);
+                PROG ir0 = iv.visit(p2);
+                Canon cv = new Canon();
+                IR.Clear();
+
+                PROG ir = cv.visit(ir0);
+                ir.dump();
+
+                // Output AST data to UI
+                OnIrOut(new IrOutEventArgs(irData = IR.getIr()));
+                IR.Clear();
+
+                // -------------------------------------------------------
+
+                PROG irProgram = null;
+                try
+                {
+                    //stream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read);
+                    irProgram = (new irParser(irDataStream = CreateMemoryStream(irData))).Program();
+                }
+                catch (InterpException ex)
+                {
+                    OnAppException(new AppExceptionEventArgs(ex));
+                }
+                catch (Exception ex)
+                {
+                    OnAppException(new AppExceptionEventArgs(ex));
+                }
+                finally
+                {
+                    if (stream != null)
+                        stream.Close();
+                }
+
+                if (irProgram != null)
+                {
+                    try
+                    {
+                        InterpVisitor interpreter = new InterpVisitor();
+                        interpreter.AddOnSystemOut(Interpreter_OnSystemOut);
+                        interpreter.visit(irProgram);
+                    }
+                    catch (Exception ex)
+                    {
+                        OnAppException(new AppExceptionEventArgs(ex));
+                    }
+                }
             }
             catch (TypeException ex)
             {
@@ -474,6 +542,18 @@ namespace DemiTasse.AppIDE
             {
                 OnAppException(new AppExceptionEventArgs(ex));
             }
+        }
+
+        private Stream CreateMemoryStream(string astData)
+        {
+            int astDataLen = astData.Length;
+
+            byte[] bData = new byte[astDataLen];
+
+            for (int i = 0; i < astDataLen; ++i)
+                bData[i] = (byte)astData[i];
+
+            return new MemoryStream(bData);
         }
 
         public void RunPause()
@@ -492,18 +572,6 @@ namespace DemiTasse.AppIDE
         }
 
         #endregion IAppIDECommand
-
-        public string[] TestSuiteNames
-        {
-            get 
-            {
-                string[] testSuiteNames = new string[TestSuiteManager.TestSuites.Count];
-
-                TestSuiteManager.TestSuites.Keys.CopyTo(testSuiteNames, 0);
-
-                return testSuiteNames;
-            } 
-        }
 
         private void Interpreter_OnSystemOut(object sender, InterpOutEventArgs e)
         {

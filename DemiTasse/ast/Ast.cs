@@ -26,30 +26,6 @@ namespace DemiTasse.ast
     {
         private static StringBuilder text = new StringBuilder();
 
-        #region AstOut Event
-
-        public delegate void AstOutEventHandler(object sender, AstOutEventArgs e);
-
-        public static event AstOutEventHandler OnAstOutHandler;
-
-        public static void AddOnAstOut(AstOutEventHandler handler)
-        {
-            OnAstOutHandler += handler;
-        }
-
-        public static void RemoveOnAstOut(AstOutEventHandler handler)
-        {
-            OnAstOutHandler -= handler;
-        }
-
-        protected static void OnAstOut(Object sender, AstOutEventArgs e)
-        {
-            if (OnAstOutHandler != null)
-                OnAstOutHandler(sender, e);
-        }
-
-        #endregion AstOut Event
-
         public static void DUMP(string s) 
         { 
             text.Append(s); 
@@ -92,9 +68,9 @@ namespace DemiTasse.ast
                 e.dump();
         }
 
-        public static void Dump(Object sender)
+        public static string getAst()
         {
-            OnAstOut(sender, new AstOutEventArgs(text.ToString()));
+            return text.ToString();
         }
 
         public static void Clear()

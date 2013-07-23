@@ -439,7 +439,7 @@ namespace DemiTasse.irpsr
             String s;
 
             t = jj_consume_token(RegExpId.STRVAL);
-            s=t.image; {if (true) return s.Substring(1,s.Length-1);}
+            s=t.image; {if (true) return s.Substring(1,s.Length-2);}
             throw new Error("Missing return statement in function");
         }
 

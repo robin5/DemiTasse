@@ -46,12 +46,15 @@ using System.IO;
 
 namespace DemiTasse.AppIDE
 {
-    class TestSuiteManager
+    class TestSuiteManager : ITestSuiteManager
     {
-        public static void Init(string serializationFileName)
+        public void Init(string serializationFileName)
         {
             TestSuite ts;
             string[] files = null;
+
+            if (_testSuites.Count > 0)
+                return;
 
             try
             {
@@ -103,7 +106,7 @@ namespace DemiTasse.AppIDE
             }
         }
 
-        public static TestSuite Create(string name)
+        public TestSuite Create(string name)
         {
             if (_testSuites.ContainsKey(name))
             {
@@ -116,16 +119,16 @@ namespace DemiTasse.AppIDE
             return testSuite;
         }
 
-        public static Dictionary<string, TestSuite> TestSuites
+        public Dictionary<string, TestSuite> TestSuites
         { 
             get { return _testSuites; } 
         }
 
-        public static TestSuite Open(string name)
+        public TestSuite Open(string name)
         {
             return new TestSuite(name);
         }
 
-        private static Dictionary<string, TestSuite> _testSuites = new Dictionary<string, TestSuite>();
+        private Dictionary<string, TestSuite> _testSuites = new Dictionary<string, TestSuite>();
     }
 }

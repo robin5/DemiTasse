@@ -41,10 +41,10 @@ namespace DemiTasse.ir
 
         public override void dump() 
         {
-            Console.Out.Write(" ("); 
+            DUMP(" ("); 
             for (int i=0; i<size(); i++)
                 DUMP(elementAt(i));
-            Console.Out.Write(")"); 
+            DUMP(")"); 
         }
 
         public override EXP accept(IIrVI v) { return v.visit(this); }

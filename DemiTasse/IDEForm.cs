@@ -60,6 +60,7 @@ namespace DemiTasse
     public partial class IDEForm : Form
     {
         private AppIDE.AppIDE app = null;
+        private TestSuiteManager _testSuiteManager = null;
         private enum IDEModes { SingleFile, TestSuite }
         private IDEModes _ideMode;
         private string _fileName;
@@ -88,7 +89,9 @@ namespace DemiTasse
         {
             InitializeComponent();
 
-            app = new AppIDE.AppIDE();
+            (_testSuiteManager = new TestSuiteManager()).Init("");
+
+            app = new AppIDE.AppIDE(_testSuiteManager);
             app.AddOnAppError(OnErrorOut);
             app.AddOnAppException(OnExceptionOut);
             app.AddOnOpenFile(OnOpenFile);
@@ -165,9 +168,13 @@ namespace DemiTasse
 
         private void mnuFileOpenTestSuite_Click(object sender, EventArgs e)
         {
+            string[] testSuiteNames = new string[_testSuiteManager.TestSuites.Count];
+
+            _testSuiteManager.TestSuites.Keys.CopyTo(testSuiteNames, 0);
+
             try
             {
-                using (OpenTestSuiteForm f = new OpenTestSuiteForm(app.TestSuiteNames))
+                using (OpenTestSuiteForm f = new OpenTestSuiteForm(testSuiteNames))
                 {
                     if (DialogResult.OK == f.ShowDialog())
                     {
@@ -292,7 +299,7 @@ namespace DemiTasse
                     {
                         if (null != (_currentTestFileEntry = (node.Tag as TestSuiteFileEntry)))
                         {
-                            txtConsole.Text += (_currentTestFileEntry.FileName + " ----------------------------------------------------\r\n");
+                            txtConsole.Text += Header(_currentTestFileEntry.FileName);
                             txtAST.Text += Header(_currentTestFileEntry.FileName);
                             cmdRunStartSingleFile.Execute(_currentTestFileEntry.FileName);
                         }
@@ -386,7 +393,8 @@ namespace DemiTasse
             string data = e.Data.Replace("\n", "\r\n");
             txtAST.Text += data;
 
-            CompareAst(_currentTestFileEntry.ReferenceFileName, e.Data);
+            if (null != _currentTestFileEntry)
+                CompareAst(_currentTestFileEntry.ReferenceFileName, e.Data);
         }
 
         private void CompareAst(string AstRefFileName, string AstData)
@@ -474,7 +482,7 @@ namespace DemiTasse
                 node.Checked = true;
                 if (null != (suiteEntry = item as TestSuiteSuiteEntry))
                 {
-                    TestSuite testSuite = TestSuiteManager.TestSuites[item.Name];
+                    TestSuite testSuite = _testSuiteManager.TestSuites[item.Name];
                     AddSuite(node, testSuite.Items);
                 }
             }

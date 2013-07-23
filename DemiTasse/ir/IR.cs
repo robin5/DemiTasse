@@ -32,30 +32,6 @@ namespace DemiTasse.ir
     {
         private static StringBuilder text = new StringBuilder();
 
-        #region IrOut Event
-
-        public delegate void IrOutEventHandler(object sender, IrOutEventArgs e);
-
-        public static event IrOutEventHandler OnIrOutHandler;
-
-        public static void AddOnIrOut(IrOutEventHandler handler)
-        {
-            OnIrOutHandler += handler;
-        }
-
-        public static void RemoveOnIrOut(IrOutEventHandler handler)
-        {
-            OnIrOutHandler -= handler;
-        }
-
-        protected static void OnIrOut(Object sender, IrOutEventArgs e)
-        {
-            if (OnIrOutHandler != null)
-                OnIrOutHandler(sender, e);
-        }
-
-        #endregion IrOut Event
-
         public static void DUMP(string s)
         {
             text.Append(s); 
@@ -71,9 +47,9 @@ namespace DemiTasse.ir
             if (e != null) e.dump(); else DUMP(" (null)");
         }
 
-        public static void Dump(Object sender)
+        public static string getIr()
         {
-            OnIrOut(sender, new IrOutEventArgs(text.ToString()));
+            return text.ToString();
         }
 
         public static void Clear()

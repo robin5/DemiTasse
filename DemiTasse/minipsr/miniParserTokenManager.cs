@@ -350,7 +350,7 @@ namespace DemiTasse.minipsr
         {
             try
             { 
-                curChar = SimpleCharStream.readChar(); 
+                curChar = input_stream.readChar(); 
             }
             catch(IOException e)
             {
@@ -420,7 +420,7 @@ namespace DemiTasse.minipsr
                 return jjStartNfa_0(0, old0);
             try
             { 
-                curChar = SimpleCharStream.readChar();
+                curChar = input_stream.readChar();
             }
             catch(IOException e)
             {
@@ -468,7 +468,7 @@ namespace DemiTasse.minipsr
                 return jjStartNfa_0(1, old0);
             try
             { 
-                curChar = SimpleCharStream.readChar(); 
+                curChar = input_stream.readChar(); 
             }
             catch(IOException e)
             {
@@ -518,7 +518,7 @@ namespace DemiTasse.minipsr
                 return jjStartNfa_0(2, old0);
             try 
             { 
-                curChar = SimpleCharStream.readChar(); 
+                curChar = input_stream.readChar(); 
             }
             catch(IOException e)
             {
@@ -556,7 +556,7 @@ namespace DemiTasse.minipsr
         {
            if (((active0 &= old0)) == 0L)
               return jjStartNfa_0(3, old0);
-           try { curChar = SimpleCharStream.readChar(); }
+           try { curChar = input_stream.readChar(); }
            catch(IOException e) {
               jjStopStringLiteralDfa_0(4, active0);
               return 5;
@@ -597,7 +597,7 @@ namespace DemiTasse.minipsr
         {
            if (((active0 &= old0)) == 0L)
               return jjStartNfa_0(4, old0);
-           try { curChar = SimpleCharStream.readChar(); }
+           try { curChar = input_stream.readChar(); }
            catch(IOException e) {
               jjStopStringLiteralDfa_0(5, active0);
               return 6;
@@ -623,7 +623,7 @@ namespace DemiTasse.minipsr
         {
            if (((active0 &= old0)) == 0L)
               return jjStartNfa_0(5, old0);
-           try { curChar = SimpleCharStream.readChar(); }
+           try { curChar = input_stream.readChar(); }
            catch(IOException e) {
               jjStopStringLiteralDfa_0(6, active0);
               return 7;
@@ -641,7 +641,7 @@ namespace DemiTasse.minipsr
         {
            if (((active0 &= old0)) == 0L)
               return jjStartNfa_0(6, old0);
-           try { curChar = SimpleCharStream.readChar(); }
+           try { curChar = input_stream.readChar(); }
            catch(IOException e) {
               jjStopStringLiteralDfa_0(7, active0);
               return 8;
@@ -659,7 +659,7 @@ namespace DemiTasse.minipsr
         {
            if (((active0 &= old0)) == 0L)
               return jjStartNfa_0(7, old0);
-           try { curChar = SimpleCharStream.readChar(); }
+           try { curChar = input_stream.readChar(); }
            catch(IOException e) {
               jjStopStringLiteralDfa_0(8, active0);
               return 9;
@@ -677,7 +677,7 @@ namespace DemiTasse.minipsr
         {
            if (((active0 &= old0)) == 0L)
               return jjStartNfa_0(8, old0);
-           try { curChar = SimpleCharStream.readChar(); }
+           try { curChar = input_stream.readChar(); }
            catch(IOException e) {
               jjStopStringLiteralDfa_0(9, active0);
               return 10;
@@ -695,7 +695,7 @@ namespace DemiTasse.minipsr
         {
            if (((active0 &= old0)) == 0L)
               return jjStartNfa_0(9, old0);
-           try { curChar = SimpleCharStream.readChar(); }
+           try { curChar = input_stream.readChar(); }
            catch(IOException e) {
               jjStopStringLiteralDfa_0(10, active0);
               return 11;
@@ -713,7 +713,7 @@ namespace DemiTasse.minipsr
         {
            if (((active0 &= old0)) == 0L)
               return jjStartNfa_0(10, old0);
-           try { curChar = SimpleCharStream.readChar(); }
+           try { curChar = input_stream.readChar(); }
            catch(IOException e) {
               jjStopStringLiteralDfa_0(11, active0);
               return 12;
@@ -731,7 +731,7 @@ namespace DemiTasse.minipsr
         {
            if (((active0 &= old0)) == 0L)
               return jjStartNfa_0(11, old0);
-           try { curChar = SimpleCharStream.readChar(); }
+           try { curChar = input_stream.readChar(); }
            catch(IOException e) {
               jjStopStringLiteralDfa_0(12, active0);
               return 13;
@@ -749,7 +749,7 @@ namespace DemiTasse.minipsr
         {
            if (((active0 &= old0)) == 0L)
               return jjStartNfa_0(12, old0);
-           try { curChar = SimpleCharStream.readChar(); }
+           try { curChar = input_stream.readChar(); }
            catch(IOException e) {
               jjStopStringLiteralDfa_0(13, active0);
               return 14;
@@ -767,7 +767,7 @@ namespace DemiTasse.minipsr
         {
            if (((active0 &= old0)) == 0L)
               return jjStartNfa_0(13, old0);
-           try { curChar = SimpleCharStream.readChar(); }
+           try { curChar = input_stream.readChar(); }
            catch(IOException e) {
               jjStopStringLiteralDfa_0(14, active0);
               return 15;
@@ -785,7 +785,7 @@ namespace DemiTasse.minipsr
         {
            if (((active0 &= old0)) == 0L)
               return jjStartNfa_0(14, old0);
-           try { curChar = SimpleCharStream.readChar(); }
+           try { curChar = input_stream.readChar(); }
            catch(IOException e) {
               jjStopStringLiteralDfa_0(15, active0);
               return 16;
@@ -803,7 +803,7 @@ namespace DemiTasse.minipsr
         {
            if (((active0 &= old0)) == 0L)
               return jjStartNfa_0(15, old0);
-           try { curChar = SimpleCharStream.readChar(); }
+           try { curChar = input_stream.readChar(); }
            catch(IOException e) {
               jjStopStringLiteralDfa_0(16, active0);
               return 17;
@@ -823,7 +823,7 @@ namespace DemiTasse.minipsr
         {
             jjmatchedKind = kind;
            jjmatchedPos = pos;
-           try { curChar = SimpleCharStream.readChar(); }
+           try { curChar = input_stream.readChar(); }
            catch(IOException e) { return pos + 1; }
            return jjMoveNfa_0(state, pos + 1);
         }
@@ -999,7 +999,7 @@ namespace DemiTasse.minipsr
               ++curPos;
               if ((i = jjnewStateCnt) == (startsAt = 15 - (jjnewStateCnt = startsAt)))
                  return curPos;
-              try { curChar = SimpleCharStream.readChar(); }
+              try { curChar = input_stream.readChar(); }
               catch(IOException e) { return curPos; }
            }
         }
@@ -1015,7 +1015,7 @@ namespace DemiTasse.minipsr
         }
         static private int jjMoveStringLiteralDfa1_1(long active0)
         {
-           try { curChar = SimpleCharStream.readChar(); }
+           try { curChar = input_stream.readChar(); }
            catch(IOException e) {
               return 1;
            }
@@ -1197,11 +1197,11 @@ namespace DemiTasse.minipsr
             /* final */ int beginColumn;
             /* final */ int endColumn;
             string im = jjstrLiteralImages[jjmatchedKind];
-            curTokenImage = (im == null) ? SimpleCharStream.GetImage() : im;
-            beginLine = SimpleCharStream.getBeginLine();
-            beginColumn = SimpleCharStream.getBeginColumn();
-            endLine = SimpleCharStream.getEndLine();
-            endColumn = SimpleCharStream.getEndColumn();
+            curTokenImage = (im == null) ? input_stream.GetImage() : im;
+            beginLine = input_stream.getBeginLine();
+            beginColumn = input_stream.getBeginColumn();
+            endLine = input_stream.getEndLine();
+            endColumn = input_stream.getEndColumn();
             t = PsrToken.newToken((MpRegExpId)jjmatchedKind, curTokenImage);
 
             t.beginLine = beginLine;
@@ -1234,7 +1234,7 @@ namespace DemiTasse.minipsr
 
                 try
                 {
-                    curChar = SimpleCharStream.BeginToken();
+                    curChar = input_stream.BeginToken();
                 }
                 catch(IOException e)
                 {
@@ -1272,7 +1272,7 @@ namespace DemiTasse.minipsr
                     if (jjmatchedKind != 0x7fffffff)
                     {
                         if (jjmatchedPos + 1 < curPos)
-                            SimpleCharStream.backup(curPos - jjmatchedPos - 1);
+                            input_stream.backup(curPos - jjmatchedPos - 1);
 
                         if ((jjtoToken[jjmatchedKind >> 6] & (1L << (jjmatchedKind & /* 077*/ 0x3F))) != 0L)
                         {
@@ -1317,7 +1317,7 @@ namespace DemiTasse.minipsr
                             jjmatchedKind = 0x7fffffff;
                             try
                             {
-                                curChar = SimpleCharStream.readChar();
+                                curChar = input_stream.readChar();
                                 continue;
                             }
                             catch (IOException e1)
@@ -1328,20 +1328,20 @@ namespace DemiTasse.minipsr
 
                     if (!skip_to_next_token)
                     {
-                        int error_line = SimpleCharStream.getEndLine();
-                        int error_column = SimpleCharStream.getEndColumn();
+                        int error_line = input_stream.getEndLine();
+                        int error_column = input_stream.getEndColumn();
                         string error_after = null;
                         bool EOFSeen = false;
 
                         try
                         {
-                            SimpleCharStream.readChar();
-                            SimpleCharStream.backup(1);
+                            input_stream.readChar();
+                            input_stream.backup(1);
                         }
                         catch (IOException e1)
                         {
                             EOFSeen = true;
-                            error_after = curPos <= 1 ? "" : SimpleCharStream.GetImage();
+                            error_after = curPos <= 1 ? "" : input_stream.GetImage();
                             if (curChar == '\n' || curChar == '\r')
                             {
                                 error_line++;
@@ -1353,8 +1353,8 @@ namespace DemiTasse.minipsr
 
                         if (!EOFSeen)
                         {
-                            SimpleCharStream.backup(1);
-                            error_after = curPos <= 1 ? "" : SimpleCharStream.GetImage();
+                            input_stream.backup(1);
+                            error_after = curPos <= 1 ? "" : input_stream.GetImage();
                         }
 
                         throw new TokenMgrError(EOFSeen, curLexState, error_line, error_column, error_after, curChar, TokenMgrError.LEXICAL_ERROR);
@@ -1378,7 +1378,7 @@ namespace DemiTasse.minipsr
             {
                 case 25 :
 
-                    image.Append(SimpleCharStream.GetSuffix(jjimageLen + (lengthOfMatch = jjmatchedPos + 1)));
+                    image.Append(input_stream.GetSuffix(jjimageLen + (lengthOfMatch = jjmatchedPos + 1)));
                     if (matchedToken.image.Length > 255)
                     {
                         throw new TokenMgrError("Lexical error at line "
@@ -1389,7 +1389,7 @@ namespace DemiTasse.minipsr
 
                 case 51 :
 
-                    image.Append(SimpleCharStream.GetSuffix(jjimageLen + (lengthOfMatch = jjmatchedPos + 1)));
+                    image.Append(input_stream.GetSuffix(jjimageLen + (lengthOfMatch = jjmatchedPos + 1)));
                     try
                     {
                         int.Parse(matchedToken.image);
@@ -1404,7 +1404,7 @@ namespace DemiTasse.minipsr
 
                 case 52 :
 
-                    image.Append(SimpleCharStream.GetSuffix(jjimageLen + (lengthOfMatch = jjmatchedPos + 1)));
+                    image.Append(input_stream.GetSuffix(jjimageLen + (lengthOfMatch = jjmatchedPos + 1)));
                     if (matchedToken.image.Length > 257)
                     {
                         throw new TokenMgrError("Lexical error at line "

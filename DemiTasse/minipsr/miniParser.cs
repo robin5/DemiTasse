@@ -2028,7 +2028,7 @@ namespace DemiTasse.minipsr
         static private bool jj_initialized_once = false;
         /** Generated Token Manager. */
         static public miniParserTokenManager token_source;
-        static SimpleCharStream jj_input_stream;
+        static SimpleCharStream jj_input_stream = null;
         /** Current token. */
         static public PsrToken token;
         /** Next token. */
