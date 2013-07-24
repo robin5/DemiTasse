@@ -301,6 +301,7 @@ namespace DemiTasse
                         {
                             txtConsole.Text += Header(_currentTestFileEntry.FileName);
                             txtAST.Text += Header(_currentTestFileEntry.FileName);
+                            txtIntRep.Text += Header(_currentTestFileEntry.FileName);
                             cmdRunStartSingleFile.Execute(_currentTestFileEntry.FileName);
                         }
                         else if (null != (node.Tag as TestSuiteSuiteEntry))

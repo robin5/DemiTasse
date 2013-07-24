@@ -2402,7 +2402,7 @@ namespace DemiTasse.minipsr
             {
                 exptokseq[i] = jj_expentries[i];
             }
-        return new miniParseException(token, exptokseq, tokenImage);
+            return new miniParseException(token, exptokseq, tokenImage);
         }
 
         /** Enable tracing. */

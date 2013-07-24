@@ -176,7 +176,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(430, 173);
+            this.tabPage3.Size = new System.Drawing.Size(428, 173);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Abstract Syntax Tree";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -189,7 +189,7 @@
             this.txtAST.Multiline = true;
             this.txtAST.Name = "txtAST";
             this.txtAST.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtAST.Size = new System.Drawing.Size(424, 167);
+            this.txtAST.Size = new System.Drawing.Size(422, 167);
             this.txtAST.TabIndex = 0;
             this.txtAST.WordWrap = false;
             // 

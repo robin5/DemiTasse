@@ -52,15 +52,15 @@ using DemiTasse.psrutil;
 
 namespace DemiTasse.minipsr
 {
-/**
- * This exception is thrown when parse errors are encountered.
- * You can explicitly create objects of this exception type by
- * calling the method generateParseException in the generated
- * parser.
- *
- * You can modify this class to customize your error reporting
- * mechanisms so long as you retain the public fields.
- */
+    /**
+     * This exception is thrown when parse errors are encountered.
+     * You can explicitly create objects of this exception type by
+     * calling the method generateParseException in the generated
+     * parser.
+     *
+     * You can modify this class to customize your error reporting
+     * mechanisms so long as you retain the public fields.
+     */
     public class miniParseException : Exception
     {
         /**
@@ -76,13 +76,9 @@ namespace DemiTasse.minipsr
          * a new object of this type with the fields "currentToken",
          * "expectedTokenSequences", and "tokenImage" set.
          */
-        public miniParseException(PsrToken currentTokenVal,
-                              int[][] expectedTokenSequencesVal,
-                              string[] tokenImageVal
-                             )
+        public miniParseException(PsrToken currentTokenVal, int[][] expectedTokenSequencesVal, string[] tokenImageVal)
+            : base(initialise(currentTokenVal, expectedTokenSequencesVal, tokenImageVal))
         {
-            //super(initialise(currentTokenVal, expectedTokenSequencesVal, tokenImageVal));
-            initialise(currentTokenVal, expectedTokenSequencesVal, tokenImageVal);
             currentToken = currentTokenVal;
             expectedTokenSequences = expectedTokenSequencesVal;
             tokenImage = tokenImageVal;
@@ -109,27 +105,26 @@ namespace DemiTasse.minipsr
         {
         }
 
-
         /**
          * This is the last token that has been consumed successfully.  If
          * this object has been created due to a parse error, the token
          * followng this token will (therefore) be the first error token.
          */
-        public PsrToken currentToken;
+        private PsrToken currentToken;
 
         /**
          * Each entry in this array is an array of integers.  Each array
          * of integers represents a sequence of tokens (by their ordinal
          * values) that is expected at this point of the parse.
          */
-        public int[][] expectedTokenSequences;
+        private int[][] expectedTokenSequences;
 
         /**
          * This is a reference to the "tokenImage" array of the generated
          * parser within which the parse error occurred.  This array is
          * defined in the generated ...Constants interface.
          */
-        public string[] tokenImage;
+        private string[] tokenImage;
 
         /**
         * It uses "currentToken" and "expectedTokenSequences" to generate a parse
@@ -196,14 +191,14 @@ namespace DemiTasse.minipsr
         /**
          * The end of line string for this machine.
          */
-        protected string eol = System_getProperty("line.separator", "\n");
+        private string eol = System_getProperty("line.separator", "\n");
 
         /**
          * Used to convert raw characters to their escaped version
          * when these raw version cannot be used as part of an ASCII
          * string literal.
          */
-        static string add_escapes(string str)
+        private static string add_escapes(string str)
         {
             StringBuilder retval = new StringBuilder();
             char ch;

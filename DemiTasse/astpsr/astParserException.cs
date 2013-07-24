@@ -68,9 +68,8 @@ namespace DemiTasse.astpsr
         public astParseException(AstToken currentTokenVal,
             int[][] expectedTokenSequencesVal,
             string[] tokenImageVal)
+            : base(initialise(currentTokenVal, expectedTokenSequencesVal, tokenImageVal))
         {
-            //super(initialise(currentTokenVal, expectedTokenSequencesVal, tokenImageVal));
-            initialise(currentTokenVal, expectedTokenSequencesVal, tokenImageVal);
             currentToken = currentTokenVal;
             expectedTokenSequences = expectedTokenSequencesVal;
             tokenImage = tokenImageVal;
