@@ -44,9 +44,9 @@ namespace DemiTasse.AppIDE
             _name = name;
         }
 
-        public void AddTestFile(string fileName, string refFileName)
+        public void AddTestFile(string fileName, string astRefFileName, string irRefFileName, string soRefFileName)
         {
-            TestSuiteFileEntry entry = new TestSuiteFileEntry(fileName, refFileName);
+            TestSuiteFileEntry entry = new TestSuiteFileEntry(fileName, astRefFileName, irRefFileName, soRefFileName);
             _items.Add(entry);
         }
 
