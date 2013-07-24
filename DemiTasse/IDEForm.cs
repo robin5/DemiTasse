@@ -59,7 +59,7 @@ namespace DemiTasse
 {
     public partial class IDEForm : Form
     {
-        private AppIDE.AppIDE app = null;
+        private AppIDE.AppIDE _app = null;
         private TestSuiteManager _testSuiteManager = null;
         private enum IDEModes { SingleFile, TestSuite }
         private IDEModes _ideMode;
@@ -68,20 +68,19 @@ namespace DemiTasse
         private StringBuilder _intermediateRepresentation = new StringBuilder();
         private TestSuiteFileEntry _currentTestFileEntry;
 
-
-        private Command cmdNewFile = null;
-        private Command cmdNewTestSuite = null;
-        private Command cmdOpenFile = null;
-        private Command cmdOpenTestSuite = null;
-        private Command cmdOpenTestSuiteFile = null;
-        private Command cmdAddFile = null;
-        private Command cmdClose = null;
-        private Command cmdCloseTestSuite = null;
-        private Command cmdRunStartSingleFile = null;
-        private Command cmdRunStartTestSuite = null;
-        private Command cmdRunPause = null;
-        private Command cmdRunContinue = null;
-        private Command cmdRunStop = null;
+        private Command _cmdNewFile = null;
+        private Command _cmdNewTestSuite = null;
+        private Command _cmdOpenFile = null;
+        private Command _cmdOpenTestSuite = null;
+        private Command _cmdOpenTestSuiteFile = null;
+        private Command _cmdAddFile = null;
+        private Command _cmdClose = null;
+        private Command _cmdCloseTestSuite = null;
+        private Command _cmdRunStartSingleFile = null;
+        private Command _cmdRunStartTestSuite = null;
+        private Command _cmdRunPause = null;
+        private Command _cmdRunContinue = null;
+        private Command _cmdRunStop = null;
 
         private TestSuite _testSuite = null;
 
@@ -91,28 +90,29 @@ namespace DemiTasse
 
             (_testSuiteManager = new TestSuiteManager()).Init("");
 
-            app = new AppIDE.AppIDE(_testSuiteManager);
-            app.AddOnAppError(OnErrorOut);
-            app.AddOnAppException(OnExceptionOut);
-            app.AddOnOpenFile(OnOpenFile);
-            app.AddOnOpenTestSuite(OnOpenTestSuite);
-            app.AddOnOpenTestSuiteFile(OnOpenTestSuiteFile);
-            app.AddOnSystemOut(OnSystemOut);
-            app.AddOnIrOut(OnIrOut);
-            app.AddOnAstOut(OnAstOut);
+            _app = new AppIDE.AppIDE(_testSuiteManager);
+            _app.AddOnAppError(OnErrorOut);
+            _app.AddOnAppException(OnExceptionOut);
+            _app.AddOnOpenFile(OnOpenFile);
+            _app.AddOnOpenTestSuite(OnOpenTestSuite);
+            _app.AddOnOpenTestSuiteFile(OnOpenTestSuiteFile);
+            
+            _app.AddOnSystemOut(OnSystemOut);
+            _app.AddOnIrOut(OnIrOut);
+            _app.AddOnAstOut(OnAstOut);
 
-            cmdNewFile = new CmdNewFile(app);
-            cmdNewTestSuite = new CmdNewTestSuite(app);
-            cmdOpenFile = new CmdOpenFile(app);
-            cmdOpenTestSuite = new CmdOpenTestSuite(app);
-            cmdOpenTestSuiteFile = new CmdOpenTestSuiteFile(app);
-            cmdAddFile = new CmdAddFile(app);
-            cmdClose = new CmdNotYetImplemented();
-            cmdCloseTestSuite = new CmdNotYetImplemented();
-            cmdRunStartSingleFile = new CmdRunStartSingleFile(app);
-            cmdRunPause = new CmdNotYetImplemented();
-            cmdRunContinue = new CmdNotYetImplemented();
-            cmdRunStop = new CmdNotYetImplemented();
+            _cmdNewFile = new CmdNewFile(_app);
+            _cmdNewTestSuite = new CmdNewTestSuite(_app);
+            _cmdOpenFile = new CmdOpenFile(_app);
+            _cmdOpenTestSuite = new CmdOpenTestSuite(_app);
+            _cmdOpenTestSuiteFile = new CmdOpenTestSuiteFile(_app);
+            _cmdAddFile = new CmdAddFile(_app);
+            _cmdClose = new CmdNotYetImplemented();
+            _cmdCloseTestSuite = new CmdNotYetImplemented();
+            _cmdRunStartSingleFile = new CmdRunStartSingleFile(_app);
+            _cmdRunPause = new CmdNotYetImplemented();
+            _cmdRunContinue = new CmdNotYetImplemented();
+            _cmdRunStop = new CmdNotYetImplemented();
         }
 
         private void IDEForm_Load(object sender, EventArgs e)
@@ -125,7 +125,7 @@ namespace DemiTasse
         {
             try
             {
-                cmdNewFile.Execute();
+                _cmdNewFile.Execute();
             }
             catch (Exception ex)
             {
@@ -137,7 +137,7 @@ namespace DemiTasse
         {
             try
             {
-                cmdNewTestSuite.Execute("New Validation Tests");
+                _cmdNewTestSuite.Execute("New Validation Tests");
             }
             catch (Exception ex)
             {
@@ -156,7 +156,7 @@ namespace DemiTasse
                     if (DialogResult.OK == dialog.ShowDialog())
                     {
                         txtFile.Clear();
-                        cmdOpenFile.Execute(dialog.FileName);
+                        _cmdOpenFile.Execute(dialog.FileName);
                     }
                 }
             }
@@ -178,7 +178,7 @@ namespace DemiTasse
                 {
                     if (DialogResult.OK == f.ShowDialog())
                     {
-                        cmdOpenTestSuite.Execute(f.TestSuiteName);
+                        _cmdOpenTestSuite.Execute(f.TestSuiteName);
                     }
                 }
 
@@ -193,7 +193,7 @@ namespace DemiTasse
         {
             try
             {
-                cmdAddFile.Execute();
+                _cmdAddFile.Execute();
             }
             catch (Exception ex)
             {
@@ -205,7 +205,7 @@ namespace DemiTasse
         {
             try
             {
-                cmdClose.Execute();
+                _cmdClose.Execute();
             }
             catch (Exception ex)
             {
@@ -217,7 +217,7 @@ namespace DemiTasse
         {
             try
             {
-                cmdCloseTestSuite.Execute();
+                _cmdCloseTestSuite.Execute();
             }
             catch (Exception ex)
             {
@@ -247,7 +247,7 @@ namespace DemiTasse
 
                 if (IDEMode == IDEModes.SingleFile)
                 {
-                    cmdRunStartSingleFile.Execute(_fileName);
+                    _cmdRunStartSingleFile.Execute(_fileName);
                 }
                 else
                 {
@@ -302,7 +302,7 @@ namespace DemiTasse
                             txtConsole.Text += Header(_currentTestFileEntry.FileName);
                             txtAST.Text += Header(_currentTestFileEntry.FileName);
                             txtIntRep.Text += Header(_currentTestFileEntry.FileName);
-                            cmdRunStartSingleFile.Execute(_currentTestFileEntry.FileName);
+                            _cmdRunStartSingleFile.Execute(_currentTestFileEntry.FileName);
                         }
                         else if (null != (node.Tag as TestSuiteSuiteEntry))
                         {
@@ -329,7 +329,7 @@ namespace DemiTasse
         {
             try
             {
-                cmdRunPause.Execute();
+                _cmdRunPause.Execute();
             }
             catch (Exception ex)
             {
@@ -341,7 +341,7 @@ namespace DemiTasse
         {
             try
             {
-                cmdRunContinue.Execute();
+                _cmdRunContinue.Execute();
             }
             catch (Exception ex)
             {
@@ -353,7 +353,7 @@ namespace DemiTasse
         {
             try
             {
-                cmdRunStop.Execute();
+                _cmdRunStop.Execute();
             }
             catch (Exception ex)
             {
@@ -576,7 +576,7 @@ namespace DemiTasse
                 {
                     txtFile.Clear();
                     this.Text = Application.ProductName + " - " + _testSuite.Name + ": " + fileEntry.Name;
-                    cmdOpenTestSuiteFile.Execute(fileEntry.FileName);
+                    _cmdOpenTestSuiteFile.Execute(fileEntry.FileName);
                 }
             }
         }
