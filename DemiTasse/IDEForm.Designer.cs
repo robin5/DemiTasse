@@ -31,7 +31,7 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tvTestSuite = new System.Windows.Forms.TreeView();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.txtFile = new System.Windows.Forms.TextBox();
+            this.tcFiles = new System.Windows.Forms.TabControl();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.txtConsole = new System.Windows.Forms.TextBox();
@@ -95,11 +95,13 @@
             this.tvTestSuite.CheckBoxes = true;
             this.tvTestSuite.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tvTestSuite.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F);
+            this.tvTestSuite.HideSelection = false;
             this.tvTestSuite.Location = new System.Drawing.Point(0, 0);
             this.tvTestSuite.Name = "tvTestSuite";
             this.tvTestSuite.Size = new System.Drawing.Size(218, 480);
             this.tvTestSuite.TabIndex = 0;
             this.tvTestSuite.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvTestSuite_NodeMouseClick);
+            this.tvTestSuite.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvTestSuite_NodeMouseDoubleClick);
             this.tvTestSuite.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tvTestSuite_KeyUp);
             // 
             // splitContainer2
@@ -112,7 +114,7 @@
             // 
             // splitContainer2.Panel1
             // 
-            this.splitContainer2.Panel1.Controls.Add(this.txtFile);
+            this.splitContainer2.Panel1.Controls.Add(this.tcFiles);
             // 
             // splitContainer2.Panel2
             // 
@@ -121,19 +123,15 @@
             this.splitContainer2.SplitterDistance = 277;
             this.splitContainer2.TabIndex = 0;
             // 
-            // txtFile
+            // tcFiles
             // 
-            this.txtFile.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtFile.Font = new System.Drawing.Font("Courier New", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtFile.Location = new System.Drawing.Point(0, 0);
-            this.txtFile.Multiline = true;
-            this.txtFile.Name = "txtFile";
-            this.txtFile.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtFile.Size = new System.Drawing.Size(438, 275);
-            this.txtFile.TabIndex = 0;
-            this.txtFile.WordWrap = false;
-            this.txtFile.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtFile_KeyDown);
-            this.txtFile.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtFile_KeyPress);
+            this.tcFiles.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tcFiles.Location = new System.Drawing.Point(0, 0);
+            this.tcFiles.Name = "tcFiles";
+            this.tcFiles.SelectedIndex = 0;
+            this.tcFiles.Size = new System.Drawing.Size(438, 275);
+            this.tcFiles.TabIndex = 0;
+            this.tcFiles.Visible = false;
             // 
             // tabControl1
             // 
@@ -387,7 +385,6 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.ResumeLayout(false);
             this.splitContainer2.Panel1.ResumeLayout(false);
-            this.splitContainer2.Panel1.PerformLayout();
             this.splitContainer2.Panel2.ResumeLayout(false);
             this.splitContainer2.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
@@ -408,7 +405,6 @@
 
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.SplitContainer splitContainer2;
-        private System.Windows.Forms.TextBox txtFile;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem mnuFile;
         private System.Windows.Forms.ToolStripMenuItem mnuFileOpen;
@@ -437,6 +433,7 @@
         private System.Windows.Forms.TextBox txtIntRep;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.TextBox txtAST;
+        private System.Windows.Forms.TabControl tcFiles;
     }
 }
 

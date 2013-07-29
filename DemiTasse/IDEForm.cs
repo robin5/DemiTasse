@@ -110,6 +110,7 @@ namespace DemiTasse
             }
         }
 
+        #region Form Events
 
         public IDEForm()
         {
@@ -143,11 +144,40 @@ namespace DemiTasse
             _cmdRunStop = new CmdNotYetImplemented();
         }
 
+        private void IDEForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Stream stream = null;
+            try
+            {
+                // To serialize the hashtable and its key/value pairs,  
+                // you must first open a stream for writing. 
+                // In this case, use a file stream.
+                stream = File.Create("temp.bin");
+
+                // Construct a BinaryFormatter and use it to serialize the data to the stream.
+                BinaryFormatter bf = new BinaryFormatter();
+                bf.Context = new System.Runtime.Serialization.StreamingContext(StreamingContextStates.All);
+                bf.Serialize(stream, _testSuiteManager);
+            }
+            catch (Exception ex)
+            {
+            }
+            finally
+            {
+                if (null != stream)
+                    stream.Close();
+            }
+        }
+
         private void IDEForm_Load(object sender, EventArgs e)
         {
             Text = "DemiTasse (untitled)";
             IDEMode = IDEModes.SingleFile;
         }
+
+        #endregion Form Events
+
+        #region Menus
 
         private void mnuFileNewFile_Click(object sender, EventArgs e)
         {
@@ -183,7 +213,7 @@ namespace DemiTasse
 
                     if (DialogResult.OK == dialog.ShowDialog())
                     {
-                        txtFile.Clear();
+                        //txtFile.Clear();
                         _cmdOpenFile.Execute(dialog.FileName);
                     }
                 }
@@ -389,6 +419,8 @@ namespace DemiTasse
             }
         }
 
+        #endregion Menus
+
         private void DisplayException(Exception ex)
         {
             MessageBox.Show(ex.Message, "Exception", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
@@ -470,7 +502,7 @@ namespace DemiTasse
             string title = (new FileInfo(e.FileName)).Name;
             _fileName = e.FileName;
             this.Text = Application.ProductName + ": " + title;
-            txtFile.Text = e.Code;
+            //txtFile.Text = e.Code;
             IDEMode = IDEModes.SingleFile;
         }
 
@@ -481,7 +513,7 @@ namespace DemiTasse
             try
             {
                 this.Text = Application.ProductName + " - " + e.TestSuite.Name;
-                txtFile.Text = "";
+                //txtFile.Text = "";
                 IDEMode = IDEModes.TestSuite;
 
                 tvTestSuite.Nodes.Clear();
@@ -519,7 +551,7 @@ namespace DemiTasse
 
         private void OnOpenTestSuiteFile(object sender, OpenTestSuiteFileEventArgs e)
         {
-            txtFile.Text = e.Code;
+            //txtFile.Text = e.Code;
             IDEMode = IDEModes.TestSuite;
         }
 
@@ -572,14 +604,82 @@ namespace DemiTasse
 
         private void tvTestSuite_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
+        }
+
+        private void tvTestSuite_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
             try
             {
-                DisplayFileNode(e.Node);
+                ShowTabPage(e.Node);
             }
             catch (Exception ex)
             {
                 DisplayException(ex);
             }
+        }
+
+        private void ShowTabPage(TreeNode node)
+        {
+            TestSuiteFileEntry fileEntry = null;
+
+            if ((null == node) || (null == (fileEntry = node.Tag as TestSuiteFileEntry)))
+                return;
+
+            if (this.tcFiles.Controls.ContainsKey(fileEntry.FileName))
+            {
+                //System.Windows.Forms.TabPage tabPage1 = (System.Windows.Forms.TabPage)this.tcFiles.Controls[fileEntry.FileName];
+                tcFiles.SelectTab(fileEntry.FileName);
+                return;
+            }
+
+            //txtFile.Clear();
+            // this.Text = Application.ProductName + " - " + _testSuite.Name + ": " + fileEntry.Name;
+            // _cmdOpenTestSuiteFile.Execute(fileEntry.FileName);
+
+            System.Windows.Forms.TextBox textBox = new System.Windows.Forms.TextBox();
+            System.Windows.Forms.TabPage tabPage = new System.Windows.Forms.TabPage();
+
+            this.tcFiles.SuspendLayout();
+            tabPage.SuspendLayout();
+
+            // 
+            // tcFiles
+            // 
+            this.tcFiles.Controls.Add(tabPage);
+            // 
+            // tabPage
+            // 
+            tabPage.Controls.Add(textBox);
+            tabPage.Location = new System.Drawing.Point(4, 22);
+            tabPage.Name = fileEntry.FileName;
+            tabPage.Padding = new System.Windows.Forms.Padding(3);
+            tabPage.Size = new System.Drawing.Size(430, 249);
+            tabPage.TabIndex = 0;
+            tabPage.Text = fileEntry.Name;
+            tabPage.UseVisualStyleBackColor = true;
+            // 
+            // textBox
+            // 
+            textBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            textBox.Font = new System.Drawing.Font("Courier New", 11.25F);
+            textBox.Location = new System.Drawing.Point(3, 3);
+            textBox.Multiline = true;
+            textBox.Name = "textBox1";
+            textBox.Size = new System.Drawing.Size(424, 243);
+            textBox.TabIndex = 0;
+
+            using (StreamReader sr = new StreamReader(fileEntry.FileName, Encoding.ASCII))
+            {
+                textBox.Text = sr.ReadToEnd();
+                textBox.SelectionStart = 0;
+                textBox.SelectionLength = 0;
+            }
+
+            this.tcFiles.ResumeLayout(false);
+            tabPage.ResumeLayout(false);
+            tabPage.PerformLayout();
+            tcFiles.SelectTab(fileEntry.FileName);
+            tcFiles.Visible = true;
         }
 
         private void tvTestSuite_KeyUp(object sender, KeyEventArgs e)
@@ -602,36 +702,13 @@ namespace DemiTasse
 
                 if (null != fileEntry)
                 {
-                    txtFile.Clear();
+                    //txtFile.Clear();
                     this.Text = Application.ProductName + " - " + _testSuite.Name + ": " + fileEntry.Name;
                     _cmdOpenTestSuiteFile.Execute(fileEntry.FileName);
                 }
             }
         }
 
-        private void IDEForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            Stream stream = null;
-            try
-            {
-                // To serialize the hashtable and its key/value pairs,  
-                // you must first open a stream for writing. 
-                // In this case, use a file stream.
-                stream = File.Create("temp.bin");
-
-                // Construct a BinaryFormatter and use it to serialize the data to the stream.
-                BinaryFormatter bf = new BinaryFormatter();
-                bf.Context = new System.Runtime.Serialization.StreamingContext(StreamingContextStates.All);
-                bf.Serialize(stream, _testSuiteManager);
-            }
-            catch (Exception ex)
-            {
-            }
-            finally
-            {
-                if (null != stream)
-                    stream.Close();
-            }
-        }
+        private List<System.Windows.Forms.TabPage> tabPages = new List<System.Windows.Forms.TabPage>();
     }
 }
