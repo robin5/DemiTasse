@@ -39,6 +39,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 
 // **********************************************************************************
 // * Implementation
@@ -46,10 +48,13 @@ using System.IO;
 
 namespace DemiTasse.AppIDE
 {
+    [Serializable]
     class TestSuiteManager : ITestSuiteManager
     {
         public void Init(string serializationFileName)
         {
+
+#if false
             TestSuite ts = null;
             string[] files = null;
 
@@ -105,6 +110,8 @@ namespace DemiTasse.AppIDE
                     null,                            // IR reference file - not generated
                     files[i].Replace(".ir", ".so")); // System Out reference file
             }
+#endif
+
         }
 
         public TestSuite Create(string name)

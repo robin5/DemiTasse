@@ -37,6 +37,7 @@ using System.Text;
 
 namespace DemiTasse.AppIDE
 {
+    [Serializable]
     class TestSuiteSuiteEntry : TestSuiteEntry
     {
         public TestSuiteSuiteEntry(string name)

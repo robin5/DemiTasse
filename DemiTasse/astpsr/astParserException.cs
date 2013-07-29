@@ -129,7 +129,7 @@ namespace DemiTasse.astpsr
             int[][] expectedTokenSequences,
             string[] tokenImage)
         {
-            string eol = System_getProperty("line.separator", "\n");
+            string eol = Environment.NewLine;
             StringBuilder expected = new StringBuilder();
             int maxSize = 0;
 
@@ -184,7 +184,7 @@ namespace DemiTasse.astpsr
         /**
          * The end of line string for this machine.
          */
-        protected string eol = System_getProperty("line.separator", "\n");
+        protected string eol = Environment.NewLine;
 
         /**
          * Used to convert raw characters to their escaped version
@@ -240,16 +240,6 @@ namespace DemiTasse.astpsr
                 }
             }
             return retval.ToString();
-        }
-
-        private static string System_getProperty(string property, string defaultValue)
-        {
-            if (property.Equals("line.separator", StringComparison.OrdinalIgnoreCase))
-            {
-                return "\r\n";
-            }
-            else
-                throw new Exception("System_getProperty fucntion not yet implemented");
         }
     }
     /* JavaCC - OriginalChecksum=e55596c3272f3b161c6a662f1ea55cb7 (do not edit this line) */

@@ -44,6 +44,8 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using System.Diagnostics;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 
 using DemiTasse.ast;
 using DemiTasse.ir;
@@ -84,11 +86,37 @@ namespace DemiTasse
 
         private TestSuite _testSuite = null;
 
+        private void InitTestSuiteManager(string serializationFileName)
+        {
+            FileStream fs = new FileStream(serializationFileName, FileMode.Open);
+            try
+            {
+                BinaryFormatter formatter = new BinaryFormatter();
+
+                // Deserialize the hashtable from the file and 
+
+                // assign the reference to the local variable.
+
+                _testSuiteManager = (TestSuiteManager)formatter.Deserialize(fs);
+            }
+            catch (SerializationException e)
+            {
+                Console.WriteLine("Failed to deserialize. Reason: " + e.Message);
+                throw;
+            }
+            finally
+            {
+                fs.Close();
+            }
+        }
+
+
         public IDEForm()
         {
             InitializeComponent();
 
-            (_testSuiteManager = new TestSuiteManager()).Init("");
+            //(_testSuiteManager = new TestSuiteManager()).Init("temp.bin");
+            InitTestSuiteManager("temp.bin");
 
             _app = new AppIDE.AppIDE(_testSuiteManager);
             _app.AddOnAppError(OnErrorOut);
@@ -578,6 +606,31 @@ namespace DemiTasse
                     this.Text = Application.ProductName + " - " + _testSuite.Name + ": " + fileEntry.Name;
                     _cmdOpenTestSuiteFile.Execute(fileEntry.FileName);
                 }
+            }
+        }
+
+        private void IDEForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Stream stream = null;
+            try
+            {
+                // To serialize the hashtable and its key/value pairs,  
+                // you must first open a stream for writing. 
+                // In this case, use a file stream.
+                stream = File.Create("temp.bin");
+
+                // Construct a BinaryFormatter and use it to serialize the data to the stream.
+                BinaryFormatter bf = new BinaryFormatter();
+                bf.Context = new System.Runtime.Serialization.StreamingContext(StreamingContextStates.All);
+                bf.Serialize(stream, _testSuiteManager);
+            }
+            catch (Exception ex)
+            {
+            }
+            finally
+            {
+                if (null != stream)
+                    stream.Close();
             }
         }
     }

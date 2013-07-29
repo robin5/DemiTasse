@@ -137,7 +137,7 @@ namespace DemiTasse.minipsr
             int[][] expectedTokenSequences,
             string[] tokenImage)
         {
-            string eol = System_getProperty("line.separator", "\n");
+            string eol = Environment.NewLine;
             StringBuilder expected = new StringBuilder();
             int maxSize = 0;
 
@@ -191,7 +191,7 @@ namespace DemiTasse.minipsr
         /**
          * The end of line string for this machine.
          */
-        private string eol = System_getProperty("line.separator", "\n");
+        private string eol = Environment.NewLine;
 
         /**
          * Used to convert raw characters to their escaped version
@@ -247,16 +247,6 @@ namespace DemiTasse.minipsr
                 }
             }
             return retval.ToString();
-        }
-        
-        private static string System_getProperty(string property, string defaultValue)
-        {
-            if (property.Equals("line.separator", StringComparison.OrdinalIgnoreCase))
-            {
-                return "\r\n";
-            }
-            else
-                throw new Exception("System_getProperty fucntion not yet implemented");
         }
     }
 }

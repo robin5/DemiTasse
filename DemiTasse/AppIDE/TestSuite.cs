@@ -34,15 +34,33 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace DemiTasse.AppIDE
 {
+    [Serializable]
     public class TestSuite
     {
         public TestSuite(string name)
         {
             _name = name;
         }
+
+#if false
+        private TestSuite(SerializationInfo info, StreamingContext context)
+        {
+            _name = info.GetString("Name");
+            _items = (List<TestSuiteEntry>)info.Get
+        }
+
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue("Name", _name);
+            info.AddValue("Items", _items);
+        }
+
+#endif
 
         public void AddTestFile(string fileName, string astRefFileName, string irRefFileName, string soRefFileName)
         {
@@ -71,6 +89,7 @@ namespace DemiTasse.AppIDE
         }
 
         private string _name;
+
         private List<TestSuiteEntry> _items = new List<TestSuiteEntry>();
     }
 }

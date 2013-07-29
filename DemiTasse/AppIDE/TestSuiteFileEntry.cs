@@ -37,6 +37,7 @@ using System.IO;
 
 namespace DemiTasse.AppIDE
 {
+    [Serializable]
     class TestSuiteFileEntry : TestSuiteEntry
     {
         public TestSuiteFileEntry(string fileName, string astRefFileName, string irRefFileName, string soRefFileName)

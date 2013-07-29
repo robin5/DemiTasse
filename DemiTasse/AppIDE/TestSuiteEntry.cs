@@ -38,6 +38,7 @@ using System.Windows.Forms;
 
 namespace DemiTasse.AppIDE
 {
+    [Serializable]
     public class TestSuiteEntry
     {
         public TestSuiteEntry(string title)
