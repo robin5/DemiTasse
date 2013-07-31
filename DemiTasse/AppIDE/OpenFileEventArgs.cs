@@ -34,6 +34,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 
 namespace DemiTasse.AppIDE
 {
@@ -41,14 +42,18 @@ namespace DemiTasse.AppIDE
     {
         private string _code = null;
         private string _fileName = null;
+        private string _name = null;
 
         public OpenFileEventArgs(string fileName, string code)
         {
             _fileName = fileName;
             _code = code;
+            FileInfo fileNode = new FileInfo(fileName);
+            _name = fileNode.Name;
         }
 
         public string FileName { get { return _fileName; } }
         public string Code { get { return _code; } }
+        public string Name { get { return _name; } }
     }
 }

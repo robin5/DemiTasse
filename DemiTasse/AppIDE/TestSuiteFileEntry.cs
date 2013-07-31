@@ -69,9 +69,16 @@ namespace DemiTasse.AppIDE
             get { return _soRefFileName; }
         }
 
+        public bool Changed
+        {
+            get { return _changed; }
+            set { _changed = value; }
+        }
+
         private string _fileName;
         private string _astRefFileName;
         private string _irRefFileName;
         private string _soRefFileName;
+        private bool _changed = false;
     }
 }

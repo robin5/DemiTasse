@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.tvTestSuite = new System.Windows.Forms.TreeView();
+            this.tvFiles = new System.Windows.Forms.TreeView();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.tcFiles = new System.Windows.Forms.TabControl();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -81,7 +81,7 @@
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.tvTestSuite);
+            this.splitContainer1.Panel1.Controls.Add(this.tvFiles);
             // 
             // splitContainer1.Panel2
             // 
@@ -90,19 +90,19 @@
             this.splitContainer1.SplitterDistance = 220;
             this.splitContainer1.TabIndex = 0;
             // 
-            // tvTestSuite
+            // tvFiles
             // 
-            this.tvTestSuite.CheckBoxes = true;
-            this.tvTestSuite.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tvTestSuite.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F);
-            this.tvTestSuite.HideSelection = false;
-            this.tvTestSuite.Location = new System.Drawing.Point(0, 0);
-            this.tvTestSuite.Name = "tvTestSuite";
-            this.tvTestSuite.Size = new System.Drawing.Size(218, 480);
-            this.tvTestSuite.TabIndex = 0;
-            this.tvTestSuite.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvTestSuite_NodeMouseClick);
-            this.tvTestSuite.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvTestSuite_NodeMouseDoubleClick);
-            this.tvTestSuite.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tvTestSuite_KeyUp);
+            this.tvFiles.CheckBoxes = true;
+            this.tvFiles.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tvFiles.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F);
+            this.tvFiles.HideSelection = false;
+            this.tvFiles.Location = new System.Drawing.Point(0, 0);
+            this.tvFiles.Name = "tvFiles";
+            this.tvFiles.Size = new System.Drawing.Size(218, 480);
+            this.tvFiles.TabIndex = 0;
+            this.tvFiles.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvFiles_NodeMouseClick);
+            this.tvFiles.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvFiles_NodeMouseDoubleClick);
+            this.tvFiles.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tvFiles_KeyUp);
             // 
             // splitContainer2
             // 
@@ -167,6 +167,7 @@
             this.txtConsole.Size = new System.Drawing.Size(424, 167);
             this.txtConsole.TabIndex = 1;
             this.txtConsole.WordWrap = false;
+            this.txtConsole.TextChanged += new System.EventHandler(this.txtConsole_TextChanged);
             // 
             // tabPage3
             // 
@@ -174,7 +175,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(430, 173);
+            this.tabPage3.Size = new System.Drawing.Size(428, 173);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Abstract Syntax Tree";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -187,7 +188,7 @@
             this.txtAST.Multiline = true;
             this.txtAST.Name = "txtAST";
             this.txtAST.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtAST.Size = new System.Drawing.Size(424, 167);
+            this.txtAST.Size = new System.Drawing.Size(422, 167);
             this.txtAST.TabIndex = 0;
             this.txtAST.WordWrap = false;
             // 
@@ -197,7 +198,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(430, 173);
+            this.tabPage2.Size = new System.Drawing.Size(428, 173);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Intermediate Representation";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -210,7 +211,7 @@
             this.txtIntRep.Multiline = true;
             this.txtIntRep.Name = "txtIntRep";
             this.txtIntRep.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtIntRep.Size = new System.Drawing.Size(424, 167);
+            this.txtIntRep.Size = new System.Drawing.Size(422, 167);
             this.txtIntRep.TabIndex = 0;
             this.txtIntRep.WordWrap = false;
             // 
@@ -425,7 +426,7 @@
         private System.Windows.Forms.ToolStripMenuItem mnuRunPause;
         private System.Windows.Forms.ToolStripMenuItem mnuRunContinue;
         private System.Windows.Forms.ToolStripMenuItem mnuRunStop;
-        private System.Windows.Forms.TreeView tvTestSuite;
+        private System.Windows.Forms.TreeView tvFiles;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TextBox txtConsole;

@@ -120,15 +120,15 @@ namespace DemiTasse
             InitTestSuiteManager("temp.bin");
 
             _app = new AppIDE.AppIDE(_testSuiteManager);
-            _app.AddOnAppError(OnErrorOut);
-            _app.AddOnAppException(OnExceptionOut);
-            _app.AddOnOpenFile(OnOpenFile);
-            _app.AddOnOpenTestSuite(OnOpenTestSuite);
-            _app.AddOnOpenTestSuiteFile(OnOpenTestSuiteFile);
+            _app.AddOnAppError(App_OnErrorOut);
+            _app.AddOnAppException(App_OnExceptionOut);
+            _app.AddOnOpenFile(App_OnOpenFile);
+            _app.AddOnOpenTestSuite(App_OnOpenTestSuite);
+            _app.AddOnOpenTestSuiteFile(App_OnOpenTestSuiteFile);
             
-            _app.AddOnSystemOut(OnSystemOut);
-            _app.AddOnIrOut(OnIrOut);
-            _app.AddOnAstOut(OnAstOut);
+            _app.AddOnSystemOut(App_OnSystemOut);
+            _app.AddOnIrOut(App_OnIrOut);
+            _app.AddOnAstOut(App_OnAstOut);
 
             _cmdNewFile = new CmdNewFile(_app);
             _cmdNewTestSuite = new CmdNewTestSuite(_app);
@@ -213,8 +213,14 @@ namespace DemiTasse
 
                     if (DialogResult.OK == dialog.ShowDialog())
                     {
-                        //txtFile.Clear();
-                        _cmdOpenFile.Execute(dialog.FileName);
+                        if (this.tcFiles.Controls.ContainsKey(dialog.FileName))
+                        {
+                            this.tcFiles.SelectTab(dialog.FileName);
+                        }
+                        else
+                        {
+                            _cmdOpenFile.Execute(dialog.FileName);
+                        }
                     }
                 }
             }
@@ -309,9 +315,9 @@ namespace DemiTasse
                 }
                 else
                 {
-                    if (tvTestSuite.Nodes.Count > 0)
+                    if (tvFiles.Nodes.Count > 0)
                     {
-                        ExecuteTestSuiteItems(tvTestSuite.Nodes[0]);
+                        ExecuteTestSuiteItems(tvFiles.Nodes[0]);
                     }
                 }
             }
@@ -438,18 +444,18 @@ namespace DemiTasse
             txtConsole.Text += msg;
         }
 
-        private void OnSystemOut(object sender, InterpOutEventArgs e)
+        private void App_OnSystemOut(object sender, InterpOutEventArgs e)
         {
             txtConsole.Text += e.Message;
         }
 
-        private void OnIrOut(object sender, IrOutEventArgs e)
+        private void App_OnIrOut(object sender, IrOutEventArgs e)
         {
             string data = e.Data.Replace("\n", "\r\n");
             txtIntRep.Text += data;
         }
 
-        private void OnAstOut(object sender, AstOutEventArgs e)
+        private void App_OnAstOut(object sender, AstOutEventArgs e)
         {
             string data = e.Data.Replace("\n", "\r\n");
             txtAST.Text += data;
@@ -487,26 +493,67 @@ namespace DemiTasse
 
         }
 
-        private void OnErrorOut(object sender, AppErrorEventArgs e)
+        private void App_OnErrorOut(object sender, AppErrorEventArgs e)
         {
             txtConsole.Text += e.Message;
         }
 
-        private void OnExceptionOut(object sender, AppExceptionEventArgs e)
+        private void App_OnExceptionOut(object sender, AppExceptionEventArgs e)
         {
             txtConsole.Text += e.Message;
         }
 
-        private void OnOpenFile(object sender, OpenFileEventArgs e)
+        private void App_OnOpenFile(object sender, OpenFileEventArgs e)
         {
-            string title = (new FileInfo(e.FileName)).Name;
-            _fileName = e.FileName;
-            this.Text = Application.ProductName + ": " + title;
-            //txtFile.Text = e.Code;
-            IDEMode = IDEModes.SingleFile;
+            TreeNode node = null;
+
+            try
+            {
+                if (this.tcFiles.Controls.ContainsKey(e.FileName))
+                {
+                    this.tcFiles.SelectTab(e.FileName);
+                }
+                else
+                {
+                    _fileName = e.FileName;
+                    this.Text = Application.ProductName + ": " + e.Name;
+                    //txtFile.Text = e.Code;
+                    IDEMode = IDEModes.SingleFile;
+                    ClearAllFileTabs();
+                    tvFiles.Nodes.Clear();
+                    node = tvFiles.Nodes.Add(e.Name);
+                    node.Tag = new TestSuiteFileEntry(e.FileName, null, null, null);
+                    ShowTabPage(node);
+                }
+            }
+            catch (Exception ex)
+            {
+                DisplayException(ex);
+            }
         }
 
-        private void OnOpenTestSuite(object sender, OpenTestSuiteEventArgs e)
+        private void ClearAllFileTabs()
+        {
+            TestSuiteFileEntry fileEntry = null;
+
+            foreach (TabPage tabPage in tcFiles.TabPages)
+            {
+                fileEntry = tabPage.Tag as TestSuiteFileEntry;
+                Debug.Assert(fileEntry != null);
+                if (fileEntry.Changed)
+                {
+                    SaveFile(fileEntry);
+                }
+            }
+
+            tcFiles.TabPages.Clear();
+        }
+
+        private void SaveFile(TestSuiteFileEntry fileEntry)
+        {
+        }
+
+        private void App_OnOpenTestSuite(object sender, OpenTestSuiteEventArgs e)
         {
             TreeNode node;
 
@@ -515,9 +562,9 @@ namespace DemiTasse
                 this.Text = Application.ProductName + " - " + e.TestSuite.Name;
                 //txtFile.Text = "";
                 IDEMode = IDEModes.TestSuite;
-
-                tvTestSuite.Nodes.Clear();
-                node = tvTestSuite.Nodes.Add(e.TestSuite.Name);
+                ClearAllFileTabs();
+                tvFiles.Nodes.Clear();
+                node = tvFiles.Nodes.Add(e.TestSuite.Name);
                 node.Tag = null;
 
                 AddSuite(node, (_testSuite = e.TestSuite).Items);
@@ -549,7 +596,7 @@ namespace DemiTasse
             }
         }
 
-        private void OnOpenTestSuiteFile(object sender, OpenTestSuiteFileEventArgs e)
+        private void App_OnOpenTestSuiteFile(object sender, OpenTestSuiteFileEventArgs e)
         {
             //txtFile.Text = e.Code;
             IDEMode = IDEModes.TestSuite;
@@ -562,13 +609,15 @@ namespace DemiTasse
                 if (value == IDEForm.IDEModes.SingleFile)
                 {
                     _ideMode = IDEForm.IDEModes.SingleFile;
-                    splitContainer1.Panel1Collapsed = true;
+                    tvFiles.CheckBoxes = false;
+                    tvFiles.ShowLines = false;
                     LockEdit = false;
                 }
                 else
                 {
                     _ideMode = IDEForm.IDEModes.TestSuite;
-                    splitContainer1.Panel1Collapsed = false;
+                    tvFiles.CheckBoxes = true;
+                    tvFiles.ShowLines = true;
                     LockEdit = true;
                 }
             }
@@ -602,11 +651,11 @@ namespace DemiTasse
             }
         }
 
-        private void tvTestSuite_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        private void tvFiles_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
         }
 
-        private void tvTestSuite_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        private void tvFiles_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             try
             {
@@ -657,6 +706,7 @@ namespace DemiTasse
             tabPage.TabIndex = 0;
             tabPage.Text = fileEntry.Name;
             tabPage.UseVisualStyleBackColor = true;
+            tabPage.Tag = node.Tag;
             // 
             // textBox
             // 
@@ -667,6 +717,8 @@ namespace DemiTasse
             textBox.Name = "textBox1";
             textBox.Size = new System.Drawing.Size(424, 243);
             textBox.TabIndex = 0;
+            textBox.TextChanged += new System.EventHandler(this.editFiles_TextChanged);
+            textBox.Tag = node.Tag;
 
             using (StreamReader sr = new StreamReader(fileEntry.FileName, Encoding.ASCII))
             {
@@ -680,13 +732,14 @@ namespace DemiTasse
             tabPage.PerformLayout();
             tcFiles.SelectTab(fileEntry.FileName);
             tcFiles.Visible = true;
+            fileEntry.Changed = false;
         }
 
-        private void tvTestSuite_KeyUp(object sender, KeyEventArgs e)
+        private void tvFiles_KeyUp(object sender, KeyEventArgs e)
         {
             try
             {
-                DisplayFileNode(tvTestSuite.SelectedNode);
+                DisplayFileNode(tvFiles.SelectedNode);
             }
             catch (Exception ex)
             {
@@ -707,6 +760,33 @@ namespace DemiTasse
                     _cmdOpenTestSuiteFile.Execute(fileEntry.FileName);
                 }
             }
+        }
+
+        private void txtConsole_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+        
+        private void editFiles_TextChanged(object sender, EventArgs e)
+        {
+            TestSuiteFileEntry fileEntry = null;
+            System.Windows.Forms.TextBox textBox;
+
+            Debug.Assert(null != sender, "null sender encountered");
+            if (sender == null)
+                return;
+
+            textBox = sender as System.Windows.Forms.TextBox;
+            Debug.Assert(null != textBox, "Unexpected sender: sender != textbox");
+            if (textBox == null)
+                return;
+
+            fileEntry = textBox.Tag as TestSuiteFileEntry;
+            Debug.Assert(null != fileEntry, "fileEntry missing from tag");
+            if (null == fileEntry)
+                return;
+
+            fileEntry.Changed = true;
         }
 
         private List<System.Windows.Forms.TabPage> tabPages = new List<System.Windows.Forms.TabPage>();
