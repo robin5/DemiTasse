@@ -49,10 +49,13 @@
             this.mnuFileOpenTestSuite = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuFileAddFiles = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuSepAddFiles = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuFileSave = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuFileSaveAll = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuFileClose = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuFileCloseTestSuite = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuFileExit = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuRun = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuRunStart = new System.Windows.Forms.ToolStripMenuItem();
@@ -132,6 +135,7 @@
             this.tcFiles.Size = new System.Drawing.Size(438, 275);
             this.tcFiles.TabIndex = 0;
             this.tcFiles.Visible = false;
+            this.tcFiles.Selected += new System.Windows.Forms.TabControlEventHandler(this.tcFiles_Selected);
             // 
             // tabControl1
             // 
@@ -233,10 +237,13 @@
             this.mnuFileOpen,
             this.toolStripMenuItem1,
             this.mnuFileAddFiles,
-            this.toolStripMenuItem2,
+            this.mnuSepAddFiles,
+            this.mnuFileSave,
+            this.mnuFileSaveAll,
+            this.toolStripMenuItem3,
             this.mnuFileClose,
             this.mnuFileCloseTestSuite,
-            this.toolStripMenuItem3,
+            this.toolStripMenuItem2,
             this.mnuFileExit});
             this.mnuFile.Name = "mnuFile";
             this.mnuFile.Size = new System.Drawing.Size(37, 20);
@@ -248,7 +255,7 @@
             this.mnuFileNewFile,
             this.mnuNewTestSuite});
             this.mnuFileNew.Name = "mnuFileNew";
-            this.mnuFileNew.Size = new System.Drawing.Size(132, 22);
+            this.mnuFileNew.Size = new System.Drawing.Size(152, 22);
             this.mnuFileNew.Text = "New";
             // 
             // mnuFileNewFile
@@ -271,7 +278,7 @@
             this.mnuFileOpenFile,
             this.mnuFileOpenTestSuite});
             this.mnuFileOpen.Name = "mnuFileOpen";
-            this.mnuFileOpen.Size = new System.Drawing.Size(132, 22);
+            this.mnuFileOpen.Size = new System.Drawing.Size(152, 22);
             this.mnuFileOpen.Text = "Open";
             // 
             // mnuFileOpenFile
@@ -291,43 +298,63 @@
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(129, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(149, 6);
             // 
             // mnuFileAddFiles
             // 
             this.mnuFileAddFiles.Name = "mnuFileAddFiles";
-            this.mnuFileAddFiles.Size = new System.Drawing.Size(132, 22);
+            this.mnuFileAddFiles.Size = new System.Drawing.Size(152, 22);
             this.mnuFileAddFiles.Text = "Add Files...";
             this.mnuFileAddFiles.Click += new System.EventHandler(this.mnuFileAddFiles_Click);
             // 
-            // toolStripMenuItem2
+            // mnuSepAddFiles
             // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(129, 6);
+            this.mnuSepAddFiles.Name = "mnuSepAddFiles";
+            this.mnuSepAddFiles.Size = new System.Drawing.Size(149, 6);
+            // 
+            // mnuFileSave
+            // 
+            this.mnuFileSave.Enabled = false;
+            this.mnuFileSave.Name = "mnuFileSave";
+            this.mnuFileSave.Size = new System.Drawing.Size(152, 22);
+            this.mnuFileSave.Text = "Save";
+            this.mnuFileSave.Click += new System.EventHandler(this.mnuFileSave_Click);
+            // 
+            // mnuFileSaveAll
+            // 
+            this.mnuFileSaveAll.Enabled = false;
+            this.mnuFileSaveAll.Name = "mnuFileSaveAll";
+            this.mnuFileSaveAll.Size = new System.Drawing.Size(152, 22);
+            this.mnuFileSaveAll.Text = "Save All";
+            // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(149, 6);
             // 
             // mnuFileClose
             // 
             this.mnuFileClose.Name = "mnuFileClose";
-            this.mnuFileClose.Size = new System.Drawing.Size(132, 22);
+            this.mnuFileClose.Size = new System.Drawing.Size(152, 22);
             this.mnuFileClose.Text = "Close";
             this.mnuFileClose.Click += new System.EventHandler(this.mnuFileClose_Click);
             // 
             // mnuFileCloseTestSuite
             // 
             this.mnuFileCloseTestSuite.Name = "mnuFileCloseTestSuite";
-            this.mnuFileCloseTestSuite.Size = new System.Drawing.Size(132, 22);
+            this.mnuFileCloseTestSuite.Size = new System.Drawing.Size(152, 22);
             this.mnuFileCloseTestSuite.Text = "Close Suite";
             this.mnuFileCloseTestSuite.Click += new System.EventHandler(this.mnuFileCloseTestSuite_Click);
             // 
-            // toolStripMenuItem3
+            // toolStripMenuItem2
             // 
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(129, 6);
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(149, 6);
             // 
             // mnuFileExit
             // 
             this.mnuFileExit.Name = "mnuFileExit";
-            this.mnuFileExit.Size = new System.Drawing.Size(132, 22);
+            this.mnuFileExit.Size = new System.Drawing.Size(152, 22);
             this.mnuFileExit.Text = "Exit";
             this.mnuFileExit.Click += new System.EventHandler(this.mnuFileExit_Click);
             // 
@@ -419,7 +446,7 @@
         private System.Windows.Forms.ToolStripMenuItem mnuFileOpenFile;
         private System.Windows.Forms.ToolStripMenuItem mnuFileOpenTestSuite;
         private System.Windows.Forms.ToolStripMenuItem mnuFileAddFiles;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripSeparator mnuSepAddFiles;
         private System.Windows.Forms.ToolStripMenuItem mnuFileClose;
         private System.Windows.Forms.ToolStripMenuItem mnuFileCloseTestSuite;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
@@ -435,6 +462,9 @@
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.TextBox txtAST;
         private System.Windows.Forms.TabControl tcFiles;
+        private System.Windows.Forms.ToolStripMenuItem mnuFileSave;
+        private System.Windows.Forms.ToolStripMenuItem mnuFileSaveAll;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
     }
 }
 

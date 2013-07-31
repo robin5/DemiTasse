@@ -76,6 +76,7 @@ namespace DemiTasse
         private Command _cmdOpenTestSuite = null;
         private Command _cmdOpenTestSuiteFile = null;
         private Command _cmdAddFile = null;
+        private Command _cmdSaveFile = null;
         private Command _cmdClose = null;
         private Command _cmdCloseTestSuite = null;
         private Command _cmdRunStartSingleFile = null;
@@ -125,6 +126,7 @@ namespace DemiTasse
             _app.AddOnOpenFile(App_OnOpenFile);
             _app.AddOnOpenTestSuite(App_OnOpenTestSuite);
             _app.AddOnOpenTestSuiteFile(App_OnOpenTestSuiteFile);
+            _app.AddOnSaveFile(App_OnSaveFile);
             
             _app.AddOnSystemOut(App_OnSystemOut);
             _app.AddOnIrOut(App_OnIrOut);
@@ -136,6 +138,7 @@ namespace DemiTasse
             _cmdOpenTestSuite = new CmdOpenTestSuite(_app);
             _cmdOpenTestSuiteFile = new CmdOpenTestSuiteFile(_app);
             _cmdAddFile = new CmdAddFile(_app);
+            _cmdSaveFile = new CmdSaveFile(_app);
             _cmdClose = new CmdNotYetImplemented();
             _cmdCloseTestSuite = new CmdNotYetImplemented();
             _cmdRunStartSingleFile = new CmdRunStartSingleFile(_app);
@@ -285,6 +288,31 @@ namespace DemiTasse
             try
             {
                 _cmdAddFile.Execute();
+            }
+            catch (Exception ex)
+            {
+                DisplayException(ex);
+            }
+        }
+
+        private void mnuFileSave_Click(object sender, EventArgs e)
+        {
+            TestSuiteFileEntry fileEntry = null;
+
+            try
+            {
+                if (tcFiles.SelectedTab != null)
+                {
+
+                    if (null != (fileEntry = (tcFiles.SelectedTab.Tag as TestSuiteFileEntry)))
+                    {
+                        TextBox tb = tcFiles.SelectedTab.Controls[0] as TextBox;
+
+                        Debug.Assert(tb != null, "TextBox == null");
+
+                        _cmdSaveFile.Execute(fileEntry.FileName, tb.Text);
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -564,6 +592,25 @@ namespace DemiTasse
             }
         }
 
+        private void App_OnSaveFile(object sender, SaveFileEventArgs e)
+        {
+            Debug.Assert(tcFiles.TabPages.ContainsKey(e.FileName), "Can't reconcile saved file: " + e.FileName);
+
+            if (tcFiles.TabPages.ContainsKey(e.FileName))
+            {
+                tcFiles.TabPages[e.FileName].Text = e.Name;
+            }
+
+            TestSuiteFileEntry fileEntry = tcFiles.TabPages[e.FileName].Tag as TestSuiteFileEntry;
+
+            Debug.Assert(null != fileEntry, "Can't reconcile fileEntry for saved file: " + e.FileName);
+
+            if (fileEntry != null)
+                fileEntry.Changed = false;
+
+            DetermineSaveMenuState();
+        }
+
         private void ClearAllFileTabs()
         {
             TestSuiteFileEntry fileEntry = null;
@@ -579,6 +626,31 @@ namespace DemiTasse
             }
 
             tcFiles.TabPages.Clear();
+            DetermineSaveMenuState();
+        }
+
+        private void DetermineSaveMenuState()
+        {
+            TestSuiteFileEntry fileEntry = null;
+            bool enableSaveAll = false;
+            bool enableSave = false;
+
+            foreach (TabPage tabPage in tcFiles.TabPages)
+            {
+                fileEntry = tabPage.Tag as TestSuiteFileEntry;
+                Debug.Assert(fileEntry != null);
+                if (fileEntry.Changed)
+                {
+                    enableSaveAll = true;
+                    if (tabPage == tcFiles.SelectedTab)
+                    {
+                        enableSave = true;
+                    }
+                }
+            }
+
+            mnuFileSaveAll.Enabled = enableSaveAll;
+            mnuFileSave.Enabled = enableSave;
         }
 
         private void SaveFile(TestSuiteFileEntry fileEntry)
@@ -643,6 +715,8 @@ namespace DemiTasse
                     _ideMode = IDEForm.IDEModes.SingleFile;
                     tvFiles.CheckBoxes = false;
                     tvFiles.ShowLines = false;
+                    mnuFileAddFiles.Visible = false;
+                    mnuSepAddFiles.Visible = false;
                     LockEdit = false;
                 }
                 else
@@ -650,6 +724,8 @@ namespace DemiTasse
                     _ideMode = IDEForm.IDEModes.TestSuite;
                     tvFiles.CheckBoxes = true;
                     tvFiles.ShowLines = true;
+                    mnuFileAddFiles.Visible = true;
+                    mnuSepAddFiles.Visible = true;
                     LockEdit = true;
                 }
             }
@@ -736,7 +812,6 @@ namespace DemiTasse
             tabPage.Padding = new System.Windows.Forms.Padding(3);
             tabPage.Size = new System.Drawing.Size(430, 249);
             tabPage.TabIndex = 0;
-            tabPage.Text = fileEntry.Name;
             tabPage.UseVisualStyleBackColor = true;
             tabPage.Tag = node.Tag;
             // 
@@ -749,7 +824,7 @@ namespace DemiTasse
             textBox.Name = "textBox1";
             textBox.Size = new System.Drawing.Size(424, 243);
             textBox.TabIndex = 0;
-            textBox.TextChanged += new System.EventHandler(this.editFiles_TextChanged);
+            textBox.TextChanged += new System.EventHandler(this.tcFiles_TextChanged);
             textBox.Tag = node.Tag;
 
             using (StreamReader sr = new StreamReader(fileEntry.FileName, Encoding.ASCII))
@@ -759,6 +834,7 @@ namespace DemiTasse
                 textBox.SelectionLength = 0;
                 sr.Close();
             }
+            tabPage.Text = fileEntry.Name;
 
             this.tcFiles.ResumeLayout(false);
             tabPage.ResumeLayout(false);
@@ -766,6 +842,7 @@ namespace DemiTasse
             tcFiles.SelectTab(fileEntry.FileName);
             tcFiles.Visible = true;
             fileEntry.Changed = false;
+            DetermineSaveMenuState();
         }
 
         private void tvFiles_KeyUp(object sender, KeyEventArgs e)
@@ -800,7 +877,7 @@ namespace DemiTasse
 
         }
         
-        private void editFiles_TextChanged(object sender, EventArgs e)
+        private void tcFiles_TextChanged(object sender, EventArgs e)
         {
             TestSuiteFileEntry fileEntry = null;
             System.Windows.Forms.TextBox textBox;
@@ -820,8 +897,26 @@ namespace DemiTasse
                 return;
 
             fileEntry.Changed = true;
+
+            TabPage tc = tcFiles.TabPages[fileEntry.FileName];
+            tc.Text = fileEntry.Name + "*";
+
+            mnuFileSave.Enabled = true;
+            mnuFileSaveAll.Enabled = true;
         }
 
         private List<System.Windows.Forms.TabPage> tabPages = new List<System.Windows.Forms.TabPage>();
+
+        private void tcFiles_Selected(object sender, TabControlEventArgs e)
+        {
+            TestSuiteFileEntry fileEntry = e.TabPage.Tag as TestSuiteFileEntry;
+
+            Debug.Assert(null != fileEntry, "fileEntry missing from tag");
+            
+            if (null != fileEntry)
+            {
+                mnuFileSave.Enabled = fileEntry.Changed;
+            }
+        }
     }
 }

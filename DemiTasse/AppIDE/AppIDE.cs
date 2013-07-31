@@ -126,6 +126,28 @@ namespace DemiTasse.AppIDE
         }
         #endregion OpenFile Event
 
+        #region SaveFile Event
+        public delegate void SaveFileEventHandler(object sender, SaveFileEventArgs e);
+
+        public event SaveFileEventHandler OnSaveFileHandler;
+
+        public void AddOnSaveFile(SaveFileEventHandler handler)
+        {
+            OnSaveFileHandler += handler;
+        }
+
+        public void RemoveOnSaveFile(SaveFileEventHandler handler)
+        {
+            OnSaveFileHandler -= handler;
+        }
+
+        protected void OnSaveFile(SaveFileEventArgs e)
+        {
+            if (OnSaveFileHandler != null)
+                OnSaveFileHandler(this, e);
+        }
+        #endregion SaveFile Event
+
         #region OpenTestSuiteFile Event
         public delegate void OpenTestSuiteFileEventHandler(object sender, OpenTestSuiteFileEventArgs e);
 
@@ -381,6 +403,46 @@ namespace DemiTasse.AppIDE
         public void AddFile()
         {
             OnAppError(new AppErrorEventArgs("AddFile Not yet implemented."));
+        }
+
+        public void SaveFile(string fileName, string code)
+        {
+            FileStream sr = null;
+            StreamWriter sw = null;
+
+            try
+            {
+                sr = new FileStream(fileName, FileMode.Truncate, FileAccess.Write);
+                sw = new StreamWriter(sr, Encoding.ASCII);
+                sw.Write(code);
+            }
+            catch (IOException ex)
+            {
+                OnAppError(new AppErrorEventArgs(ex.Message));
+            }
+            catch (OutOfMemoryException ex)
+            {
+                OnAppException(new AppExceptionEventArgs(ex));
+            }
+            catch (Exception ex)
+            {
+                OnAppException(new AppExceptionEventArgs(ex));
+            }
+            finally
+            {
+                if (sw != null)
+                    sw.Close();
+                else if (sr != null)
+                    sr.Close();
+            }
+            try
+            {
+                OnSaveFile(new SaveFileEventArgs(fileName, ""));
+            }
+            catch (Exception ex)
+            {
+                OnAppException(new AppExceptionEventArgs(ex));
+            }
         }
 
         public void Close()

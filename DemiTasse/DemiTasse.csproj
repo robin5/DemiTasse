@@ -54,6 +54,7 @@
     <Compile Include="AppIDE\CmdNotYetImplemented.cs" />
     <Compile Include="AppIDE\CmdOpenTestSuite.cs" />
     <Compile Include="AppIDE\CmdOpenTestSuiteFile.cs" />
+    <Compile Include="AppIDE\CmdSaveFile.cs" />
     <Compile Include="AppIDE\Command.cs" />
     <Compile Include="AppIDE\CmdOpenFile.cs" />
     <Compile Include="AppIDE\IAppIDECommand.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="AppIDE\OpenFileEventArgs.cs" />
     <Compile Include="AppIDE\OpenTestSuiteEventArgs.cs" />
     <Compile Include="AppIDE\OpenTestSuiteFileEventArgs.cs" />
+    <Compile Include="AppIDE\SaveFileEventArgs.cs" />
     <Compile Include="AppIDE\TestSuite.cs" />
     <Compile Include="AppIDE\TestSuiteEntry.cs" />
     <Compile Include="AppIDE\TestSuiteFileEntry.cs" />

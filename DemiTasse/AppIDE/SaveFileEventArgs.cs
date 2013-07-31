@@ -2,7 +2,7 @@
 // * Copyright (c) 2013 Robin Murray
 // **********************************************************************************
 // *
-// * File: IAppIDECommand.cs
+// * File: OpenFileEventArgs.cs
 // *
 // * Description:  
 // *
@@ -34,23 +34,24 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 
 namespace DemiTasse.AppIDE
 {
-    interface IAppIDECommand
+    public class SaveFileEventArgs : EventArgs
     {
-        void NewFile(string fileName);
-        void NewTestSuite(string name);
-        void OpenFile(string fileName);
-        void OpenTestSuite(string name);
-        void OpenTestSuiteFile(string fileName);
-        void AddFile();
-        void SaveFile(string fileName, string code);
-        void Close();
-        void CloseTestSuite();
-        void RunStartSingleFile(string fileName);
-        void RunPause();
-        void RunContinue();
-        void RunStop();
+        private string _code = null;
+        private string _fileName = null;
+        private string _name = null;
+
+        public SaveFileEventArgs(string fileName, string code)
+        {
+            _fileName = fileName;
+            FileInfo fileNode = new FileInfo(fileName);
+            _name = fileNode.Name;
+        }
+
+        public string FileName { get { return _fileName; } }
+        public string Name { get { return _name; } }
     }
 }

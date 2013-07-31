@@ -2,7 +2,7 @@
 // * Copyright (c) 2013 Robin Murray
 // **********************************************************************************
 // *
-// * File: IAppIDECommand.cs
+// * File: CmdAddFile.cs
 // *
 // * Description:  
 // *
@@ -32,25 +32,23 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
 namespace DemiTasse.AppIDE
 {
-    interface IAppIDECommand
+    class CmdSaveFile : Command
     {
-        void NewFile(string fileName);
-        void NewTestSuite(string name);
-        void OpenFile(string fileName);
-        void OpenTestSuite(string name);
-        void OpenTestSuiteFile(string fileName);
-        void AddFile();
-        void SaveFile(string fileName, string code);
-        void Close();
-        void CloseTestSuite();
-        void RunStartSingleFile(string fileName);
-        void RunPause();
-        void RunContinue();
-        void RunStop();
+        private IAppIDECommand _app = null;
+
+        public CmdSaveFile(IAppIDECommand app)
+        {
+            _app = app;
+        }
+
+        public override void Execute(string fileName, string code)
+        {
+            _app.SaveFile(fileName, code);
+        }
     }
 }

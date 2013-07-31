@@ -40,6 +40,10 @@ namespace DemiTasse.AppIDE
 {
     public abstract class Command
     {
+        public virtual void Execute(string txt1, string txt2)
+        {
+            Message();
+        }
         public virtual void Execute(string txt)
         {
             Message();
