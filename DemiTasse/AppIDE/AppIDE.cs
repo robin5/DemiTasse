@@ -242,10 +242,47 @@ namespace DemiTasse.AppIDE
 
         #region IAppIDECommand
 
-        public void NewFile()
+        public void NewFile(string fileName)
         {
-            OpenFileEventArgs e = new OpenFileEventArgs("(untitled)", "");
-            OnOpenFile(e);
+            FileStream sr = null;
+            StreamWriter sw = null;
+
+            try
+            {
+                sr = new FileStream(fileName, FileMode.CreateNew, FileAccess.Write, FileShare.Read);
+                sw = new StreamWriter(sr, Encoding.ASCII);
+                sw.WriteLine("class foo {");
+                sw.WriteLine("    public static void main(String[] a) {");
+                sw.WriteLine("    }");
+                sw.WriteLine("}");
+            }
+            catch (IOException ex)
+            {
+                OnAppError(new AppErrorEventArgs(ex.Message));
+            }
+            catch (OutOfMemoryException ex)
+            {
+                OnAppException(new AppExceptionEventArgs(ex));
+            }
+            catch (Exception ex)
+            {
+                OnAppException(new AppExceptionEventArgs(ex));
+            }
+            finally
+            {
+                if (sw != null)
+                    sw.Close();
+                else if (sr != null)
+                    sr.Close();
+            }
+            try
+            {
+                OnOpenFile(new OpenFileEventArgs(fileName, ""));
+            }
+            catch (Exception ex)
+            {
+                OnAppException(new AppExceptionEventArgs(ex));
+            }
         }
         
         public void NewTestSuite(string name)

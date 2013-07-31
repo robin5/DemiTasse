@@ -45,9 +45,9 @@ namespace DemiTasse.AppIDE
         {
             _app = app;
         }
-        public override void Execute()
+        public override void Execute(string fileName)
         {
-            _app.NewFile();
+            _app.NewFile(fileName);
         }
     }
 }

@@ -39,7 +39,7 @@ namespace DemiTasse.AppIDE
 {
     interface IAppIDECommand
     {
-        void NewFile();
+        void NewFile(string fileName);
         void NewTestSuite(string name);
         void OpenFile(string fileName);
         void OpenTestSuite(string name);

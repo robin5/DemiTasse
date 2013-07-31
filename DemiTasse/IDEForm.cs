@@ -183,7 +183,31 @@ namespace DemiTasse
         {
             try
             {
-                _cmdNewFile.Execute();
+                using (OpenFileDialog dialog = new OpenFileDialog())
+                {
+                    dialog.Title = "New Mini-Java File";
+                    dialog.Filter = "MiniJava files (*.java)|*.java|Abstract Syntax Tree files (*.ast)|*.ast|Intermediate Representation files (*.ir)|*.ir|All files (*.*)|*.*";
+                    dialog.CheckPathExists = true;
+                    dialog.CheckFileExists = false;
+
+                    if (DialogResult.OK == dialog.ShowDialog())
+                    {
+                        if (this.tcFiles.Controls.ContainsKey(dialog.FileName))
+                        {
+                            DisplayInfoMessage("File already exists: " + dialog.FileName);
+                            this.tcFiles.SelectTab(dialog.FileName);
+                        }
+                        else if (File.Exists(dialog.FileName))
+                        {
+                            DisplayInfoMessage("File already exists: " + dialog.FileName);
+                            _cmdOpenFile.Execute(dialog.FileName);
+                        }
+                        else
+                        {
+                            _cmdNewFile.Execute(dialog.FileName);
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -209,7 +233,10 @@ namespace DemiTasse
             {
                 using (OpenFileDialog dialog = new OpenFileDialog())
                 {
+                    dialog.Title = "Open Mini-Java File";
                     dialog.Filter = "MiniJava files (*.java)|*.java|Abstract Syntax Tree files (*.ast)|*.ast|Intermediate Representation files (*.ir)|*.ir|All files (*.*)|*.*";
+                    dialog.CheckPathExists = true;
+                    dialog.CheckFileExists = true;
 
                     if (DialogResult.OK == dialog.ShowDialog())
                     {
@@ -431,6 +458,11 @@ namespace DemiTasse
         {
             MessageBox.Show(ex.Message, "Exception", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             //txtConsole.Text += ex.ToString() + ":" + ex.Message;
+        }
+
+        private void DisplayInfoMessage(string message)
+        {
+            MessageBox.Show(message, "Information Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void DisplayAppUserException(Exception ex)
@@ -725,6 +757,7 @@ namespace DemiTasse
                 textBox.Text = sr.ReadToEnd();
                 textBox.SelectionStart = 0;
                 textBox.SelectionLength = 0;
+                sr.Close();
             }
 
             this.tcFiles.ResumeLayout(false);
