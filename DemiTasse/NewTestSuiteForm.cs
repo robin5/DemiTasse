@@ -44,64 +44,59 @@ using System.Text;
 using System.Windows.Forms;
 using System.Diagnostics;
 
-using DemiTasse.AppIDE;
-
-// **********************************************************************************
-// * Implementation
-// **********************************************************************************
-
 namespace DemiTasse
 {
-    public partial class OpenTestSuiteForm : Form
+    public partial class NewTestSuiteForm : Form
     {
-        private string _TestSuitName = "";
-        private string[] _TestSuitNames;
+        private string _newTestProjectName = "";
+        private string[] _testProjectNames;
 
-        public OpenTestSuiteForm(string[] testSuitNames)
+        public NewTestSuiteForm(string[] testSuitNames)
         {
             InitializeComponent();
-
-            _TestSuitName = "";
-            _TestSuitNames = testSuitNames;
-            btnOpen.Enabled = false;
+            _newTestProjectName = "";
+            _testProjectNames = testSuitNames;
+            btnOK.Enabled = false;
         }
 
         public string TestSuiteName
-        { 
-            get { return _TestSuitName; } 
+        {
+            get { return _newTestProjectName; }
         }
 
-        private void OpenTestSuiteForm_Load(object sender, EventArgs e)
+        private void NewTestSuiteForm_Load(object sender, EventArgs e)
         {
-            Debug.Assert(_TestSuitNames != null, "_TestSuitNames = null");
-            foreach (string testSuiteName in _TestSuitNames)
-            {
-                lbTestSuites.Items.Add(testSuiteName);
-            }
+            Debug.Assert(_testProjectNames != null, "_TestSuitNames = null");
         }
 
-        private void btnOpen_Click(object sender, EventArgs e)
+        private void btnOK_Click(object sender, EventArgs e)
         {
-            Debug.Assert(lbTestSuites.SelectedIndex >= 0, "Open button pressed without a selection.");
-            this.DialogResult = DialogResult.OK;
-            this.Close();
-        }
-
-        private void lbTestSuites_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            _TestSuitName = lbTestSuites.SelectedItem.ToString();
-            btnOpen.Enabled = true;
-        }
-
-        private void lbTestSuites_DoubleClick(object sender, EventArgs e)
-        {
-            Debug.Assert(lbTestSuites.SelectedIndex >= 0, "Open button pressed without a selection.");
-
-            if (lbTestSuites.SelectedIndex >= 0)
+            if (IsUniqueTestProjectName(_newTestProjectName))
             {
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
+            else
+                MessageBox.Show("Test project '" + _newTestProjectName + "' already exists. Please enter a unique project name.",
+                    this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        private void txtNewTestProject_TextChanged(object sender, EventArgs e)
+        {
+            _newTestProjectName = txtNewTestProject.Text.Trim();
+            btnOK.Enabled = (_newTestProjectName.Length > 0);
+        }
+
+        private bool IsUniqueTestProjectName(string newTestProjectName)
+        {
+            foreach (string name in _testProjectNames)
+            {
+                if (0 == string.Compare(name, newTestProjectName, true))
+                {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }

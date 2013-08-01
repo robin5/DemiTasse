@@ -134,6 +134,12 @@
     <Compile Include="minipsr\miniParserTokenManager.cs" />
     <Compile Include="minipsr\miniParseException.cs" />
     <Compile Include="minipsr\PsrToken.cs" />
+    <Compile Include="NewTestSuiteForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NewTestSuiteForm.Designer.cs">
+      <DependentUpon>NewTestSuiteForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="psrutil\Error.cs" />
     <Compile Include="interp\InterpException.cs" />
     <Compile Include="interp\InterpVisitor.cs" />
@@ -190,6 +196,9 @@
     <Compile Include="typechk\TypeVisitor.cs" />
     <EmbeddedResource Include="IDEForm.resx">
       <DependentUpon>IDEForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NewTestSuiteForm.resx">
+      <DependentUpon>NewTestSuiteForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="OpenTestSuiteForm.resx">
       <DependentUpon>OpenTestSuiteForm.cs</DependentUpon>

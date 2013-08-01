@@ -155,6 +155,17 @@ namespace DemiTasse.AppIDE
             return new TestSuite(name);
         }
 
+        public string[] TestSuiteNames
+        {
+            get
+            {
+                string[] testSuiteNames = new string[_testSuites.Count];
+
+                _testSuites.Keys.CopyTo(testSuiteNames, 0);
+                return testSuiteNames;
+            }
+        }
+
         private Dictionary<string, TestSuite> _testSuites = new Dictionary<string, TestSuite>();
     }
 }

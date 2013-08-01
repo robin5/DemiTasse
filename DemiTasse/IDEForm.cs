@@ -288,7 +288,20 @@ namespace DemiTasse
         {
             try
             {
-                _cmdNewTestSuite.Execute("New Validation Tests");
+                try
+                {
+                    using (NewTestSuiteForm f = new NewTestSuiteForm(_testSuiteManager.TestSuiteNames))
+                    {
+                        if (DialogResult.OK == f.ShowDialog())
+                        {
+                            _cmdNewTestSuite.Execute(f.TestSuiteName);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    DisplayException(ex);
+                }
             }
             catch (Exception ex)
             {
@@ -328,13 +341,9 @@ namespace DemiTasse
 
         private void mnuFileOpenTestSuite_Click(object sender, EventArgs e)
         {
-            string[] testSuiteNames = new string[_testSuiteManager.TestSuites.Count];
-
-            _testSuiteManager.TestSuites.Keys.CopyTo(testSuiteNames, 0);
-
             try
             {
-                using (OpenTestSuiteForm f = new OpenTestSuiteForm(testSuiteNames))
+                using (OpenTestSuiteForm f = new OpenTestSuiteForm(_testSuiteManager.TestSuiteNames))
                 {
                     if (DialogResult.OK == f.ShowDialog())
                     {
