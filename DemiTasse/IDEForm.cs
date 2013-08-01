@@ -149,6 +149,72 @@ namespace DemiTasse
 
         private void IDEForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            try
+            {
+                if (DialogResult.Cancel == SaveAllFiles(true))
+                {
+                    e.Cancel = true;
+                }
+                else
+                {
+                    SaveTestSuiteConfig();
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+
+        private DialogResult SaveAllFiles(bool queryUser)
+        {
+            TestSuiteFileEntry fileEntry = null;
+            DialogResult rc;
+
+            foreach (TabPage tp in tcFiles.TabPages)
+            {
+                fileEntry = tp.Tag as TestSuiteFileEntry;
+
+                Debug.Assert(null != fileEntry);
+
+                if (null != fileEntry)
+                {
+                    if (fileEntry.Changed)
+                    {
+                        if (queryUser)
+                        {
+                            rc = MessageBox.Show("Save file " + fileEntry.FileName, "Save File", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                        }
+                        else
+                            rc = DialogResult.Yes;
+
+                        if (DialogResult.Yes == rc)
+                        {
+                            TextBox tb = tcFiles.SelectedTab.Controls[0] as TextBox;
+
+                            Debug.Assert(tb != null, "TextBox == null");
+
+                            try
+                            {
+                                _cmdSaveFile.Execute(fileEntry.FileName, tb.Text);
+                            }
+                            catch (Exception ex)
+                            {
+                                DisplayException(ex);
+                            }
+                        }
+                        else if (DialogResult.Cancel == rc)
+                        {
+                            return DialogResult.Cancel;
+                        }
+                    }
+                }
+            }
+
+            return DialogResult.OK;
+        }
+
+        private void SaveTestSuiteConfig()
+        {
             Stream stream = null;
             try
             {
@@ -174,7 +240,7 @@ namespace DemiTasse
 
         private void IDEForm_Load(object sender, EventArgs e)
         {
-            Text = "DemiTasse (untitled)";
+            Text = Application.ProductName;
             IDEMode = IDEModes.SingleFile;
         }
 
@@ -320,36 +386,9 @@ namespace DemiTasse
 
         private void mnuFileSaveAll_Click(object sender, EventArgs e)
         {
-            TestSuiteFileEntry fileEntry = null;
-
             try
             {
-                foreach (TabPage tp in tcFiles.TabPages)
-                {
-                    try
-                    {
-                        fileEntry = tp.Tag as TestSuiteFileEntry;
-
-                        Debug.Assert(null != fileEntry);
-
-                        if (null != fileEntry)
-                        {
-                            if (fileEntry.Changed)
-                            {
-                                TextBox tb = tcFiles.SelectedTab.Controls[0] as TextBox;
-
-                                Debug.Assert(tb != null, "TextBox == null");
-
-                                _cmdSaveFile.Execute(fileEntry.FileName, tb.Text);
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        DisplayException(ex);
-                    }
-                }
-
+                SaveAllFiles(false);
             }
             catch (Exception ex)
             {
