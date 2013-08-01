@@ -51,10 +51,10 @@ namespace DemiTasse.AppIDE
     [Serializable]
     class TestSuiteManager : ITestSuiteManager
     {
-        public void Init(string serializationFileName)
+        public void FakeInit()
         {
 
-#if false
+#if true
             TestSuite ts = null;
             string[] files = null;
 
@@ -63,10 +63,13 @@ namespace DemiTasse.AppIDE
 
             string baseDir = AppDomain.CurrentDomain.BaseDirectory;
             string parserDir = baseDir + @"tst\parser\";
+            string editDir = baseDir + @"tst\edit\";
             string astDir = baseDir + @"tst\ast\";
             string irDir = baseDir + @"tst\ir\";
 
-
+            // ---------------
+            // Mini-Java Tests
+            // ---------------
             files = Directory.GetFiles(parserDir, "test??.java", SearchOption.TopDirectoryOnly);
             ts = Create("Mini-Java Tests");
             for (int i = 0; i < files.Length; ++i)
@@ -76,6 +79,21 @@ namespace DemiTasse.AppIDE
                     files[i].Replace(".java", ".ast.ref"),  // AST reference file
                     files[i].Replace(".java", ".ir.ref"),  // Intermedite Representation reference file
                     files[i].Replace(".java", ".so.ref")); // System Out reference file
+            }
+
+            // -----------------------------------
+            // Mini-Java Tests For Testing Editing
+            // -----------------------------------
+
+            files = Directory.GetFiles(editDir, "test??.java", SearchOption.TopDirectoryOnly);
+            ts = Create("Mini-Java tests for testing editing");
+            for (int i = 0; i < files.Length; ++i)
+            {
+                ts.AddTestFile(
+                    files[i],   // Mini-java test file
+                    null,       // AST reference file
+                    null,       // Intermedite Representation reference file
+                    null);      // System Out reference file
             }
 
             files = Directory.GetFiles(parserDir, "errp??.java", SearchOption.TopDirectoryOnly);

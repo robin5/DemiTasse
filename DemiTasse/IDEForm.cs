@@ -95,7 +95,6 @@ namespace DemiTasse
                 BinaryFormatter formatter = new BinaryFormatter();
 
                 // Deserialize the hashtable from the file and 
-
                 // assign the reference to the local variable.
 
                 _testSuiteManager = (TestSuiteManager)formatter.Deserialize(fs);
@@ -117,8 +116,9 @@ namespace DemiTasse
         {
             InitializeComponent();
 
-            //(_testSuiteManager = new TestSuiteManager()).Init("temp.bin");
             InitTestSuiteManager("temp.bin");
+            //_testSuiteManager = new TestSuiteManager();
+            //_testSuiteManager.FakeInit();
 
             _app = new AppIDE.AppIDE(_testSuiteManager);
             _app.AddOnAppError(App_OnErrorOut);
@@ -297,22 +297,59 @@ namespace DemiTasse
 
         private void mnuFileSave_Click(object sender, EventArgs e)
         {
+            TabPage tp = tcFiles.SelectedTab;
+
+            Debug.Assert(null != tp);
+
+            if (null != tp)
+            {
+                TestSuiteFileEntry fileEntry = tp.Tag as TestSuiteFileEntry;
+
+                Debug.Assert(null != fileEntry);
+
+                if (null != fileEntry)
+                {
+                    TextBox tb = tcFiles.SelectedTab.Controls[0] as TextBox;
+
+                    Debug.Assert(null != tb, "TextBox == null");
+
+                    _cmdSaveFile.Execute(fileEntry.FileName, tb.Text);
+                }
+            }
+        }
+
+        private void mnuFileSaveAll_Click(object sender, EventArgs e)
+        {
             TestSuiteFileEntry fileEntry = null;
 
             try
             {
-                if (tcFiles.SelectedTab != null)
+                foreach (TabPage tp in tcFiles.TabPages)
                 {
-
-                    if (null != (fileEntry = (tcFiles.SelectedTab.Tag as TestSuiteFileEntry)))
+                    try
                     {
-                        TextBox tb = tcFiles.SelectedTab.Controls[0] as TextBox;
+                        fileEntry = tp.Tag as TestSuiteFileEntry;
 
-                        Debug.Assert(tb != null, "TextBox == null");
+                        Debug.Assert(null != fileEntry);
 
-                        _cmdSaveFile.Execute(fileEntry.FileName, tb.Text);
+                        if (null != fileEntry)
+                        {
+                            if (fileEntry.Changed)
+                            {
+                                TextBox tb = tcFiles.SelectedTab.Controls[0] as TextBox;
+
+                                Debug.Assert(tb != null, "TextBox == null");
+
+                                _cmdSaveFile.Execute(fileEntry.FileName, tb.Text);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        DisplayException(ex);
                     }
                 }
+
             }
             catch (Exception ex)
             {

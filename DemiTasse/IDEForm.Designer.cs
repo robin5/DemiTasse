@@ -326,6 +326,7 @@
             this.mnuFileSaveAll.Name = "mnuFileSaveAll";
             this.mnuFileSaveAll.Size = new System.Drawing.Size(152, 22);
             this.mnuFileSaveAll.Text = "Save All";
+            this.mnuFileSaveAll.Click += new System.EventHandler(this.mnuFileSaveAll_Click);
             // 
             // toolStripMenuItem3
             // 

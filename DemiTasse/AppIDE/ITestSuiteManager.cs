@@ -7,7 +7,7 @@ namespace DemiTasse.AppIDE
 {
     interface ITestSuiteManager
     {
-        void Init(string serializationFileName);
+        //void Init(string serializationFileName);
         TestSuite Create(string name);
         TestSuite Open(string name);
         Dictionary<string, TestSuite> TestSuites { get; }
