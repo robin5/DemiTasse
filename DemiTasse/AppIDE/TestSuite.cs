@@ -85,11 +85,6 @@ namespace DemiTasse.AppIDE
             return entry;
         }
 
-        public void InsertTestFiles(int index, TestSuiteFileEntry[] entries)
-        {
-            _items.InsertRange(index, entries);
-        }
-
         public void InsertTestFiles(int firstIndex, string[] fileNames)
         {
             int index = firstIndex;
@@ -109,7 +104,11 @@ namespace DemiTasse.AppIDE
                     index++;
                 }
             }
+            ReIndexTestSuiteEntries();
+        }
 
+        private void ReIndexTestSuiteEntries()
+        {
             entryIndex = 0;
             foreach (TestSuiteEntry entry in _items)
             {

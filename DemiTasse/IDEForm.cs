@@ -128,7 +128,6 @@ namespace DemiTasse
             _app.AddOnOpenFile(App_OnOpenFile);
             _app.AddOnOpenTestSuite(App_OnOpenTestSuite);
             _app.AddOnOpenTestSuiteFile(App_OnOpenTestSuiteFile);
-            _app.AddOnAddTestSuiteFile(App_OnAddTestSuiteFile);
             _app.AddOnSaveFile(App_OnSaveFile);
             
             _app.AddOnSystemOut(App_OnSystemOut);
@@ -815,25 +814,6 @@ namespace DemiTasse
         {
             //txtFile.Text = e.Code;
             IDEMode = IDEModes.TestSuite;
-        }
-
-        private void App_OnAddTestSuiteFile(object sender, AddTestSuiteFileEventArgs e)
-        {
-            TreeNode node;
-            try
-            {
-                _testSuite.InsertTestFiles(0, e.FileEntries);
-
-                tvFiles.Nodes.Clear();
-                node = tvFiles.Nodes.Add(_testSuite.Name);
-                node.Tag = null;
-
-                AddSuite(node, _testSuite.Items);
-            }
-            catch (Exception ex)
-            {
-                DisplayException(ex);
-            }
         }
 
         private IDEModes IDEMode 

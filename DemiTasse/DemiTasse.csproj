@@ -44,7 +44,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppIDE\AddTestSuiteFileEventArgs.cs" />
     <Compile Include="AppIDE\AppErrorEventArgs.cs" />
     <Compile Include="AppIDE\AppExceptionEventArgs.cs" />
     <Compile Include="AppIDE\AppIDE.cs" />

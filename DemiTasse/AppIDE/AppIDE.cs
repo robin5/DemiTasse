@@ -170,28 +170,6 @@ namespace DemiTasse.AppIDE
         }
         #endregion OpenTestSuiteFile Event
 
-        #region AddTestSuiteFile Event
-        public delegate void AddTestSuiteFileEventHandler(object sender, AddTestSuiteFileEventArgs e);
-
-        public event AddTestSuiteFileEventHandler OnAddTestSuiteFileHandler;
-
-        public void AddOnAddTestSuiteFile(AddTestSuiteFileEventHandler handler)
-        {
-            OnAddTestSuiteFileHandler += handler;
-        }
-
-        public void RemoveOnAddTestSuiteFile(AddTestSuiteFileEventHandler handler)
-        {
-            OnAddTestSuiteFileHandler -= handler;
-        }
-
-        protected void OnAddTestSuiteFile(AddTestSuiteFileEventArgs e)
-        {
-            if (OnAddTestSuiteFileHandler != null)
-                OnAddTestSuiteFileHandler(this, e);
-        }
-        #endregion AddTestSuiteFile Event
-
         #region OpenTestSuite Event
         
         public delegate void OpenTestSuiteEventHandler(object sender, OpenTestSuiteEventArgs e);
