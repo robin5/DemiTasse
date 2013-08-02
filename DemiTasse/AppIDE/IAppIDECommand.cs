@@ -44,7 +44,7 @@ namespace DemiTasse.AppIDE
         void OpenFile(string fileName);
         void OpenTestSuite(string name);
         void OpenTestSuiteFile(string fileName);
-        void AddFile();
+        void AddTestSuiteFiles(string name, int index, string[] fileNames);
         void SaveFile(string fileName, string code);
         void Close();
         void CloseTestSuite();

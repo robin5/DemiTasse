@@ -96,6 +96,25 @@ namespace DemiTasse.AppIDE
                     null);      // System Out reference file
             }
 
+            // ---------------------------------------
+            // Mini-Java Tests For Editing Test Suites
+            // ---------------------------------------
+
+            files = Directory.GetFiles(editDir, "test??.java", SearchOption.TopDirectoryOnly);
+            ts = Create("Mini-Java tests for editing test suites");
+            for (int i = 0; i < files.Length; ++i)
+            {
+                ts.AddTestFile(
+                    files[i],   // Mini-java test file
+                    null,       // AST reference file
+                    null,       // Intermedite Representation reference file
+                    null);      // System Out reference file
+            }
+
+            // ----------------------------------
+            // Mini-Java Tests For parsing errors
+            // ----------------------------------
+
             files = Directory.GetFiles(parserDir, "errp??.java", SearchOption.TopDirectoryOnly);
             ts = Create("Error Parser Tests");
             for (int i = 0; i < files.Length; ++i)
@@ -145,14 +164,18 @@ namespace DemiTasse.AppIDE
             return testSuite;
         }
 
+        public void AddTestSuiteFiles(string name, int index, string[] fileNames)
+        {
+            if (!_testSuites.ContainsKey(name))
+                throw new Exception("Could not update test suite: " + name);
+            
+            TestSuite t = _testSuites[name];
+            t.InsertTestFiles(index, fileNames);
+        }
+
         public Dictionary<string, TestSuite> TestSuites
         { 
             get { return _testSuites; } 
-        }
-
-        public TestSuite Open(string name)
-        {
-            return new TestSuite(name);
         }
 
         public string[] TestSuiteNames

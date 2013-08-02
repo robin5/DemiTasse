@@ -75,17 +75,20 @@ namespace DemiTasse
         private Command _cmdOpenFile = null;
         private Command _cmdOpenTestSuite = null;
         private Command _cmdOpenTestSuiteFile = null;
-        private Command _cmdAddFile = null;
+        private Command _cmdAddTestSuiteFiles = null;
         private Command _cmdSaveFile = null;
         private Command _cmdClose = null;
         private Command _cmdCloseTestSuite = null;
         private Command _cmdRunStartSingleFile = null;
-        private Command _cmdRunStartTestSuite = null;
+        //private Command _cmdRunStartTestSuite = null;
         private Command _cmdRunPause = null;
         private Command _cmdRunContinue = null;
         private Command _cmdRunStop = null;
 
         private TestSuite _testSuite = null;
+
+        private const string _dialogFilter = "MiniJava files (*.java)|*.java|Abstract Syntax Tree files (*.ast)|*.ast|Intermediate Representation files (*.ir)|*.ir|All files (*.*)|*.*";
+
 
         private void InitTestSuiteManager(string serializationFileName)
         {
@@ -117,8 +120,7 @@ namespace DemiTasse
             InitializeComponent();
 
             InitTestSuiteManager("temp.bin");
-            //_testSuiteManager = new TestSuiteManager();
-            //_testSuiteManager.FakeInit();
+            //(_testSuiteManager = new TestSuiteManager()).FakeInit();
 
             _app = new AppIDE.AppIDE(_testSuiteManager);
             _app.AddOnAppError(App_OnErrorOut);
@@ -126,6 +128,7 @@ namespace DemiTasse
             _app.AddOnOpenFile(App_OnOpenFile);
             _app.AddOnOpenTestSuite(App_OnOpenTestSuite);
             _app.AddOnOpenTestSuiteFile(App_OnOpenTestSuiteFile);
+            _app.AddOnAddTestSuiteFile(App_OnAddTestSuiteFile);
             _app.AddOnSaveFile(App_OnSaveFile);
             
             _app.AddOnSystemOut(App_OnSystemOut);
@@ -137,7 +140,7 @@ namespace DemiTasse
             _cmdOpenFile = new CmdOpenFile(_app);
             _cmdOpenTestSuite = new CmdOpenTestSuite(_app);
             _cmdOpenTestSuiteFile = new CmdOpenTestSuiteFile(_app);
-            _cmdAddFile = new CmdAddFile(_app);
+            _cmdAddTestSuiteFiles = new CmdAddTestSuiteFiles(_app);
             _cmdSaveFile = new CmdSaveFile(_app);
             _cmdClose = new CmdNotYetImplemented();
             _cmdCloseTestSuite = new CmdNotYetImplemented();
@@ -316,7 +319,7 @@ namespace DemiTasse
                 using (OpenFileDialog dialog = new OpenFileDialog())
                 {
                     dialog.Title = "Open Mini-Java File";
-                    dialog.Filter = "MiniJava files (*.java)|*.java|Abstract Syntax Tree files (*.ast)|*.ast|Intermediate Representation files (*.ir)|*.ir|All files (*.*)|*.*";
+                    dialog.Filter = _dialogFilter;
                     dialog.CheckPathExists = true;
                     dialog.CheckFileExists = true;
 
@@ -360,9 +363,32 @@ namespace DemiTasse
 
         private void mnuFileAddFiles_Click(object sender, EventArgs e)
         {
+            TestSuiteFileEntry entry = null;
             try
             {
-                _cmdAddFile.Execute();
+                using (OpenFileDialog dialog = new OpenFileDialog())
+                {
+                    dialog.Title = "Add Test Project File(s)";
+                    dialog.Filter = _dialogFilter;
+                    dialog.Multiselect = true;
+                    dialog.CheckPathExists = true;
+                    dialog.CheckFileExists = true;
+
+                    if (DialogResult.OK == dialog.ShowDialog())
+                    {
+                        Debug.Assert(null != tvFiles.SelectedNode, "No node is selected.");
+
+                        if (null == tvFiles.SelectedNode.Tag)
+                        {
+                            _cmdAddTestSuiteFiles.Execute(_testSuite.Name, -1, dialog.FileNames);
+                        }
+                        else if (null != (entry = tvFiles.SelectedNode.Tag as TestSuiteFileEntry))
+                        {
+                            _cmdAddTestSuiteFiles.Execute(_testSuite.Name, entry.Index, dialog.FileNames);
+                        }
+                    }
+                }
+                
             }
             catch (Exception ex)
             {
@@ -667,7 +693,7 @@ namespace DemiTasse
                     ClearAllFileTabs();
                     tvFiles.Nodes.Clear();
                     node = tvFiles.Nodes.Add(e.Name);
-                    node.Tag = new TestSuiteFileEntry(e.FileName, null, null, null);
+                    node.Tag = new TestSuiteFileEntry(e.FileName, null, null, null, 0);
                     ShowTabPage(node);
                 }
             }
@@ -789,6 +815,25 @@ namespace DemiTasse
         {
             //txtFile.Text = e.Code;
             IDEMode = IDEModes.TestSuite;
+        }
+
+        private void App_OnAddTestSuiteFile(object sender, AddTestSuiteFileEventArgs e)
+        {
+            TreeNode node;
+            try
+            {
+                _testSuite.InsertTestFiles(0, e.FileEntries);
+
+                tvFiles.Nodes.Clear();
+                node = tvFiles.Nodes.Add(_testSuite.Name);
+                node.Tag = null;
+
+                AddSuite(node, _testSuite.Items);
+            }
+            catch (Exception ex)
+            {
+                DisplayException(ex);
+            }
         }
 
         private IDEModes IDEMode 

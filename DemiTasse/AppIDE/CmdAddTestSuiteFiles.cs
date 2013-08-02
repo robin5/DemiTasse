@@ -2,7 +2,7 @@
 // * Copyright (c) 2013 Robin Murray
 // **********************************************************************************
 // *
-// * File: Command.cs
+// * File: CmdAddFile.cs
 // *
 // * Description:  
 // *
@@ -32,34 +32,23 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
 namespace DemiTasse.AppIDE
 {
-    public abstract class Command
+    class CmdAddTestSuiteFiles : Command
     {
-        public virtual void Execute(string name, int index, string[] txts)
+        private IAppIDECommand _app = null;
+
+        public CmdAddTestSuiteFiles(IAppIDECommand app)
         {
-            Message();
-        }
-        public virtual void Execute(string txt1, string txt2)
-        {
-            Message();
-        }
-        public virtual void Execute(string txt)
-        {
-            Message();
-        }
-        public virtual void Execute()
-        {
-            Message();
+            _app = app;
         }
 
-        private void Message()
+        public override void Execute(string name, int index, string[] fileNames)
         {
-            MessageBox.Show("Not yet implemented.", "DemiTasse", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            _app.AddTestSuiteFiles(name, index, fileNames);
         }
     }
 }

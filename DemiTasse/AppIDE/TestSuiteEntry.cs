@@ -41,9 +41,10 @@ namespace DemiTasse.AppIDE
     [Serializable]
     public class TestSuiteEntry
     {
-        public TestSuiteEntry(string title)
+        public TestSuiteEntry(string title, int index)
         {
             _name = title;
+            _index = index;
         }
 
         public override string ToString()
@@ -51,11 +52,22 @@ namespace DemiTasse.AppIDE
             return _name;
         }
 
-        public string Name 
-        { 
-            get { return _name; } 
+        public string Name
+        {
+            get { return _name; }
+        }
+
+        public int Index
+        {
+            get { return _index; }
+        }
+
+        public void ReIndex(int index)
+        {
+            _index = index;
         }
 
         private string _name;
+        private int _index;
     }
 }

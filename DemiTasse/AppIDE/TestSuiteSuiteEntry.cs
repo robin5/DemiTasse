@@ -40,8 +40,8 @@ namespace DemiTasse.AppIDE
     [Serializable]
     class TestSuiteSuiteEntry : TestSuiteEntry
     {
-        public TestSuiteSuiteEntry(string name)
-            : base(name)
+        public TestSuiteSuiteEntry(string name, int index)
+            : base(name, index)
         {
         }
     }

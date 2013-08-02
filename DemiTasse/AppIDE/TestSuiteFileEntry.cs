@@ -38,10 +38,10 @@ using System.IO;
 namespace DemiTasse.AppIDE
 {
     [Serializable]
-    class TestSuiteFileEntry : TestSuiteEntry
+    public class TestSuiteFileEntry : TestSuiteEntry
     {
-        public TestSuiteFileEntry(string fileName, string astRefFileName, string irRefFileName, string soRefFileName)
-            : base((new FileInfo(fileName)).Name)
+        public TestSuiteFileEntry(string fileName, string astRefFileName, string irRefFileName, string soRefFileName, int index)
+            : base((new FileInfo(fileName)).Name, index)
         {
             _fileName = fileName;
             _astRefFileName = astRefFileName;

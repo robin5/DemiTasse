@@ -42,6 +42,8 @@ namespace DemiTasse.AppIDE
     [Serializable]
     public class TestSuite
     {
+        private int entryIndex = 0;
+
         public TestSuite(string name)
         {
             _name = name;
@@ -62,15 +64,70 @@ namespace DemiTasse.AppIDE
 
 #endif
 
+        public TestSuiteFileEntry AddTestFile(string fileName)
+        {
+            TestSuiteFileEntry entry = new TestSuiteFileEntry(fileName, null, null, null, entryIndex);
+            _items.Add(entry);
+            entryIndex++;
+            return entry;
+        }
+
+        public TestSuiteFileEntry InsertTestFile(int index, string fileName)
+        {
+            TestSuiteFileEntry entry = new TestSuiteFileEntry(fileName, null, null, null, entryIndex);
+            _items.Insert(index, entry);
+            return entry;
+        }
+
+        public TestSuiteFileEntry InsertTestFile(int index, TestSuiteFileEntry entry)
+        {
+            _items.Insert(index, entry);
+            return entry;
+        }
+
+        public void InsertTestFiles(int index, TestSuiteFileEntry[] entries)
+        {
+            _items.InsertRange(index, entries);
+        }
+
+        public void InsertTestFiles(int firstIndex, string[] fileNames)
+        {
+            int index = firstIndex;
+
+            if (index < 0)
+            {
+                foreach (string fileName in fileNames)
+                {
+                    AddTestFile(fileName, null, null, null);
+                }
+            }
+            else
+            {
+                foreach (string fileName in fileNames)
+                {
+                    _items.Insert(index, new TestSuiteFileEntry(fileName, null, null, null, index));
+                    index++;
+                }
+            }
+
+            entryIndex = 0;
+            foreach (TestSuiteEntry entry in _items)
+            {
+                entry.ReIndex(entryIndex++);
+            }
+        }
+
         public void AddTestFile(string fileName, string astRefFileName, string irRefFileName, string soRefFileName)
         {
-            TestSuiteFileEntry entry = new TestSuiteFileEntry(fileName, astRefFileName, irRefFileName, soRefFileName);
+            TestSuiteFileEntry entry = new TestSuiteFileEntry(fileName, astRefFileName, irRefFileName, soRefFileName, entryIndex);
+            entryIndex++;
             _items.Add(entry);
         }
 
         public void AddTestSuite(string name)
         {
-            _items.Add(new TestSuiteSuiteEntry(name));
+            _items.Add(new TestSuiteSuiteEntry(name, entryIndex));
+            entryIndex++;
         }
 
         public string Name

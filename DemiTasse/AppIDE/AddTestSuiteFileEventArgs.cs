@@ -2,7 +2,7 @@
 // * Copyright (c) 2013 Robin Murray
 // **********************************************************************************
 // *
-// * File: CmdAddFile.cs
+// * File: AddTestSuiteFileEventArgs.cs
 // *
 // * Description:  
 // *
@@ -32,23 +32,30 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
-using System.Windows.Forms;
+using System.IO;
 
 namespace DemiTasse.AppIDE
 {
-    class CmdAddFile : Command
+    public class AddTestSuiteFileEventArgs : EventArgs
     {
-        private IAppIDECommand _app = null;
+        private TestSuiteFileEntry[] _fileEntries = null;
+        private string _name = null;
 
-        public CmdAddFile(IAppIDECommand app)
+        public AddTestSuiteFileEventArgs(string[] fileNames)
         {
-            _app = app;
+            int i = 0;
+            _fileEntries = new TestSuiteFileEntry[fileNames.Count()];
+            foreach (string fileName in fileNames)
+            {
+                _fileEntries[i++] = new TestSuiteFileEntry(fileName, null, null, null, -1); // [REVISIT] future code must insert a proper index
+            }
         }
 
-        public override void Execute()
+        public TestSuiteFileEntry[] FileEntries 
         {
-            _app.AddFile();
+            get { return _fileEntries; } 
         }
     }
 }
