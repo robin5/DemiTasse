@@ -168,9 +168,17 @@ namespace DemiTasse.AppIDE
         {
             if (!_testSuites.ContainsKey(name))
                 throw new Exception("Could not update test suite: " + name);
-            
+
             TestSuite t = _testSuites[name];
             t.InsertTestFiles(index, fileNames);
+        }
+
+        public void RemoveTestSuiteFile(string name, int index)
+        {
+            if (!_testSuites.ContainsKey(name))
+                throw new Exception("Could not update test suite: " + name);
+
+            _testSuites[name].Items.RemoveAt(index);
         }
 
         public Dictionary<string, TestSuite> TestSuites

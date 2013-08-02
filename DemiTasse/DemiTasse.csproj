@@ -54,6 +54,7 @@
     <Compile Include="AppIDE\CmdNotYetImplemented.cs" />
     <Compile Include="AppIDE\CmdOpenTestSuite.cs" />
     <Compile Include="AppIDE\CmdOpenTestSuiteFile.cs" />
+    <Compile Include="AppIDE\CmdRemoveTestSuiteFile.cs" />
     <Compile Include="AppIDE\CmdSaveFile.cs" />
     <Compile Include="AppIDE\Command.cs" />
     <Compile Include="AppIDE\CmdOpenFile.cs" />

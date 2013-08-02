@@ -2,7 +2,7 @@
 // * Copyright (c) 2013 Robin Murray
 // **********************************************************************************
 // *
-// * File: IAppIDECommand.cs
+// * File: CmdRemoveTestSuiteFile.cs
 // *
 // * Description:  
 // *
@@ -37,21 +37,17 @@ using System.Text;
 
 namespace DemiTasse.AppIDE
 {
-    interface IAppIDECommand
+    class CmdRemoveTestSuiteFile : Command
     {
-        void NewFile(string fileName);
-        void NewTestSuite(string name);
-        void OpenFile(string fileName);
-        void OpenTestSuite(string name);
-        void OpenTestSuiteFile(string fileName);
-        void AddTestSuiteFiles(string name, int index, string[] fileNames);
-        void RemoveTestSuiteFile(string name, int index);
-        void SaveFile(string fileName, string code);
-        void Close();
-        void CloseTestSuite();
-        void RunStartSingleFile(string fileName);
-        void RunPause();
-        void RunContinue();
-        void RunStop();
+        private IAppIDECommand _app = null;
+
+        public CmdRemoveTestSuiteFile(IAppIDECommand app)
+        {
+            _app = app;
+        }
+        public override void Execute(string name, int index)
+        {
+            _app.RemoveTestSuiteFile(name, index);
+        }
     }
 }

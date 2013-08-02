@@ -417,6 +417,23 @@ namespace DemiTasse.AppIDE
             }
         }
 
+        public void RemoveTestSuiteFile(string name, int index)
+        {
+            try
+            {
+                _testSuiteManager.RemoveTestSuiteFile(name, index);
+
+                //OnAddTestSuiteFile(new AddTestSuiteFileEventArgs(fileNames));
+
+                OpenTestSuiteEventArgs e = new OpenTestSuiteEventArgs(_testSuiteManager.TestSuites[name]);
+                OnOpenTestSuite(e);
+            }
+            catch (Exception ex)
+            {
+                OnAppException(new AppExceptionEventArgs(ex));
+            }
+        }
+
         public void SaveFile(string fileName, string code)
         {
             FileStream sr = null;

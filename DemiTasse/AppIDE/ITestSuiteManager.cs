@@ -10,6 +10,7 @@ namespace DemiTasse.AppIDE
         //void Init(string serializationFileName);
         TestSuite Create(string name);
         void AddTestSuiteFiles(string name, int index, string[] fileNames);
+        void RemoveTestSuiteFile(string name, int index);
         Dictionary<string, TestSuite> TestSuites { get; }
     }
 }

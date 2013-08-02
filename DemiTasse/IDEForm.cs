@@ -76,6 +76,7 @@ namespace DemiTasse
         private Command _cmdOpenTestSuite = null;
         private Command _cmdOpenTestSuiteFile = null;
         private Command _cmdAddTestSuiteFiles = null;
+        private Command _cmdRemoveTestSuiteFile = null;
         private Command _cmdSaveFile = null;
         private Command _cmdClose = null;
         private Command _cmdCloseTestSuite = null;
@@ -140,6 +141,7 @@ namespace DemiTasse
             _cmdOpenTestSuite = new CmdOpenTestSuite(_app);
             _cmdOpenTestSuiteFile = new CmdOpenTestSuiteFile(_app);
             _cmdAddTestSuiteFiles = new CmdAddTestSuiteFiles(_app);
+            _cmdRemoveTestSuiteFile = new CmdRemoveTestSuiteFile(_app);
             _cmdSaveFile = new CmdSaveFile(_app);
             _cmdClose = new CmdNotYetImplemented();
             _cmdCloseTestSuite = new CmdNotYetImplemented();
@@ -393,6 +395,26 @@ namespace DemiTasse
             {
                 DisplayException(ex);
             }
+        }
+
+        private void mnuFileRemoveFile_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                TestSuiteFileEntry entry;
+
+                Debug.Assert(null != tvFiles.SelectedNode, "No node has been selected for removal.");
+
+                if (null != (entry = tvFiles.SelectedNode.Tag as TestSuiteFileEntry))
+                {
+                    _cmdRemoveTestSuiteFile.Execute(_testSuite.Name, entry.Index);
+                }
+            }
+            catch (Exception ex)
+            {
+                DisplayException(ex);
+            }
+
         }
 
         private void mnuFileSave_Click(object sender, EventArgs e)
@@ -826,6 +848,7 @@ namespace DemiTasse
                     tvFiles.CheckBoxes = false;
                     tvFiles.ShowLines = false;
                     mnuFileAddFiles.Visible = false;
+                    mnuFileRemoveFile.Visible = false;
                     mnuSepAddFiles.Visible = false;
                     LockEdit = false;
                 }
@@ -835,6 +858,7 @@ namespace DemiTasse
                     tvFiles.CheckBoxes = true;
                     tvFiles.ShowLines = true;
                     mnuFileAddFiles.Visible = true;
+                    mnuFileRemoveFile.Visible = true;
                     mnuSepAddFiles.Visible = true;
                     LockEdit = true;
                 }

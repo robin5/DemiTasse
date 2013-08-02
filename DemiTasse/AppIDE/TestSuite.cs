@@ -134,9 +134,9 @@ namespace DemiTasse.AppIDE
             get { return _name; }
         }
 
-        public IList<TestSuiteEntry> Items
+        public List<TestSuiteEntry> Items
         {
-            get { return _items.AsReadOnly(); }
+            get { return _items; }
         }
 
         public override string ToString()
