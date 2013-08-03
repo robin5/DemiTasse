@@ -49,6 +49,8 @@
             this.mnuFileOpenTestSuite = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuFileAddFiles = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuFileRemoveFile = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuFileDeleteTestSuite = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuSepAddFiles = new System.Windows.Forms.ToolStripSeparator();
             this.mnuFileSave = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuFileSaveAll = new System.Windows.Forms.ToolStripMenuItem();
@@ -62,8 +64,6 @@
             this.mnuRunPause = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuRunContinue = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuRunStop = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuFileRemoveFile = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuFileDeleteTestSuite = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -105,7 +105,6 @@
             this.tvFiles.Name = "tvFiles";
             this.tvFiles.Size = new System.Drawing.Size(218, 480);
             this.tvFiles.TabIndex = 0;
-            this.tvFiles.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvFiles_NodeMouseClick);
             this.tvFiles.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvFiles_NodeMouseDoubleClick);
             this.tvFiles.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tvFiles_KeyUp);
             // 
@@ -181,7 +180,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(428, 173);
+            this.tabPage3.Size = new System.Drawing.Size(430, 173);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Abstract Syntax Tree";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -194,7 +193,7 @@
             this.txtAST.Multiline = true;
             this.txtAST.Name = "txtAST";
             this.txtAST.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtAST.Size = new System.Drawing.Size(422, 167);
+            this.txtAST.Size = new System.Drawing.Size(424, 167);
             this.txtAST.TabIndex = 0;
             this.txtAST.WordWrap = false;
             // 
@@ -265,14 +264,14 @@
             // mnuFileNewFile
             // 
             this.mnuFileNewFile.Name = "mnuFileNewFile";
-            this.mnuFileNewFile.Size = new System.Drawing.Size(152, 22);
+            this.mnuFileNewFile.Size = new System.Drawing.Size(134, 22);
             this.mnuFileNewFile.Text = "File...";
             this.mnuFileNewFile.Click += new System.EventHandler(this.mnuFileNewFile_Click);
             // 
             // mnuNewTestSuite
             // 
             this.mnuNewTestSuite.Name = "mnuNewTestSuite";
-            this.mnuNewTestSuite.Size = new System.Drawing.Size(152, 22);
+            this.mnuNewTestSuite.Size = new System.Drawing.Size(134, 22);
             this.mnuNewTestSuite.Text = "Test Suite...";
             this.mnuNewTestSuite.Click += new System.EventHandler(this.mnuNewTestSuite_Click);
             // 
@@ -288,14 +287,14 @@
             // mnuFileOpenFile
             // 
             this.mnuFileOpenFile.Name = "mnuFileOpenFile";
-            this.mnuFileOpenFile.Size = new System.Drawing.Size(152, 22);
+            this.mnuFileOpenFile.Size = new System.Drawing.Size(134, 22);
             this.mnuFileOpenFile.Text = "File...";
             this.mnuFileOpenFile.Click += new System.EventHandler(this.mnuFileOpenFile_Click);
             // 
             // mnuFileOpenTestSuite
             // 
             this.mnuFileOpenTestSuite.Name = "mnuFileOpenTestSuite";
-            this.mnuFileOpenTestSuite.Size = new System.Drawing.Size(152, 22);
+            this.mnuFileOpenTestSuite.Size = new System.Drawing.Size(134, 22);
             this.mnuFileOpenTestSuite.Text = "Test Suite...";
             this.mnuFileOpenTestSuite.Click += new System.EventHandler(this.mnuFileOpenTestSuite_Click);
             // 
@@ -310,6 +309,19 @@
             this.mnuFileAddFiles.Size = new System.Drawing.Size(161, 22);
             this.mnuFileAddFiles.Text = "Add Files...";
             this.mnuFileAddFiles.Click += new System.EventHandler(this.mnuFileAddFiles_Click);
+            // 
+            // mnuFileRemoveFile
+            // 
+            this.mnuFileRemoveFile.Name = "mnuFileRemoveFile";
+            this.mnuFileRemoveFile.Size = new System.Drawing.Size(161, 22);
+            this.mnuFileRemoveFile.Text = "Remove File";
+            this.mnuFileRemoveFile.Click += new System.EventHandler(this.mnuFileRemoveFile_Click);
+            // 
+            // mnuFileDeleteTestSuite
+            // 
+            this.mnuFileDeleteTestSuite.Name = "mnuFileDeleteTestSuite";
+            this.mnuFileDeleteTestSuite.Size = new System.Drawing.Size(161, 22);
+            this.mnuFileDeleteTestSuite.Text = "Delete Test Suite";
             // 
             // mnuSepAddFiles
             // 
@@ -401,19 +413,6 @@
             this.mnuRunStop.Size = new System.Drawing.Size(123, 22);
             this.mnuRunStop.Text = "Stop";
             this.mnuRunStop.Click += new System.EventHandler(this.mnuRunStop_Click);
-            // 
-            // mnuFileRemoveFile
-            // 
-            this.mnuFileRemoveFile.Name = "mnuFileRemoveFile";
-            this.mnuFileRemoveFile.Size = new System.Drawing.Size(161, 22);
-            this.mnuFileRemoveFile.Text = "Remove File";
-            this.mnuFileRemoveFile.Click += new System.EventHandler(this.mnuFileRemoveFile_Click);
-            // 
-            // mnuFileDeleteTestSuite
-            // 
-            this.mnuFileDeleteTestSuite.Name = "mnuFileDeleteTestSuite";
-            this.mnuFileDeleteTestSuite.Size = new System.Drawing.Size(161, 22);
-            this.mnuFileDeleteTestSuite.Text = "Delete Test Suite";
             // 
             // IDEForm
             // 

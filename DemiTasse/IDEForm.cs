@@ -166,6 +166,7 @@ namespace DemiTasse
             }
             catch (Exception ex)
             {
+                DisplayException(ex);
             }
         }
 
@@ -180,38 +181,8 @@ namespace DemiTasse
 
                 Debug.Assert(null != fileEntry);
 
-                if (null != fileEntry)
-                {
-                    if (fileEntry.Changed)
-                    {
-                        if (queryUser)
-                        {
-                            rc = MessageBox.Show("Save file " + fileEntry.FileName, "Save File", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
-                        }
-                        else
-                            rc = DialogResult.Yes;
-
-                        if (DialogResult.Yes == rc)
-                        {
-                            TextBox tb = tcFiles.SelectedTab.Controls[0] as TextBox;
-
-                            Debug.Assert(tb != null, "TextBox == null");
-
-                            try
-                            {
-                                _cmdSaveFile.Execute(fileEntry.FileName, tb.Text);
-                            }
-                            catch (Exception ex)
-                            {
-                                DisplayException(ex);
-                            }
-                        }
-                        else if (DialogResult.Cancel == rc)
-                        {
-                            return DialogResult.Cancel;
-                        }
-                    }
-                }
+                if (DialogResult.Cancel == (rc = SaveFile(fileEntry, queryUser)))
+                    return rc;
             }
 
             return DialogResult.OK;
@@ -246,6 +217,7 @@ namespace DemiTasse
         {
             Text = Application.ProductName;
             IDEMode = IDEModes.SingleFile;
+            mnuFileClose.Enabled = false;
         }
 
         #endregion Form Events
@@ -419,25 +391,58 @@ namespace DemiTasse
 
         private void mnuFileSave_Click(object sender, EventArgs e)
         {
-            TabPage tp = tcFiles.SelectedTab;
+            Debug.Assert(null != tcFiles.SelectedTab);
 
-            Debug.Assert(null != tp);
-
-            if (null != tp)
+            if (null != tcFiles.SelectedTab)
             {
-                TestSuiteFileEntry fileEntry = tp.Tag as TestSuiteFileEntry;
+                TestSuiteFileEntry fileEntry = tcFiles.SelectedTab.Tag as TestSuiteFileEntry;
 
                 Debug.Assert(null != fileEntry);
 
-                if (null != fileEntry)
+                if (fileEntry.Changed)
                 {
-                    TextBox tb = tcFiles.SelectedTab.Controls[0] as TextBox;
-
-                    Debug.Assert(null != tb, "TextBox == null");
-
-                    _cmdSaveFile.Execute(fileEntry.FileName, tb.Text);
+                    SaveFile(fileEntry, false);
                 }
             }
+        }
+
+        private DialogResult SaveFile(TestSuiteFileEntry fileEntry, bool queryUser)
+        {
+            DialogResult rc = DialogResult.OK;
+
+            if (null != fileEntry)
+            {
+                if (fileEntry.Changed)
+                {
+                    if (queryUser)
+                    {
+                        rc = MessageBox.Show("Save file " + fileEntry.FileName, "Save File", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                    }
+                    else
+                        rc = DialogResult.Yes;
+
+                    if (DialogResult.Yes == rc)
+                    {
+                        TextBox tb = tcFiles.SelectedTab.Controls[0] as TextBox;
+
+                        Debug.Assert(tb != null, "TextBox == null");
+
+                        try
+                        {
+                            _cmdSaveFile.Execute(fileEntry.FileName, tb.Text);
+                        }
+                        catch (Exception ex)
+                        {
+                            DisplayException(ex);
+                        }
+                    }
+                    else if (DialogResult.Cancel == rc)
+                    {
+                        return DialogResult.Cancel;
+                    }
+                }
+            }
+            return rc;
         }
 
         private void mnuFileSaveAll_Click(object sender, EventArgs e)
@@ -456,7 +461,27 @@ namespace DemiTasse
         {
             try
             {
-                _cmdClose.Execute();
+                Debug.Assert(null != tcFiles.SelectedTab, "No tab selected for close command.");
+
+                TestSuiteFileEntry fileEntry = tcFiles.SelectedTab.Tag as TestSuiteFileEntry;
+
+                Debug.Assert(null != fileEntry, "file entry missing from tab control");
+
+                if (fileEntry.Changed)
+                {
+                    if (DialogResult.Cancel == SaveFile(fileEntry, true))
+                    {
+                        return;
+                    }
+                }
+
+                TabPage tabPage = tcFiles.SelectedTab;
+                TextBox textBox = tabPage.Controls[0] as TextBox;
+
+                textBox.TextChanged -= new System.EventHandler(this.tcFiles_TextChanged);
+                tabPage.Controls.Remove(textBox);
+                tcFiles.Controls.Remove(tabPage);
+                mnuFileClose.Enabled = (tcFiles.TabPages.Count > 0);
             }
             catch (Exception ex)
             {
@@ -753,7 +778,7 @@ namespace DemiTasse
                 Debug.Assert(fileEntry != null);
                 if (fileEntry.Changed)
                 {
-                    SaveFile(fileEntry);
+                    SaveFile(fileEntry, true);
                 }
             }
 
@@ -783,10 +808,6 @@ namespace DemiTasse
 
             mnuFileSaveAll.Enabled = enableSaveAll;
             mnuFileSave.Enabled = enableSave;
-        }
-
-        private void SaveFile(TestSuiteFileEntry fileEntry)
-        {
         }
 
         private void App_OnOpenTestSuite(object sender, OpenTestSuiteEventArgs e)
@@ -849,7 +870,9 @@ namespace DemiTasse
                     tvFiles.ShowLines = false;
                     mnuFileAddFiles.Visible = false;
                     mnuFileRemoveFile.Visible = false;
+                    mnuFileDeleteTestSuite.Visible = false;
                     mnuSepAddFiles.Visible = false;
+                    mnuFileCloseTestSuite.Visible = false;
                     LockEdit = false;
                 }
                 else
@@ -859,6 +882,8 @@ namespace DemiTasse
                     tvFiles.ShowLines = true;
                     mnuFileAddFiles.Visible = true;
                     mnuFileRemoveFile.Visible = true;
+                    mnuFileDeleteTestSuite.Visible = true;
+                    mnuFileCloseTestSuite.Visible = true;
                     mnuSepAddFiles.Visible = true;
                     LockEdit = true;
                 }
@@ -893,10 +918,6 @@ namespace DemiTasse
             }
         }
 
-        private void tvFiles_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
-        {
-        }
-
         private void tvFiles_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             try
@@ -915,6 +936,8 @@ namespace DemiTasse
 
             if ((null == node) || (null == (fileEntry = node.Tag as TestSuiteFileEntry)))
                 return;
+
+            mnuFileClose.Enabled = true;
 
             if (this.tcFiles.Controls.ContainsKey(fileEntry.FileName))
             {
@@ -1043,13 +1066,20 @@ namespace DemiTasse
 
         private void tcFiles_Selected(object sender, TabControlEventArgs e)
         {
-            TestSuiteFileEntry fileEntry = e.TabPage.Tag as TestSuiteFileEntry;
-
-            Debug.Assert(null != fileEntry, "fileEntry missing from tag");
-            
-            if (null != fileEntry)
+            if (e.TabPage != null)
             {
-                mnuFileSave.Enabled = fileEntry.Changed;
+                TestSuiteFileEntry fileEntry = e.TabPage.Tag as TestSuiteFileEntry;
+
+                Debug.Assert(null != fileEntry, "fileEntry missing from tag");
+
+                if (null != fileEntry)
+                {
+                    mnuFileSave.Enabled = fileEntry.Changed;
+                }
+                mnuFileClose.Enabled = true;
+            }
+            else
+            {
             }
         }
     }
