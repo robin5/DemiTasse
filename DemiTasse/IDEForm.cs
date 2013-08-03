@@ -1082,5 +1082,10 @@ namespace DemiTasse
             {
             }
         }
+
+        private void buildToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
