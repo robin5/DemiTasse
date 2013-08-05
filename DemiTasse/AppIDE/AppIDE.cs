@@ -484,32 +484,52 @@ namespace DemiTasse.AppIDE
             OnAppError(new AppErrorEventArgs("CloseTestSuite Not yet implemented."));
         }
 
-        public void RunStartSingleFile(string fileName)
+        public void RunStart(string fileName)
         {
+            FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read);
+
             if (fileName.EndsWith(".ir", StringComparison.OrdinalIgnoreCase))
             {
-                ExecuteIrTest(fileName);
+                ExecuteIrTest(stream, fileName);
             }
             else if (fileName.EndsWith(".ast", StringComparison.OrdinalIgnoreCase))
             {
-                ExecuteAstTest(fileName);
+                ExecuteAstTest(stream, fileName);
             }
             else if (fileName.EndsWith(".java", StringComparison.OrdinalIgnoreCase))
             {
-                ExecuteParserTest(fileName);
+                ExecuteParserTest(stream, fileName);
             }
             else 
                 throw new AppUserErrorException("Attempt to execute unknown file type: " + fileName);
         }
 
-        private void ExecuteIrTest(string fileName)
+        public void RunStart(string fileName, string code)
         {
-            FileStream stream = null;
+            Stream stream = CreateMemoryStream(code);
+
+            if (fileName.EndsWith(".ir", StringComparison.OrdinalIgnoreCase))
+            {
+                ExecuteIrTest(stream, fileName);
+            }
+            else if (fileName.EndsWith(".ast", StringComparison.OrdinalIgnoreCase))
+            {
+                ExecuteAstTest(stream, fileName);
+            }
+            else if (fileName.EndsWith(".java", StringComparison.OrdinalIgnoreCase))
+            {
+                ExecuteParserTest(stream, fileName);
+            }
+            else
+                throw new AppUserErrorException("Attempt to execute unknown file type: " + fileName);
+        }
+
+        private void ExecuteIrTest(Stream stream, string fileName)
+        {
             PROG p = null;
 
             try
             {
-                stream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read);
                 p = (new irParser(stream)).Program();
             }
             catch (InterpException ex)
@@ -541,20 +561,29 @@ namespace DemiTasse.AppIDE
             }
         }
 
-        public void ExecuteAstTest(string fileName)
+        public void ExecuteAstTest(Stream stream, string fileName)
         {
             try 
             {
-                FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read);
-                //DemiTasse.ast.Program p = (new astParser(stream)).Program();
+                // create AST parser
                 astParser psr = new astParser(stream);
+
+                // Parse AST file and return pointer to program at root of tree
                 DemiTasse.ast.Program p = astParser.Program();
                 stream.Close();
+
+                //  Create a symbol table visitor
                 SymbolVisitor sv = new SymbolVisitor();
+
+                // traverse AST to create symbol table
                 sv.visit(p);
                 //sv.symTable.show();
+
+                // Traverse AST to verify type
                 TypeVisitor tv = new TypeVisitor(sv.symTable);
                 tv.visit(p);
+
+                // Generate intermediate language
                 IrgenVisitor iv = new IrgenVisitor(sv.symTable, tv);
                 PROG ir0 = iv.visit(p);
                 Canon cv = new Canon();
@@ -577,17 +606,17 @@ namespace DemiTasse.AppIDE
             }
         }
 
-        private void ExecuteParserTest(string fileName)
+        private void ExecuteParserTest(Stream stream, string fileName)
         {
             string astData;
             Stream astDataStream = null;
+
             string irData;
             Stream irDataStream = null;
 
             try
             {
                 Ast.Clear();
-                FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read);
                 miniParser MiniPsr = new miniParser(stream);
                 DemiTasse.ast.Program astProgram = miniParser.Program();
                 stream.Close();

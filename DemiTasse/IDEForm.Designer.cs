@@ -59,13 +59,13 @@
             this.mnuFileCloseTestSuite = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuFileExit = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuBuild = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuBuildCompile = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuRun = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuRunStart = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuRunPause = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuRunContinue = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuRunStop = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuBuild = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuBuildCompile = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -388,6 +388,22 @@
             this.mnuFileExit.Text = "Exit";
             this.mnuFileExit.Click += new System.EventHandler(this.mnuFileExit_Click);
             // 
+            // mnuBuild
+            // 
+            this.mnuBuild.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuBuildCompile});
+            this.mnuBuild.Name = "mnuBuild";
+            this.mnuBuild.Size = new System.Drawing.Size(46, 20);
+            this.mnuBuild.Text = "&Build";
+            // 
+            // mnuBuildCompile
+            // 
+            this.mnuBuildCompile.Name = "mnuBuildCompile";
+            this.mnuBuildCompile.ShortcutKeys = System.Windows.Forms.Keys.F7;
+            this.mnuBuildCompile.Size = new System.Drawing.Size(178, 22);
+            this.mnuBuildCompile.Text = "Compile Project";
+            this.mnuBuildCompile.Click += new System.EventHandler(this.mnuBuildCompile_Click);
+            // 
             // mnuRun
             // 
             this.mnuRun.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -403,46 +419,30 @@
             // 
             this.mnuRunStart.Name = "mnuRunStart";
             this.mnuRunStart.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.mnuRunStart.Size = new System.Drawing.Size(152, 22);
+            this.mnuRunStart.Size = new System.Drawing.Size(123, 22);
             this.mnuRunStart.Text = "Start";
             this.mnuRunStart.Click += new System.EventHandler(this.mnuRunStart_Click);
             // 
             // mnuRunPause
             // 
             this.mnuRunPause.Name = "mnuRunPause";
-            this.mnuRunPause.Size = new System.Drawing.Size(152, 22);
+            this.mnuRunPause.Size = new System.Drawing.Size(123, 22);
             this.mnuRunPause.Text = "Pause";
             this.mnuRunPause.Click += new System.EventHandler(this.mnuRunPause_Click);
             // 
             // mnuRunContinue
             // 
             this.mnuRunContinue.Name = "mnuRunContinue";
-            this.mnuRunContinue.Size = new System.Drawing.Size(152, 22);
+            this.mnuRunContinue.Size = new System.Drawing.Size(123, 22);
             this.mnuRunContinue.Text = "Continue";
             this.mnuRunContinue.Click += new System.EventHandler(this.mnuRunContinue_Click);
             // 
             // mnuRunStop
             // 
             this.mnuRunStop.Name = "mnuRunStop";
-            this.mnuRunStop.Size = new System.Drawing.Size(152, 22);
+            this.mnuRunStop.Size = new System.Drawing.Size(123, 22);
             this.mnuRunStop.Text = "Stop";
             this.mnuRunStop.Click += new System.EventHandler(this.mnuRunStop_Click);
-            // 
-            // mnuBuild
-            // 
-            this.mnuBuild.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuBuildCompile});
-            this.mnuBuild.Name = "mnuBuild";
-            this.mnuBuild.Size = new System.Drawing.Size(46, 20);
-            this.mnuBuild.Text = "&Build";
-            this.mnuBuild.Click += new System.EventHandler(this.buildToolStripMenuItem_Click);
-            // 
-            // mnuBuildCompile
-            // 
-            this.mnuBuildCompile.Name = "mnuBuildCompile";
-            this.mnuBuildCompile.ShortcutKeys = System.Windows.Forms.Keys.F7;
-            this.mnuBuildCompile.Size = new System.Drawing.Size(178, 22);
-            this.mnuBuildCompile.Text = "Compile Project";
             // 
             // IDEForm
             // 

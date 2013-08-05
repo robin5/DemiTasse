@@ -59,7 +59,7 @@
     <Compile Include="AppIDE\Command.cs" />
     <Compile Include="AppIDE\CmdOpenFile.cs" />
     <Compile Include="AppIDE\IAppIDECommand.cs" />
-    <Compile Include="AppIDE\CmdRunStartSingleFile.cs" />
+    <Compile Include="AppIDE\CmdRunStart.cs" />
     <Compile Include="AppIDE\ITestSuiteManager.cs" />
     <Compile Include="AppIDE\OpenFileEventArgs.cs" />
     <Compile Include="AppIDE\OpenTestSuiteEventArgs.cs" />

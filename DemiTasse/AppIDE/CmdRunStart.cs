@@ -2,7 +2,7 @@
 // * Copyright (c) 2013 Robin Murray
 // **********************************************************************************
 // *
-// * File: CmdRunStartSingleFile.cs
+// * File: CmdRunStart.cs
 // *
 // * Description:  
 // *
@@ -37,17 +37,21 @@ using System.Text;
 
 namespace DemiTasse.AppIDE
 {
-    class CmdRunStartSingleFile : Command
+    class CmdRunStart : Command
     {
         private IAppIDECommand _app = null;
 
-        public CmdRunStartSingleFile(IAppIDECommand app)
+        public CmdRunStart(IAppIDECommand app)
         {
             _app = app;
         }
         public override void Execute(string fileName)
         {
-            _app.RunStartSingleFile(fileName);
+            _app.RunStart(fileName);
+        }
+        public override void Execute(string fileName, string code)
+        {
+            _app.RunStart(fileName, code);
         }
     }
 }

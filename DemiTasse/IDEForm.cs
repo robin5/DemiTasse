@@ -80,7 +80,7 @@ namespace DemiTasse
         private Command _cmdSaveFile = null;
         private Command _cmdClose = null;
         private Command _cmdCloseTestSuite = null;
-        private Command _cmdRunStartSingleFile = null;
+        private Command _cmdRunStart = null;
         //private Command _cmdRunStartTestSuite = null;
         private Command _cmdRunPause = null;
         private Command _cmdRunContinue = null;
@@ -145,7 +145,7 @@ namespace DemiTasse
             _cmdSaveFile = new CmdSaveFile(_app);
             _cmdClose = new CmdNotYetImplemented();
             _cmdCloseTestSuite = new CmdNotYetImplemented();
-            _cmdRunStartSingleFile = new CmdRunStartSingleFile(_app);
+            _cmdRunStart = new CmdRunStart(_app);
             _cmdRunPause = new CmdNotYetImplemented();
             _cmdRunContinue = new CmdNotYetImplemented();
             _cmdRunStop = new CmdNotYetImplemented();
@@ -523,14 +523,19 @@ namespace DemiTasse
 
                 if (IDEMode == IDEModes.SingleFile)
                 {
-                    _cmdRunStartSingleFile.Execute(_fileName);
+                    Debug.Assert(tcFiles.TabPages.ContainsKey(_fileName), "");
+                    Debug.Assert(tcFiles.TabPages[_fileName].Controls.Count > 0, "");
+                    Debug.Assert(null != (tcFiles.TabPages[_fileName].Controls[0] as TextBox), "");
+
+                    TextBox textBox = tcFiles.TabPages[_fileName].Controls[0] as TextBox;
+
+                    _cmdRunStart.Execute(_fileName, textBox.Text);
                 }
                 else
                 {
-                    if (tvFiles.Nodes.Count > 0)
-                    {
-                        ExecuteTestSuiteItems(tvFiles.Nodes[0]);
-                    }
+                    Debug.Assert(tvFiles.Nodes.Count > 0, "");
+
+                    ExecuteTestSuiteItems(tvFiles.Nodes[0]);
                 }
             }
             catch (AppUserErrorException ex)
@@ -567,6 +572,8 @@ namespace DemiTasse
 
         private void ExecuteTestSuiteItems(TreeNode parent)
         {
+            string fileName;
+
             if (parent.Checked)
             {
                 foreach (TreeNode node in parent.Nodes)
@@ -575,10 +582,25 @@ namespace DemiTasse
                     {
                         if (null != (_currentTestFileEntry = (node.Tag as TestSuiteFileEntry)))
                         {
-                            txtConsole.Text += Header(_currentTestFileEntry.FileName);
-                            txtAST.Text += Header(_currentTestFileEntry.FileName);
-                            txtIntRep.Text += Header(_currentTestFileEntry.FileName);
-                            _cmdRunStartSingleFile.Execute(_currentTestFileEntry.FileName);
+                            fileName = _currentTestFileEntry.FileName;
+
+                            txtConsole.Text += Header(fileName);
+                            txtAST.Text += Header(fileName);
+                            txtIntRep.Text += Header(fileName);
+
+                            if (tcFiles.TabPages.ContainsKey(fileName))
+                            {
+                                TabPage tabPage = tcFiles.TabPages[fileName];
+                                TextBox textBox = tabPage.Controls[0] as TextBox;
+
+                                Debug.Assert(null != textBox, "");
+
+                                _cmdRunStart.Execute(fileName, textBox.Text);
+                            }
+                            else
+                            {
+                                _cmdRunStart.Execute(fileName);
+                            }
                         }
                         else if (null != (node.Tag as TestSuiteSuiteEntry))
                         {
@@ -1083,7 +1105,7 @@ namespace DemiTasse
             }
         }
 
-        private void buildToolStripMenuItem_Click(object sender, EventArgs e)
+        private void mnuBuildCompile_Click(object sender, EventArgs e)
         {
 
         }
