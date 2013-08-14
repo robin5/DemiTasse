@@ -1,9 +1,6 @@
 ## Welcome to DemiTasse
 Copyright © 2013 Robin Murray
 
-For more info, contact: [Robin Murray](email:robin5@pdx.edu)
-Portland State University
-
 The DemiTassi project will provide at first, an integrated development environment for 
 the [Mini-Java](http://www.cambridge.org/us/features/052182060X/index.html) 
 programming language.  It will have very primitive features that will allow
@@ -64,8 +61,12 @@ sure a better OOD can be achieved for these classes.
 * All MIni-Java source file editing functionality should be moved early into it's own control.
 * Exchange test suite functionality for n-unit unit testing.
 
-## Nice To Haves
+## Blue Sky
 
 * Editor color coding of mini-java language.
 * Auto-completion.
+
+## Contact Information
+
+For more information, contact Robin Murray [robin5@pdx.edu](email-to:robin5@pdx.edu)
 
