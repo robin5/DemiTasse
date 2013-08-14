@@ -268,8 +268,8 @@
             // 
             this.mnuFileNewFile.Name = "mnuFileNewFile";
             this.mnuFileNewFile.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.mnuFileNewFile.Size = new System.Drawing.Size(209, 22);
-            this.mnuFileNewFile.Text = "File...";
+            this.mnuFileNewFile.Size = new System.Drawing.Size(220, 22);
+            this.mnuFileNewFile.Text = "Project...";
             this.mnuFileNewFile.Click += new System.EventHandler(this.mnuFileNewFile_Click);
             // 
             // mnuNewTestSuite
@@ -277,8 +277,8 @@
             this.mnuNewTestSuite.Name = "mnuNewTestSuite";
             this.mnuNewTestSuite.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.N)));
-            this.mnuNewTestSuite.Size = new System.Drawing.Size(209, 22);
-            this.mnuNewTestSuite.Text = "Test Suite...";
+            this.mnuNewTestSuite.Size = new System.Drawing.Size(220, 22);
+            this.mnuNewTestSuite.Text = "Test Project...";
             this.mnuNewTestSuite.Click += new System.EventHandler(this.mnuNewTestSuite_Click);
             // 
             // mnuFileOpen
@@ -294,8 +294,8 @@
             // 
             this.mnuFileOpenFile.Name = "mnuFileOpenFile";
             this.mnuFileOpenFile.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.mnuFileOpenFile.Size = new System.Drawing.Size(209, 22);
-            this.mnuFileOpenFile.Text = "File...";
+            this.mnuFileOpenFile.Size = new System.Drawing.Size(220, 22);
+            this.mnuFileOpenFile.Text = "Project...";
             this.mnuFileOpenFile.Click += new System.EventHandler(this.mnuFileOpenFile_Click);
             // 
             // mnuFileOpenTestSuite
@@ -303,8 +303,8 @@
             this.mnuFileOpenTestSuite.Name = "mnuFileOpenTestSuite";
             this.mnuFileOpenTestSuite.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.O)));
-            this.mnuFileOpenTestSuite.Size = new System.Drawing.Size(209, 22);
-            this.mnuFileOpenTestSuite.Text = "Test Suite...";
+            this.mnuFileOpenTestSuite.Size = new System.Drawing.Size(220, 22);
+            this.mnuFileOpenTestSuite.Text = "Test Project...";
             this.mnuFileOpenTestSuite.Click += new System.EventHandler(this.mnuFileOpenTestSuite_Click);
             // 
             // toolStripMenuItem1
@@ -330,7 +330,7 @@
             // 
             this.mnuFileDeleteTestSuite.Name = "mnuFileDeleteTestSuite";
             this.mnuFileDeleteTestSuite.Size = new System.Drawing.Size(187, 22);
-            this.mnuFileDeleteTestSuite.Text = "Delete Test Suite";
+            this.mnuFileDeleteTestSuite.Text = "Delete Test Project";
             // 
             // mnuSepAddFiles
             // 
@@ -419,29 +419,32 @@
             // 
             this.mnuRunStart.Name = "mnuRunStart";
             this.mnuRunStart.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.mnuRunStart.Size = new System.Drawing.Size(123, 22);
+            this.mnuRunStart.Size = new System.Drawing.Size(152, 22);
             this.mnuRunStart.Text = "Start";
             this.mnuRunStart.Click += new System.EventHandler(this.mnuRunStart_Click);
             // 
             // mnuRunPause
             // 
             this.mnuRunPause.Name = "mnuRunPause";
-            this.mnuRunPause.Size = new System.Drawing.Size(123, 22);
+            this.mnuRunPause.Size = new System.Drawing.Size(152, 22);
             this.mnuRunPause.Text = "Pause";
+            this.mnuRunPause.Visible = false;
             this.mnuRunPause.Click += new System.EventHandler(this.mnuRunPause_Click);
             // 
             // mnuRunContinue
             // 
             this.mnuRunContinue.Name = "mnuRunContinue";
-            this.mnuRunContinue.Size = new System.Drawing.Size(123, 22);
+            this.mnuRunContinue.Size = new System.Drawing.Size(152, 22);
             this.mnuRunContinue.Text = "Continue";
+            this.mnuRunContinue.Visible = false;
             this.mnuRunContinue.Click += new System.EventHandler(this.mnuRunContinue_Click);
             // 
             // mnuRunStop
             // 
             this.mnuRunStop.Name = "mnuRunStop";
-            this.mnuRunStop.Size = new System.Drawing.Size(123, 22);
+            this.mnuRunStop.Size = new System.Drawing.Size(152, 22);
             this.mnuRunStop.Text = "Stop";
+            this.mnuRunStop.Visible = false;
             this.mnuRunStop.Click += new System.EventHandler(this.mnuRunStop_Click);
             // 
             // IDEForm

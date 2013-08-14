@@ -2,7 +2,7 @@
 // * Copyright (c) 2013 Robin Murray
 // **********************************************************************************
 // *
-// * File: OpenTestSuiteForm.cs
+// * File: NewTestSuiteForm.cs
 // *
 // * Description:  Used to select an existing test project
 // *

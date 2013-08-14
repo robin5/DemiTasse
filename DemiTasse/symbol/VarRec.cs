@@ -2,7 +2,7 @@
 // * Copyright (c) 2013 Robin Murray
 // **********************************************************************************
 // *
-// * File: ClassRec.cs
+// * File: VarRec.cs
 // *
 // * Description:  Variable and parameter record for Symbol table module for MINI v1.7.
 // *

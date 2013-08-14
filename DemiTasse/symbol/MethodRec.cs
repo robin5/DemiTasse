@@ -2,7 +2,7 @@
 // * Copyright (c) 2013 Robin Murray
 // **********************************************************************************
 // *
-// * File: ClassRec.cs
+// * File: MethodRec.cs
 // *
 // * Description:  Method record for Symbol table module for MINI v1.7.
 // *

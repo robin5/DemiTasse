@@ -2,7 +2,7 @@
 // * Copyright (c) 2013 Robin Murray
 // **********************************************************************************
 // *
-// * File: ClassRec.cs
+// * File: TypeVisitor.cs
 // *
 // * Description:  A type-checking visitor for MINI 1.7.
 // *

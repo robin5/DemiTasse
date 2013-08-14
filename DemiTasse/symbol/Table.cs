@@ -2,7 +2,7 @@
 // * Copyright (c) 2013 Robin Murray
 // **********************************************************************************
 // *
-// * File: ClassRec.cs
+// * File: Table.cs
 // *
 // * Description:  Top-level symbol table
 // *

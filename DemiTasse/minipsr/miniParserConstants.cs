@@ -2,7 +2,7 @@
 // * Copyright (c) 2013 Robin Murray
 // **********************************************************************************
 // *
-// * File: astParserConstants.cs
+// * File: miniParserConstants.cs
 // *
 // * Description: Token constants for abstract syntax tree.
 // *

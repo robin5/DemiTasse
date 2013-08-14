@@ -2,7 +2,7 @@
 // * Copyright (c) 2013 Robin Murray
 // **********************************************************************************
 // *
-// * File: ClassRec.cs
+// * File: SymbolException.cs
 // *
 // * Description:  Exception class for symbol table module for MINI v1.7.
 // *

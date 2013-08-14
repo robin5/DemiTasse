@@ -2,7 +2,7 @@
 // * Copyright (c) 2013 Robin Murray
 // **********************************************************************************
 // *
-// * File: MiniParserTokenManager.cs
+// * File: PsrToken.cs
 // *
 // * Description: Describes the input token stream.
 // *

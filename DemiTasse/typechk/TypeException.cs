@@ -2,7 +2,7 @@
 // * Copyright (c) 2013 Robin Murray
 // **********************************************************************************
 // *
-// * File: ClassRec.cs
+// * File: TypeException.cs
 // *
 // * Description:  Exception class for type checking module for MINI v1.7.
 // *

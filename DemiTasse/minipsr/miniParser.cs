@@ -2,7 +2,7 @@
 // * Copyright (c) 2013 Robin Murray
 // **********************************************************************************
 // *
-// * File: irParser.cs
+// * File: miniParser.cs
 // *
 // * Description: 
 // *
