@@ -1,4 +1,5 @@
 ## Welcome to DemiTasse
+Copyright © 2013 Robin Murray
 
 The DemiTassi project will provide at first, an integrated development environment for 
 the [Mini-Java](http://www.cambridge.org/us/features/052182060X/index.html) 
