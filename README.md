@@ -61,8 +61,12 @@ sure a better OOD can be achieved for these classes.
 * All MIni-Java source file editing functionality should be moved early into it's own control.
 * Exchange test suite functionality for n-unit unit testing.
 
-## Nice To Haves
+## Blue Sky
 
 * Editor color coding of mini-java language.
 * Auto-completion.
+
+## Contact Information
+
+For more information, contact Robin Murray [robin5@pdx.edu](email-to:robin5@pdx.edu)
 
