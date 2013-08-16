@@ -1,4 +1,0 @@
-parser.ParseException: Encountered " "{" "{ "" at line 2, column 7.
-Was expecting:
-    <ID> ...
-    

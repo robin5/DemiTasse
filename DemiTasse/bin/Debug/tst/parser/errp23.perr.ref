@@ -1,4 +1,0 @@
-parser.ParseException: Encountered " "=" "= "" at line 3, column 10.
-Was expecting:
-    "." ...
-    

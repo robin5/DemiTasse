@@ -1,8 +1,0 @@
-IR_PROGRAM
-main (varCnt=1, tmpCnt=2, argCnt=0) {
- [MOVE (TEMP 1) (CALL (NAME malloc) ( (BINOP * (CONST 2) (NAME wSZ))))]
- [MOVE (MEM (TEMP 1)) (CONST 5)]
- [MOVE (MEM (BINOP + (TEMP 1) (NAME wSZ))) (CONST 7)]
- [MOVE (VAR 1) (TEMP 1)]
- [CALLST (NAME print) ( (BINOP + (FIELD (VAR 1) 0) (FIELD (VAR 1) 1)))]
-}

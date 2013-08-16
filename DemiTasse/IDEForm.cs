@@ -93,7 +93,26 @@ namespace DemiTasse
 
         private void InitTestSuiteManager(string serializationFileName)
         {
-            FileStream fs = new FileStream(serializationFileName, FileMode.Open);
+            FileStream fs = null;
+
+            if (!File.Exists(serializationFileName))
+            {
+                _testSuiteManager = new TestSuiteManager();
+                return;
+            }
+
+            try
+            {
+                fs = new FileStream(serializationFileName, FileMode.Open);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Failed to open Test Project config file. Reason: " + ex.Message);
+                _testSuiteManager = new TestSuiteManager();
+                return;
+            }
+
+
             try
             {
                 BinaryFormatter formatter = new BinaryFormatter();
@@ -103,9 +122,9 @@ namespace DemiTasse
 
                 _testSuiteManager = (TestSuiteManager)formatter.Deserialize(fs);
             }
-            catch (SerializationException e)
+            catch (SerializationException ex)
             {
-                Console.WriteLine("Failed to deserialize. Reason: " + e.Message);
+                Console.WriteLine("Failed to deserialize. Reason: " + ex.Message);
                 throw;
             }
             finally
