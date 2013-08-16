@@ -29,7 +29,7 @@ Mini-Java sample files can be found at the following web site: [http://www.cambr
 
 ## Documents
 
-User Instructions: [https://github.com/robin5/DemiTasse/blob/master/DemiTasse/doc/DemiTasse%20Instructions.rtf](https://github.com/robin5/DemiTasse/blob/master/DemiTasse/doc/DemiTasse%20Instructions.rtf)
+User Instructions: [https://github.com/robin5/DemiTasse/blob/master/DemiTasse/doc/DemiTasse%20Instructions.pdf](https://github.com/robin5/DemiTasse/blob/master/DemiTasse/doc/DemiTasse%20Instructions.pdf)
 
 ## Code Status
 
