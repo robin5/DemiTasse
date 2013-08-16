@@ -33,7 +33,7 @@ User Instructions: [https://github.com/robin5/DemiTasse/blob/master/DemiTasse/do
 
 ## Code Status
 
-The current software release is v1.0.0-rc.1: [https://github.com/robin5/DemiTasse/releases/tag/v1.0.0-rc.1](https://github.com/robin5/DemiTasse/releases/tag/v1.0.0-rc.1).
+The current software release is v1.0.0-rc.2: [https://github.com/robin5/DemiTasse/releases/tag/v1.0.0-rc.2](https://github.com/robin5/DemiTasse/releases/tag/v1.0.0-rc.2).
 
 Other releases can be found here: [https://github.com/robin5/DemiTasse/releases](https://github.com/robin5/DemiTasse/releases)
 
