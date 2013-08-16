@@ -719,7 +719,8 @@ namespace DemiTasse
             txtAST.Text += data;
 
             if (null != _currentTestFileEntry)
-                CompareAst(_currentTestFileEntry.AstRefFileName, e.Data);
+                if (null != _currentTestFileEntry.AstRefFileName)
+                    CompareAst(_currentTestFileEntry.AstRefFileName, e.Data);
         }
 
         private void CompareAst(string AstRefFileName, string AstData)
