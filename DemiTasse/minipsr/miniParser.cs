@@ -55,20 +55,41 @@ namespace DemiTasse.minipsr
     // *
     // *******************************************************************************************
 
-    public class miniParser : miniParserConstants
+    public class MiniParser : MiniParserConstants
     {
+        AstProgram _astProgram = null;
         // -----------------------------------
         // Program    -> MainClass {ClassDecl}
         // -----------------------------------
 
-        static /* final */ public DemiTasse.ast.Program Program() /* throws ParseException */
+        public AstProgram ParseProgram()
+        {
+            try
+            {
+                if (_astProgram == null)
+                {
+                    _astProgram = MiniParser.Program();
+                    return _astProgram;
+                }
+                return _astProgram;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            finally
+            {
+            }
+        }
+
+        static /* final */ public AstProgram Program() /* throws ParseException */
         {
             bool done = false;
-            ClassDecl c;
-            ClassDeclList cl = new ClassDeclList();
+            AstClassDecl c;
+            AstClassDeclList cl = new AstClassDeclList();
             // Get a reference to the Main class and add it to the list of classes
             c = MainClass();
-            cl.add( c );
+            cl.Add(c);
             
             // label_1:
             while (!done)
@@ -85,25 +106,25 @@ namespace DemiTasse.minipsr
                 if (!done)
                 {
                     c = ClassDecl();
-                    cl.add(c);
+                    cl.Add(c);
                 }
             }
             jj_consume_token(0);
-            return new DemiTasse.ast.Program( cl );
+            return new AstProgram( cl );
         }
 
         // ----------------------------------------------------------
         // MainClass  -> "class" <ID> "{" MainMethod {MethodDecl} "}"
         // ----------------------------------------------------------
 
-        static /* final */ public ClassDecl MainClass() /* throws ParseException */
+        static /* final */ public AstClassDecl MainClass() /* throws ParseException */
         {
-            Id cid;                                     // Name of this class
-            Id pid = null;                              // Name of the super class (if it exists)
-            MethodDecl m;                               // Reference to a class level method
-            MethodDeclList ml = new MethodDeclList();   // List of class methods
-            VarDecl v;                                  // Reference to a class level variable
-            VarDeclList vl = new VarDeclList();
+            AstId cid;                                     // Name of this class
+            AstId pid = null;                              // Name of the super class (if it exists)
+            AstMethodDecl m;                               // Reference to a class level method
+            AstMethodDeclList ml = new AstMethodDeclList();   // List of class methods
+            AstVarDecl v;                                  // Reference to a class level variable
+            AstVarDeclList vl = new AstVarDeclList();
             bool done = false;
 
             jj_consume_token(MpRegExpId.CLASS);
@@ -129,13 +150,13 @@ namespace DemiTasse.minipsr
                 if (!done)
                 {
                     v = VarDecl();
-                    vl.add( v );
+                    vl.Add(v);
                 }
             }
 
             // Get a reference to the Main method and add it to the list of methods in this class
             m = MainMethod();
-            ml.add( m );
+            ml.Add(m);
             
             done = false;
             /* label_3: */
@@ -153,25 +174,25 @@ namespace DemiTasse.minipsr
                 if (!done)
                 {
                     m = MethodDecl();
-                    ml.add( m );
+                    ml.Add(m);
                 }
             }
             jj_consume_token(MpRegExpId.RBRACE);
-            return new ClassDecl( cid, pid, vl, ml );
+            return new AstClassDecl( cid, pid, vl, ml );
         }
 
         // --------------------------------------------------------------------------
         // ClassDecl  -> "class" <ID> ["extends" <ID>] "{" {VarDecl} {MethodDecl} "}"
         // --------------------------------------------------------------------------
 
-        static /* final */ public ClassDecl ClassDecl() /* throws ParseException */
+        static /* final */ public AstClassDecl ClassDecl() /* throws ParseException */
         {
-            Id cid;                                     // Name of this class
-            Id pid = null;                              // Name of the super class (if it exists)
-            MethodDecl m;                               // Reference to a class level method
-            MethodDeclList ml = new MethodDeclList();   // List of class methods
-            VarDecl v;                                  // Reference to a class level variable
-            VarDeclList vl = new VarDeclList();
+            AstId cid;                                     // Name of this class
+            AstId pid = null;                              // Name of the super class (if it exists)
+            AstMethodDecl m;                               // Reference to a class level method
+            AstMethodDeclList ml = new AstMethodDeclList();   // List of class methods
+            AstVarDecl v;                                  // Reference to a class level variable
+            AstVarDeclList vl = new AstVarDeclList();
             bool done;
 
             jj_consume_token(MpRegExpId.CLASS);
@@ -211,7 +232,7 @@ namespace DemiTasse.minipsr
                 if (!done)
                 {
                     v = VarDecl();
-                    vl.add( v );
+                    vl.Add(v);
                 }
             }
 
@@ -231,11 +252,11 @@ namespace DemiTasse.minipsr
                 if (!done)
                 {
                     m = MethodDecl();
-                    ml.add(m);
+                    ml.Add(m);
                 }
             }
             jj_consume_token(MpRegExpId.RBRACE);
-            return new ClassDecl( cid, pid, vl, ml );
+            return new AstClassDecl( cid, pid, vl, ml );
         }
 
         /// <summary>
@@ -243,15 +264,15 @@ namespace DemiTasse.minipsr
         /// </summary>
         /// <returns></returns>
         
-        static /* final */ public MethodDecl MainMethod() /* throws ParseException */
+        static /* final */ public AstMethodDecl MainMethod() /* throws ParseException */
         {
-            DemiTasse.ast.Type t = null;
-            Id id = new Id( "main" );
-            FormalList fl = null;
-            VarDecl v;
-            VarDeclList vl = new VarDeclList();
-            Stmt s;
-            StmtList sl = new StmtList();
+            DemiTasse.ast.AstType t = null;
+            AstId id = new AstId( "main" );
+            AstFormalList fl = null;
+            AstVarDecl v;
+            AstVarDeclList vl = new AstVarDeclList();
+            AstStmt s;
+            AstStmtList sl = new AstStmtList();
             bool done;
             
             jj_consume_token(MpRegExpId.PUBLIC);
@@ -270,7 +291,7 @@ namespace DemiTasse.minipsr
             while (jj_2_1(2))
             {
                 v = VarDecl();
-                vl.add( v );
+                vl.Add(v);
             }
 
             /* label_7: */
@@ -301,26 +322,26 @@ namespace DemiTasse.minipsr
                 if(!done)
                 {
                     s = Statement();
-                    sl.add( s );
+                    sl.Add(s);
                 }
             }
             jj_consume_token(MpRegExpId.RBRACE);
-            return new MethodDecl( t, id, fl, vl, sl );
+            return new AstMethodDecl( t, id, fl, vl, sl );
         }
 
         // -----------------------------------------------------------------------------
         // "public" (Type | "void") <ID> "(" [Formals] ")" "{" {VarDecl} {Statement} "}"
         // -----------------------------------------------------------------------------
         
-        static /* final */ public MethodDecl MethodDecl() /* throws ParseException */
+        static /* final */ public AstMethodDecl MethodDecl() /* throws ParseException */
         {
-            DemiTasse.ast.Type t = null;
-            Id id;
-            FormalList fl = null;
-            VarDecl v;
-            VarDeclList vl = new VarDeclList();
-            Stmt s;
-            StmtList sl = new StmtList();
+            DemiTasse.ast.AstType t = null;
+            AstId id;
+            AstFormalList fl = null;
+            AstVarDecl v;
+            AstVarDeclList vl = new AstVarDeclList();
+            AstStmt s;
+            AstStmtList sl = new AstStmtList();
 
             jj_consume_token(MpRegExpId.PUBLIC);
             switch ((jj_ntk == MpRegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
@@ -340,7 +361,7 @@ namespace DemiTasse.minipsr
                 default:
                     jj_la1[7] = jj_gen;
                     jj_consume_token(MpRegExpId.UNDEFINED);
-                    throw new miniParseException();
+                    throw new MiniParseException();
             }
             
             id = Id();
@@ -369,7 +390,7 @@ namespace DemiTasse.minipsr
             while (jj_2_2(2))
             {
                 v = VarDecl();
-                vl.add( v );
+                vl.Add(v);
             }
 
             /* label_9:*/
@@ -400,27 +421,27 @@ namespace DemiTasse.minipsr
                 if (!done)
                 {
                     s = Statement();
-                    sl.add(s);
+                    sl.Add(s);
                 }
             }
 
             jj_consume_token(MpRegExpId.RBRACE);
-            return new MethodDecl( t, id, fl, vl, sl );
+            return new AstMethodDecl( t, id, fl, vl, sl );
         }
 
         // --------------------------------------------------------------------------
         // Formals  ->  Type <ID> {"," Type <ID>}
         // --------------------------------------------------------------------------
 
-        static /* final */ public FormalList Formals() /* throws ParseException */
+        static /* final */ public AstFormalList Formals() /* throws ParseException */
         {
-            DemiTasse.ast.Type t = null;
-            Id id = null;
-            FormalList fl = new FormalList();
+            DemiTasse.ast.AstType t = null;
+            AstId id = null;
+            AstFormalList fl = new AstFormalList();
 
             t = Type();
             id = Id();
-            fl.add( new Formal( t, id ) );
+            fl.Add( new AstFormal( t, id ) );
 
             /* label_10: */
             bool done = false;
@@ -440,7 +461,7 @@ namespace DemiTasse.minipsr
                     jj_consume_token(MpRegExpId.COMMA);
                     t = Type();
                     id = Id();
-                    fl.add(new Formal(t, id));
+                    fl.Add(new AstFormal(t, id));
                 }
             }
             {if (true) return fl;}
@@ -451,11 +472,11 @@ namespace DemiTasse.minipsr
         // VarDec  ->  Type <ID> ["=" InitExpr] ";"
         // --------------------------------------------------------------------------
 
-        static /* final */ public VarDecl VarDecl() /* throws ParseException */
+        static /* final */ public AstVarDecl VarDecl() /* throws ParseException */
         {
-            DemiTasse.ast.Type t = null;
-            Id id = null;
-            Exp e = null;
+            DemiTasse.ast.AstType t = null;
+            AstId id = null;
+            AstExp e = null;
             t = Type();
             id = Id();
             switch ((jj_ntk == MpRegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
@@ -470,17 +491,17 @@ namespace DemiTasse.minipsr
                     break;
             }
             jj_consume_token(MpRegExpId.SEMICOLON);
-            return new VarDecl( t, id, e );
+            return new AstVarDecl( t, id, e );
         }
 
         // --------------------------------------------------------------------------
         // Type  ->  BasicType ["[" "]"] | <ID>
         // --------------------------------------------------------------------------
         
-        static /* final */ public DemiTasse.ast.Type Type() /* throws ParseException */
+        static /* final */ public DemiTasse.ast.AstType Type() /* throws ParseException */
         {
-            DemiTasse.ast.Type t = null;
-            Id id = null;
+            DemiTasse.ast.AstType t = null;
+            AstId id = null;
 
             switch ((jj_ntk == MpRegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
             {
@@ -492,7 +513,7 @@ namespace DemiTasse.minipsr
                         case MpRegExpId.LBRACKET:
                             jj_consume_token(MpRegExpId.LBRACKET);
                             jj_consume_token(MpRegExpId.RBRACKET);
-                            t = new ArrayType( t );
+                            t = new AstArrayType( t );
                             break;
                         default:
                             jj_la1[12] = jj_gen;
@@ -508,7 +529,7 @@ namespace DemiTasse.minipsr
                         case MpRegExpId.LBRACKET:
                             jj_consume_token(MpRegExpId.LBRACKET);
                             jj_consume_token(MpRegExpId.RBRACKET);
-                            t = new ArrayType( t );
+                            t = new AstArrayType( t );
                             break;
                         default:
                             jj_la1[12] = jj_gen;
@@ -518,12 +539,12 @@ namespace DemiTasse.minipsr
 
                 case MpRegExpId.ID:
                     id = Id();
-                    return new ObjType( id );
+                    return new AstObjType( id );
 
                 default:
                     jj_la1[13] = jj_gen;
                     jj_consume_token(MpRegExpId.UNDEFINED);
-                    throw new miniParseException();
+                    throw new MiniParseException();
             }
         throw new Error("Missing return statement in function");
         }
@@ -532,24 +553,24 @@ namespace DemiTasse.minipsr
         // BasicType  ->  "int" | "bool"
         // --------------------------------------------------------------------------
 
-        static /* final */ public BasicType BasicType() /* throws ParseException */
+        static /* final */ public AstBasicType BasicType() /* throws ParseException */
         {
             switch ((jj_ntk == MpRegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
             {
                 case MpRegExpId.INT:
 
                     jj_consume_token(MpRegExpId.INT);
-                    return new BasicType(DemiTasse.ast.BasicType.Int);
+                    return new AstBasicType(DemiTasse.ast.AstBasicType.Int);
 
                 case MpRegExpId.BOOLEAN:
 
                     jj_consume_token(MpRegExpId.BOOLEAN);
-                    return new BasicType(DemiTasse.ast.BasicType.Bool);
+                    return new AstBasicType(DemiTasse.ast.AstBasicType.Bool);
 
                 default:
                     jj_la1[14] = jj_gen;
                     jj_consume_token(MpRegExpId.UNDEFINED);
-                    throw new miniParseException();
+                    throw new MiniParseException();
             }
             throw new Error("Missing return statement in function");
         }
@@ -563,9 +584,9 @@ namespace DemiTasse.minipsr
         //            |  ReturnStm
         // --------------------------------------------------------------------------
 
-        static /* final */ public Stmt Statement() /* throws ParseException */
+        static /* final */ public AstStmt Statement() /* throws ParseException */
         {
-            Stmt s = null;
+            AstStmt s = null;
             switch ((jj_ntk == MpRegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
             {
                 case MpRegExpId.LBRACE:
@@ -599,7 +620,7 @@ namespace DemiTasse.minipsr
                 default:
                     jj_la1[15] = jj_gen;
                     jj_consume_token(MpRegExpId.UNDEFINED);
-                    throw new miniParseException();
+                    throw new MiniParseException();
                 }
             throw new Error("Missing return statement in function");
         }
@@ -608,10 +629,10 @@ namespace DemiTasse.minipsr
         // BlockStmt  ->  <LBRACE> ( Statement() )* <RBRACE>
         // --------------------------------------------------------------------------
         
-        static /* final */ public Block BlockStmt() /* throws ParseException */
+        static /* final */ public AstBlock BlockStmt() /* throws ParseException */
         {
-            Stmt s = null;
-            StmtList sl = new StmtList();
+            AstStmt s = null;
+            AstStmtList sl = new AstStmtList();
             jj_consume_token( MpRegExpId.LBRACE);
 
             /* label_11: */
@@ -642,11 +663,11 @@ namespace DemiTasse.minipsr
                 if (!done)
                 {
                     s = Statement();
-                    sl.add(s);
+                    sl.Add(s);
                 }
             }
             jj_consume_token(MpRegExpId.RBRACE);
-            return new Block( sl );
+            return new AstBlock( sl );
         }
 
 
@@ -654,9 +675,9 @@ namespace DemiTasse.minipsr
         // ReturnStmt  ->  <RETURN> [ Expr() ] <SEMICOLON>
         // --------------------------------------------------------------------------
         
-        static /* final */ public Return ReturnStmt() /* throws ParseException */
+        static /* final */ public AstReturn ReturnStmt() /* throws ParseException */
         {
-            Exp e = null;
+            AstExp e = null;
             
             jj_consume_token(MpRegExpId.RETURN);
             
@@ -693,17 +714,17 @@ namespace DemiTasse.minipsr
                     break;
             }
             jj_consume_token(MpRegExpId.SEMICOLON);
-            return new Return( e );
+            return new AstReturn( e );
         }
 
         // --------------------------------------------------------------------------
         // AssignOrCallStmt  -> Lvalue "(" Args ")" | = InitExpr
         // --------------------------------------------------------------------------
-        static /* final */ public Stmt AssignOrCallStmt() /* throws ParseException */
+        static /* final */ public AstStmt AssignOrCallStmt() /* throws ParseException */
         {
-            Exp lhs = null;
-            Exp rhs = null;
-            ExpList args = null;
+            AstExp lhs = null;
+            AstExp rhs = null;
+            AstExpList args = null;
             bool isCall = false;
             lhs = Lvalue();
             switch ((jj_ntk == MpRegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
@@ -757,28 +778,28 @@ namespace DemiTasse.minipsr
 
                     jj_la1[19] = jj_gen;
                     jj_consume_token(MpRegExpId.UNDEFINED);
-                    throw new miniParseException();
+                    throw new MiniParseException();
             }
 
             jj_consume_token(MpRegExpId.SEMICOLON);
             if ( isCall )
             {
-                if (null != ( lhs as Id ))
+                if (null != ( lhs as AstId ))
                 {
                     // System.out.println("CallStmt: ID");
-                    return new CallStmt( new This(), (Id)lhs, args );
+                    return new AstCallStmt( new AstThis(), (AstId)lhs, args );
                 }
-                else if (null != (lhs as Field ))
+                else if (null != (lhs as AstField ))
                 {
                     // System.out.println("CallStmt: Field");
-                    return new CallStmt( ((Field)lhs).obj, ((Field)lhs).var, args );
+                    return new AstCallStmt( ((AstField)lhs).obj, ((AstField)lhs).var, args );
                 }
                 else
                     return null;
             }
             else
             {
-                return new Assign( lhs, rhs );
+                return new AstAssign( lhs, rhs );
             }
             throw new Error("Missing return statement in function");
         }
@@ -787,11 +808,11 @@ namespace DemiTasse.minipsr
         // IfStmt  ->  "if" "(" Expr() ")" Statement ["else" Statement]
         // --------------------------------------------------------------------------
 
-        static /* final */ public If IfStmt() /* throws ParseException */
+        static /* final */ public AstIf IfStmt() /* throws ParseException */
         {
-            Exp e = null;
-            Stmt s1 = null;
-            Stmt s2 = null;
+            AstExp e = null;
+            AstStmt s1 = null;
+            AstStmt s2 = null;
 
             jj_consume_token(MpRegExpId.IF);
             jj_consume_token(MpRegExpId.LPAREN);
@@ -809,32 +830,32 @@ namespace DemiTasse.minipsr
                     jj_la1[20] = jj_gen;
                     break;
             }
-            return new If( e, s1, s2);
+            return new AstIf( e, s1, s2);
         }
 
         // --------------------------------------------------------------------------
         // WhileStmt  ->  <WHILE> <LPAREN> e = Expr() <RPAREN> s = Statement()
         // --------------------------------------------------------------------------
 
-        static /* final */ public While WhileStmt() /* throws ParseException */
+        static /* final */ public AstWhile WhileStmt() /* throws ParseException */
         {
-            Exp e = null;
-            Stmt s = null;
+            AstExp e = null;
+            AstStmt s = null;
             jj_consume_token(MpRegExpId.WHILE);
             jj_consume_token(MpRegExpId.LPAREN);
             e = Expr();
             jj_consume_token(MpRegExpId.RPAREN);
             s = Statement();
-            return new While( e, s );
+            return new AstWhile( e, s );
         }
 
         // --------------------------------------------------------------------------------------
         // PrintStmt  ->  <SYSTEM_OUT_PRINTLN> <LPAREN> [ Expr() | <STRVAL> ] <RPAREN> <SEMICOLON>
         // --------------------------------------------------------------------------------------
         
-        static /* final */ public Print PrintStmt() /* throws ParseException */
+        static /* final */ public AstPrint PrintStmt() /* throws ParseException */
         {
-            Exp e = null;
+            AstExp e = null;
 
             jj_consume_token(MpRegExpId.SYSTEM_OUT_PRINTLN);
             jj_consume_token(MpRegExpId.LPAREN);
@@ -853,7 +874,7 @@ namespace DemiTasse.minipsr
                         case MpRegExpId.NOT: e = Expr(); break;
                         case MpRegExpId.INTVAL: e = Expr(); break;
                         case MpRegExpId.STRVAL: e = StrVal(); break;
-                        default: jj_la1[21] = jj_gen; jj_consume_token(MpRegExpId.UNDEFINED); throw new miniParseException();
+                        default: jj_la1[21] = jj_gen; jj_consume_token(MpRegExpId.UNDEFINED); throw new MiniParseException();
                     }
                     break;
                 case MpRegExpId.THIS:
@@ -868,7 +889,7 @@ namespace DemiTasse.minipsr
                         case MpRegExpId.NOT: e = Expr(); break;
                         case MpRegExpId.INTVAL: e = Expr(); break;
                         case MpRegExpId.STRVAL: e = StrVal(); break;
-                        default: jj_la1[21] = jj_gen; jj_consume_token(MpRegExpId.UNDEFINED); throw new miniParseException();
+                        default: jj_la1[21] = jj_gen; jj_consume_token(MpRegExpId.UNDEFINED); throw new MiniParseException();
                     }
                     break;
                 case MpRegExpId.TRUE:
@@ -883,7 +904,7 @@ namespace DemiTasse.minipsr
                         case MpRegExpId.NOT: e = Expr(); break;
                         case MpRegExpId.INTVAL: e = Expr(); break;
                         case MpRegExpId.STRVAL: e = StrVal(); break;
-                        default: jj_la1[21] = jj_gen; jj_consume_token(MpRegExpId.UNDEFINED); throw new miniParseException();
+                        default: jj_la1[21] = jj_gen; jj_consume_token(MpRegExpId.UNDEFINED); throw new MiniParseException();
                     }
                     break;
                 case MpRegExpId.ID:
@@ -898,7 +919,7 @@ namespace DemiTasse.minipsr
                         case MpRegExpId.NOT: e = Expr(); break;
                         case MpRegExpId.INTVAL: e = Expr(); break;
                         case MpRegExpId.STRVAL: e = StrVal(); break;
-                        default: jj_la1[21] = jj_gen; jj_consume_token(MpRegExpId.UNDEFINED); throw new miniParseException();
+                        default: jj_la1[21] = jj_gen; jj_consume_token(MpRegExpId.UNDEFINED); throw new MiniParseException();
                     }
                     break;
                 case MpRegExpId.LPAREN:
@@ -913,7 +934,7 @@ namespace DemiTasse.minipsr
                         case MpRegExpId.NOT: e = Expr(); break;
                         case MpRegExpId.INTVAL: e = Expr(); break;
                         case MpRegExpId.STRVAL: e = StrVal(); break;
-                        default: jj_la1[21] = jj_gen; jj_consume_token(MpRegExpId.UNDEFINED); throw new miniParseException();
+                        default: jj_la1[21] = jj_gen; jj_consume_token(MpRegExpId.UNDEFINED); throw new MiniParseException();
                     }
                     break;
                 case MpRegExpId.SUB:
@@ -928,7 +949,7 @@ namespace DemiTasse.minipsr
                         case MpRegExpId.NOT: e = Expr(); break;
                         case MpRegExpId.INTVAL: e = Expr(); break;
                         case MpRegExpId.STRVAL: e = StrVal(); break;
-                        default: jj_la1[21] = jj_gen; jj_consume_token(MpRegExpId.UNDEFINED); throw new miniParseException();
+                        default: jj_la1[21] = jj_gen; jj_consume_token(MpRegExpId.UNDEFINED); throw new MiniParseException();
                     }
                     break;
                 case MpRegExpId.NOT:
@@ -943,7 +964,7 @@ namespace DemiTasse.minipsr
                         case MpRegExpId.NOT: e = Expr(); break;
                         case MpRegExpId.INTVAL: e = Expr(); break;
                         case MpRegExpId.STRVAL: e = StrVal(); break;
-                        default: jj_la1[21] = jj_gen; jj_consume_token(MpRegExpId.UNDEFINED); throw new miniParseException();
+                        default: jj_la1[21] = jj_gen; jj_consume_token(MpRegExpId.UNDEFINED); throw new MiniParseException();
                     }
                     break;
                 case MpRegExpId.INTVAL:
@@ -958,7 +979,7 @@ namespace DemiTasse.minipsr
                         case MpRegExpId.NOT: e = Expr(); break;
                         case MpRegExpId.INTVAL: e = Expr(); break;
                         case MpRegExpId.STRVAL: e = StrVal(); break;
-                        default: jj_la1[21] = jj_gen; jj_consume_token(MpRegExpId.UNDEFINED); throw new miniParseException();
+                        default: jj_la1[21] = jj_gen; jj_consume_token(MpRegExpId.UNDEFINED); throw new MiniParseException();
                     }
                     break;
                 case MpRegExpId.STRVAL:
@@ -973,7 +994,7 @@ namespace DemiTasse.minipsr
                         case MpRegExpId.NOT: e = Expr(); break;
                         case MpRegExpId.INTVAL: e = Expr(); break;
                         case MpRegExpId.STRVAL: e = StrVal(); break;
-                        default: jj_la1[21] = jj_gen; jj_consume_token(MpRegExpId.UNDEFINED); throw new miniParseException();
+                        default: jj_la1[21] = jj_gen; jj_consume_token(MpRegExpId.UNDEFINED); throw new MiniParseException();
                     }
                     break;
 
@@ -983,19 +1004,19 @@ namespace DemiTasse.minipsr
             }
             jj_consume_token(MpRegExpId.RPAREN);
             jj_consume_token(MpRegExpId.SEMICOLON);
-            return new Print( e );
+            return new AstPrint( e );
         }
 
         // --------------------------------------------------------------------------
         // Args -> Expr {"," Expr}
         // --------------------------------------------------------------------------
 
-        static /* final */ public ExpList Args() /* throws ParseException */
+        static /* final */ public AstExpList Args() /* throws ParseException */
         {
-            Exp e = null;
-            ExpList el = new ExpList();
+            AstExp e = null;
+            AstExpList el = new AstExpList();
             e = Expr();
-            el.add( e );
+            el.Add( e );
 
             /* label_12: */
             bool done = false;
@@ -1014,7 +1035,7 @@ namespace DemiTasse.minipsr
                 {
                     jj_consume_token(MpRegExpId.COMMA);
                     e = Expr();
-                    el.add(e);
+                    el.Add(e);
                 }
             }
             return el;
@@ -1026,12 +1047,12 @@ namespace DemiTasse.minipsr
         //           |  Expr 
         // --------------------------------------------------------------------------
 
-        static /* final */ public Exp InitExpr() /* throws ParseException */
+        static /* final */ public AstExp InitExpr() /* throws ParseException */
         {
-            DemiTasse.ast.Type t = null;
-            Exp e = null;
-            Id id = null;
-            ExpList args = null;
+            DemiTasse.ast.AstType t = null;
+            AstExp e = null;
+            AstId id = null;
+            AstExpList args = null;
             int[] i = new int[1];
 
             switch ((jj_ntk == MpRegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
@@ -1046,7 +1067,7 @@ namespace DemiTasse.minipsr
                             jj_consume_token(MpRegExpId.LBRACKET);
                             IntVal(i);
                             jj_consume_token(MpRegExpId.RBRACKET);
-                            return new NewArray(t, i[0]);
+                            return new AstNewArray(t, i[0]);
 
                         case MpRegExpId.INT:
 
@@ -1054,7 +1075,7 @@ namespace DemiTasse.minipsr
                             jj_consume_token(MpRegExpId.LBRACKET);
                             IntVal(i);
                             jj_consume_token(MpRegExpId.RBRACKET);
-                            return new NewArray( t, i[0] );
+                            return new AstNewArray( t, i[0] );
 
                         case MpRegExpId.ID:
 
@@ -1073,12 +1094,12 @@ namespace DemiTasse.minipsr
                                 default: jj_la1[24] = jj_gen; break;
                             }
                             jj_consume_token(MpRegExpId.RPAREN);
-                            return new NewObj( id, args );
+                            return new AstNewObj( id, args );
 
                         default:
                             jj_la1[25] = jj_gen;
                             jj_consume_token(MpRegExpId.UNDEFINED);
-                            throw new miniParseException();
+                            throw new MiniParseException();
                     }
                     //break;
 
@@ -1094,7 +1115,7 @@ namespace DemiTasse.minipsr
                 default:
                     jj_la1[26] = jj_gen;
                     jj_consume_token(MpRegExpId.UNDEFINED);
-                    throw new miniParseException();
+                    throw new MiniParseException();
             }
             throw new Error("Missing return statement in function");
         }
@@ -1103,10 +1124,10 @@ namespace DemiTasse.minipsr
         // Expr -> AndExpr OrTail
         // ----------------------------------------------------------------
 
-        static /* final */ public Exp Expr() /* throws ParseException */
+        static /* final */ public AstExp Expr() /* throws ParseException */
         {
-            Exp e1 = null;
-            Exp e2 = null;
+            AstExp e1 = null;
+            AstExp e2 = null;
             e1 = AndExpr();
             e2 = OrTail(e1);
             return e2 == null ? e1 : e2;
@@ -1116,17 +1137,17 @@ namespace DemiTasse.minipsr
         // OrTail  ->  [ "||" AndExpr OrTail ]
         // ----------------------------------------------------------------
         
-        static /* final */ public Exp OrTail(Exp e0) /* throws ParseException */
+        static /* final */ public AstExp OrTail(AstExp e0) /* throws ParseException */
         {
-            Exp e1 = null;
-            Exp e2 = null;
+            AstExp e1 = null;
+            AstExp e2 = null;
 
             switch ((jj_ntk == MpRegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
             {
                 case MpRegExpId.OR:
                     jj_consume_token(MpRegExpId.OR);
                     e1 = AndExpr();
-                    e1 = new Binop(DemiTasse.ast.Binop.OP.OR, e0, e1);
+                    e1 = new AstBinop(DemiTasse.ast.AstBinop.OP.OR, e0, e1);
                     e2 = OrTail(e1);
                     break;
                 default:
@@ -1140,10 +1161,10 @@ namespace DemiTasse.minipsr
         // AndExpr -> RelExpr AndTail
         // ----------------------------------------------------------------
 
-        static /* final */ public Exp AndExpr() /* throws ParseException */
+        static /* final */ public AstExp AndExpr() /* throws ParseException */
         {
-            Exp e1 = null;
-            Exp e2 = null;
+            AstExp e1 = null;
+            AstExp e2 = null;
             e1 = RelExpr();
             e2 = AndTail(e1);
             return e2 == null ? e1 : e2;
@@ -1153,10 +1174,10 @@ namespace DemiTasse.minipsr
         // AndTail  ->  [ "&&" RelExpr AndTail ]
         // ----------------------------------------------------------------
 
-        static /* final */ public Exp AndTail(Exp e0) /* throws ParseException */
+        static /* final */ public AstExp AndTail(AstExp e0) /* throws ParseException */
         {
-            Exp e1 = null;
-            Exp e2 = null;
+            AstExp e1 = null;
+            AstExp e2 = null;
 
             switch ((jj_ntk == MpRegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
             {
@@ -1164,7 +1185,7 @@ namespace DemiTasse.minipsr
 
                     jj_consume_token(MpRegExpId.AND);
                     e1 = RelExpr();
-                    e1 = new Binop(DemiTasse.ast.Binop.OP.AND, e0, e1);
+                    e1 = new AstBinop(DemiTasse.ast.AstBinop.OP.AND, e0, e1);
                     e2 = AndTail(e1);
                     break;
 
@@ -1180,11 +1201,11 @@ namespace DemiTasse.minipsr
         // RelExpr  ->  ArithExpr [ RelOp ArithExpr ]
         // ----------------------------------------------------------------
 
-        static /* final */ public Exp RelExpr() /* throws ParseException */
+        static /* final */ public AstExp RelExpr() /* throws ParseException */
         {
-            Exp e1 = null;
-            Exp e2 = null;
-            Relop.OP op = (Relop.OP)(-1);
+            AstExp e1 = null;
+            AstExp e2 = null;
+            AstRelop.OP op = (AstRelop.OP)(-1);
             e1 = ArithExpr();
 
             switch ((jj_ntk == MpRegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
@@ -1223,17 +1244,17 @@ namespace DemiTasse.minipsr
                     jj_la1[29] = jj_gen;
                     break;
             }
-            return e2 == null ? e1 : new Relop( op, e1, e2);
+            return e2 == null ? e1 : new AstRelop( op, e1, e2);
         }
 
         // ----------------------------------------------------------------
         // ArithExpr  ->  Term ArithTail
         // ----------------------------------------------------------------
 
-        static /* final */ public Exp ArithExpr() /* throws ParseException */
+        static /* final */ public AstExp ArithExpr() /* throws ParseException */
         {
-            Exp e1 = null;
-            Exp e2 = null;
+            AstExp e1 = null;
+            AstExp e2 = null;
             e1 = Term();
             e2 = ArithTail(e1);
             return e2 == null ? e1 : e2;
@@ -1243,11 +1264,11 @@ namespace DemiTasse.minipsr
         // ArithTail  ->  [ ( "+" | "-" ) Term ArithTail ]
         // ----------------------------------------------------------------
 
-        static /* final */ public Exp ArithTail(Exp e0) /* throws ParseException */
+        static /* final */ public AstExp ArithTail(AstExp e0) /* throws ParseException */
         {
-            Exp e1 = null;
-            Exp e2 = null;
-            DemiTasse.ast.Binop.OP op;
+            AstExp e1 = null;
+            AstExp e2 = null;
+            DemiTasse.ast.AstBinop.OP op;
 
             switch ((jj_ntk == MpRegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
             {
@@ -1257,19 +1278,19 @@ namespace DemiTasse.minipsr
                     {
                         case MpRegExpId.ADD:
                             jj_consume_token(MpRegExpId.ADD);
-                            op = DemiTasse.ast.Binop.OP.ADD;
+                            op = DemiTasse.ast.AstBinop.OP.ADD;
                             break;
                         case MpRegExpId.SUB:
                             jj_consume_token(MpRegExpId.SUB);
-                            op = DemiTasse.ast.Binop.OP.SUB;
+                            op = DemiTasse.ast.AstBinop.OP.SUB;
                             break;
                         default:
                             jj_la1[30] = jj_gen;
                             jj_consume_token(MpRegExpId.UNDEFINED);
-                            throw new miniParseException();
+                            throw new MiniParseException();
                     }
                     e1 = Term();
-                    e1 = new Binop(op, e0, e1);
+                    e1 = new AstBinop(op, e0, e1);
                     e2 = ArithTail(e1);
                     break;
 
@@ -1279,19 +1300,19 @@ namespace DemiTasse.minipsr
                     {
                         case MpRegExpId.ADD:
                             jj_consume_token(MpRegExpId.ADD);
-                            op = DemiTasse.ast.Binop.OP.ADD;
+                            op = DemiTasse.ast.AstBinop.OP.ADD;
                             break;
                         case MpRegExpId.SUB:
                             jj_consume_token(MpRegExpId.SUB);
-                            op = DemiTasse.ast.Binop.OP.SUB;
+                            op = DemiTasse.ast.AstBinop.OP.SUB;
                             break;
                         default:
                             jj_la1[30] = jj_gen;
                             jj_consume_token(MpRegExpId.UNDEFINED);
-                            throw new miniParseException();
+                            throw new MiniParseException();
                     }
                     e1 = Term();
-                    e1 = new Binop( op, e0, e1 );
+                    e1 = new AstBinop( op, e0, e1 );
                     e2 = ArithTail(e1);
                     break;
 
@@ -1306,10 +1327,10 @@ namespace DemiTasse.minipsr
         // Term  ->  Factor TermTail
         // ----------------------------------------------------------------
         
-        static /* final */ public Exp Term() /* throws ParseException */
+        static /* final */ public AstExp Term() /* throws ParseException */
         {
-            Exp e1 = null;
-            Exp e2 = null;
+            AstExp e1 = null;
+            AstExp e2 = null;
             e1 = Factor();
             e2 = TermTail(e1);
             return e2 == null ? e1 : e2;
@@ -1319,11 +1340,11 @@ namespace DemiTasse.minipsr
         // TermTail  -> ("*" | "/" ) Factor TermTail
         // ----------------------------------------------------------------
 
-        static /* final */ public Exp TermTail(Exp e0) /* throws ParseException */
+        static /* final */ public AstExp TermTail(AstExp e0) /* throws ParseException */
         {
-            Exp e1 = null;
-            Exp e2 = null;
-            DemiTasse.ast.Binop.OP op;
+            AstExp e1 = null;
+            AstExp e2 = null;
+            DemiTasse.ast.AstBinop.OP op;
 
             switch ((jj_ntk == MpRegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
             {
@@ -1332,21 +1353,21 @@ namespace DemiTasse.minipsr
                     {
                         case MpRegExpId.MUL:
                             jj_consume_token(MpRegExpId.MUL);
-                            op = DemiTasse.ast.Binop.OP.MUL;
+                            op = DemiTasse.ast.AstBinop.OP.MUL;
                             break;
 
                         case MpRegExpId.DIV:
                             jj_consume_token(MpRegExpId.DIV);
-                            op = DemiTasse.ast.Binop.OP.DIV;
+                            op = DemiTasse.ast.AstBinop.OP.DIV;
                             break;
 
                         default:
                             jj_la1[32] = jj_gen;
                             jj_consume_token(MpRegExpId.UNDEFINED);
-                            throw new miniParseException();
+                            throw new MiniParseException();
                     }
                     e1 = Factor();
-                    e1 = new Binop(op, e0, e1);
+                    e1 = new AstBinop(op, e0, e1);
                     e2 = TermTail(e1);
                     break;
 
@@ -1355,21 +1376,21 @@ namespace DemiTasse.minipsr
                     {
                         case MpRegExpId.MUL:
                             jj_consume_token(MpRegExpId.MUL);
-                            op = DemiTasse.ast.Binop.OP.MUL;
+                            op = DemiTasse.ast.AstBinop.OP.MUL;
                             break;
 
                         case MpRegExpId.DIV:
                             jj_consume_token(MpRegExpId.DIV);
-                            op = DemiTasse.ast.Binop.OP.DIV;
+                            op = DemiTasse.ast.AstBinop.OP.DIV;
                             break;
 
                         default:
                             jj_la1[32] = jj_gen;
                             jj_consume_token(MpRegExpId.UNDEFINED);
-                            throw new miniParseException();
+                            throw new MiniParseException();
                     }
                     e1 = Factor();
-                    e1 = new Binop( op, e0, e1 );
+                    e1 = new AstBinop( op, e0, e1 );
                     e2 = TermTail(e1);
                     break;
 
@@ -1386,13 +1407,13 @@ namespace DemiTasse.minipsr
         //             | "(" Expr ")"
         //             | Literal
         // ----------------------------------------------------------------
-        static /* final */ public Exp Factor() /* throws ParseException */
+        static /* final */ public AstExp Factor() /* throws ParseException */
         {
-            Exp e = null;
-            Exp factor = null;
+            AstExp e = null;
+            AstExp factor = null;
             bool neg = false;
             bool not = false;
-            ExpList args = null;
+            AstExpList args = null;
             bool isCall = false;
 
             switch ((jj_ntk == MpRegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
@@ -1412,13 +1433,13 @@ namespace DemiTasse.minipsr
                         default:
                             jj_la1[34] = jj_gen;
                             jj_consume_token(MpRegExpId.UNDEFINED);
-                            throw new miniParseException();
+                            throw new MiniParseException();
                     }
                     factor = Factor();
                     if (neg)
-                        return new Unop(Unop.OP.NEG, factor);
+                        return new AstUnop(AstUnop.OP.NEG, factor);
                     else if (not)
-                        return new Unop(Unop.OP.NOT, factor);
+                        return new AstUnop(AstUnop.OP.NOT, factor);
                     else
                         return factor;
 
@@ -1437,13 +1458,13 @@ namespace DemiTasse.minipsr
                         default:
                             jj_la1[34] = jj_gen;
                             jj_consume_token(MpRegExpId.UNDEFINED);
-                            throw new miniParseException();
+                            throw new MiniParseException();
                     }
                     factor = Factor();
                     if ( neg )
-                        return new Unop( Unop.OP.NEG, factor );
+                        return new AstUnop( AstUnop.OP.NEG, factor );
                     else if ( not )
-                        return new Unop( Unop.OP.NOT, factor );
+                        return new AstUnop( AstUnop.OP.NOT, factor );
                     else
                         return factor;
 
@@ -1460,7 +1481,7 @@ namespace DemiTasse.minipsr
                                     jj_consume_token(MpRegExpId.LENGTH);
                                     jj_consume_token(MpRegExpId.LPAREN);
                                     jj_consume_token(MpRegExpId.RPAREN);
-                                    e = new ArrayLen(e);
+                                    e = new AstArrayLen(e);
                                     break;
 
                                 case MpRegExpId.LPAREN:
@@ -1484,7 +1505,7 @@ namespace DemiTasse.minipsr
                                 default:
                                     jj_la1[36] = jj_gen;
                                     jj_consume_token(MpRegExpId.UNDEFINED);
-                                    throw new miniParseException();
+                                    throw new MiniParseException();
                             }
                             break;
                         case MpRegExpId.DOT:
@@ -1496,7 +1517,7 @@ namespace DemiTasse.minipsr
                                     jj_consume_token(MpRegExpId.LENGTH);
                                     jj_consume_token(MpRegExpId.LPAREN);
                                     jj_consume_token(MpRegExpId.RPAREN);
-                                    e = new ArrayLen(e);
+                                    e = new AstArrayLen(e);
                                     break;
 
                                 case MpRegExpId.LPAREN:
@@ -1520,7 +1541,7 @@ namespace DemiTasse.minipsr
                                 default:
                                     jj_la1[36] = jj_gen;
                                     jj_consume_token(MpRegExpId.UNDEFINED);
-                                    throw new miniParseException();
+                                    throw new MiniParseException();
                             }
                             break;
                         default:
@@ -1529,10 +1550,10 @@ namespace DemiTasse.minipsr
                     }
                     if (isCall)
                     {
-                        if (null != (e as Id))
-                            return new Call(new This(), (Id)e, args);
-                        if (null != (e as Field))
-                            return new Call(((Field)e).obj, ((Field)e).var, args);
+                        if (null != (e as AstId))
+                            return new AstCall(new AstThis(), (AstId)e, args);
+                        if (null != (e as AstField))
+                            return new AstCall(((AstField)e).obj, ((AstField)e).var, args);
                         else
                             return null;
                     }
@@ -1554,7 +1575,7 @@ namespace DemiTasse.minipsr
                                     jj_consume_token(MpRegExpId.LENGTH);
                                     jj_consume_token(MpRegExpId.LPAREN);
                                     jj_consume_token(MpRegExpId.RPAREN);
-                                    e = new ArrayLen(e);
+                                    e = new AstArrayLen(e);
                                     break;
 
                                 case MpRegExpId.LPAREN:
@@ -1578,7 +1599,7 @@ namespace DemiTasse.minipsr
                                 default:
                                     jj_la1[36] = jj_gen;
                                     jj_consume_token(MpRegExpId.UNDEFINED);
-                                    throw new miniParseException();
+                                    throw new MiniParseException();
                             }
                             break;
                         case MpRegExpId.DOT:
@@ -1590,7 +1611,7 @@ namespace DemiTasse.minipsr
                                     jj_consume_token(MpRegExpId.LENGTH);
                                     jj_consume_token(MpRegExpId.LPAREN);
                                     jj_consume_token(MpRegExpId.RPAREN);
-                                    e = new ArrayLen( e );
+                                    e = new AstArrayLen( e );
                                     break;
 
                                 case MpRegExpId.LPAREN:
@@ -1614,7 +1635,7 @@ namespace DemiTasse.minipsr
                                 default:
                                     jj_la1[36] = jj_gen;
                                     jj_consume_token(MpRegExpId.UNDEFINED);
-                                    throw new miniParseException();
+                                    throw new MiniParseException();
                             }
                             break;
                         default:
@@ -1623,10 +1644,10 @@ namespace DemiTasse.minipsr
                     }
                     if ( isCall )
                     {
-                        if (null != (e as Id))
-                           return new Call( new This(), (Id)e, args );
-                        if (null != (e as Field))
-                            return new Call( ((Field)e).obj, ((Field)e).var, args );
+                        if (null != (e as AstId))
+                           return new AstCall( new AstThis(), (AstId)e, args );
+                        if (null != (e as AstField))
+                            return new AstCall( ((AstField)e).obj, ((AstField)e).var, args );
                         else
                             return null;
                     }
@@ -1649,7 +1670,7 @@ namespace DemiTasse.minipsr
                 default:
                     jj_la1[38] = jj_gen;
                     jj_consume_token(MpRegExpId.UNDEFINED);
-                    throw new miniParseException();
+                    throw new MiniParseException();
             }
             throw new Error("Missing return statement in function");
         }
@@ -1657,10 +1678,10 @@ namespace DemiTasse.minipsr
         // --------------------------------------------------------------------------
         // Lvalue   -> ["this" "."] <ID> {"." <ID>} ["[" Expr "]"]
         // --------------------------------------------------------------------------
-        static /* final */ public Exp Lvalue() /* throws ParseException */
+        static /* final */ public AstExp Lvalue() /* throws ParseException */
         {
-            Exp id = null;
-            Exp ae = null;
+            AstExp id = null;
+            AstExp ae = null;
             
             switch ((jj_ntk == MpRegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
             {
@@ -1694,63 +1715,63 @@ namespace DemiTasse.minipsr
                     jj_la1[40] = jj_gen;
                     break;
             }
-            return ae == null ? id : new ArrayElm( id, ae );
+            return ae == null ? id : new AstArrayElm( id, ae );
         }
 
         // --------------------------------------------------------------------------
         // Id  ->  <ID>
         // --------------------------------------------------------------------------
 
-        static /* final */ public Id Id() /* throws ParseException */ 
+        static /* final */ public AstId Id() /* throws ParseException */ 
         {
             //    System.out.println("ID  ->");
             string id;
             jj_consume_token(MpRegExpId.ID);
             id = token.image;
-            return new Id( id );
+            return new AstId( id );
         }
 
         // --------------------------------------------------------------------------
         // FieldId  ->  Id
         // --------------------------------------------------------------------------
 
-        static /* final */ public Exp FieldId(Exp e) /* throws ParseException */
+        static /* final */ public AstExp FieldId(AstExp e) /* throws ParseException */
         {
-            Id id;
+            AstId id;
             id = Id();
-            return e == null ? (Exp)id : (Exp)(new Field(e, id));
+            return e == null ? (AstExp)id : (AstExp)(new AstField(e, id));
         }
 
         // --------------------------------------------------------------------------
         // ArrayElm  ->  "[" Expr "]"
         // --------------------------------------------------------------------------
   
-        static /* final */ public Exp ArrayElm(Exp pid) /* throws ParseException */
+        static /* final */ public AstExp ArrayElm(AstExp pid) /* throws ParseException */
         {
-            Exp e;
+            AstExp e;
             jj_consume_token(MpRegExpId.LBRACKET);
             e = Expr();
             jj_consume_token(MpRegExpId.RBRACKET);
-            return new ArrayElm( pid, e );
+            return new AstArrayElm( pid, e );
         }
 
         // --------------------------------------------------------------------------
         // This  -> <THIS>
         // --------------------------------------------------------------------------
 
-        static /* final */ public Exp This() /* throws ParseException */
+        static /* final */ public AstExp This() /* throws ParseException */
         {
             jj_consume_token(MpRegExpId.THIS);
-            return new This();
+            return new AstThis();
         }
 
         // --------------------------------------------------------------------------
         // Literal  ->  IntVal | BoolVal
         // --------------------------------------------------------------------------
         
-        static /* final */ public Exp Literal() /* throws ParseException */
+        static /* final */ public AstExp Literal() /* throws ParseException */
         {
-            Exp e;
+            AstExp e;
             int[] i = new int[1];
             
             switch ((jj_ntk == MpRegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
@@ -1762,7 +1783,7 @@ namespace DemiTasse.minipsr
                 default:
                     jj_la1[41] = jj_gen;
                     jj_consume_token(MpRegExpId.UNDEFINED);
-                    throw new miniParseException();
+                    throw new MiniParseException();
             }
             throw new Error("Missing return statement in function");
         }
@@ -1771,16 +1792,16 @@ namespace DemiTasse.minipsr
         // <BOOLVAL>  -> <TRUE> | <FALSE>
         // --------------------------------------------------------------------------
         
-        static /* final */ public BoolVal BoolVal() /* throws ParseException */
+        static /* final */ public AstBoolVal BoolVal() /* throws ParseException */
         {
             switch ((jj_ntk == MpRegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
             {
-                case MpRegExpId.TRUE: jj_consume_token(MpRegExpId.TRUE); return new BoolVal( true );
-                case MpRegExpId.FALSE: jj_consume_token(MpRegExpId.FALSE); return new BoolVal( false );
+                case MpRegExpId.TRUE: jj_consume_token(MpRegExpId.TRUE); return new AstBoolVal( true );
+                case MpRegExpId.FALSE: jj_consume_token(MpRegExpId.FALSE); return new AstBoolVal( false );
                 default:
                     jj_la1[42] = jj_gen;
                     jj_consume_token(MpRegExpId.UNDEFINED);
-                    throw new miniParseException();
+                    throw new MiniParseException();
             }
             throw new Error("Missing return statement in function");
         }
@@ -1789,65 +1810,65 @@ namespace DemiTasse.minipsr
         // IntVal  -> <INTVAL>
         // --------------------------------------------------------------------------
 
-        static /* final */ public IntVal IntVal(int[] i) /* throws ParseException */
+        static /* final */ public AstIntVal IntVal(int[] i) /* throws ParseException */
         {
             string s;
             jj_consume_token(MpRegExpId.INTVAL);
             s = token.image;
             i[0] = int.Parse(s);
-            return new IntVal( i[0] );
+            return new AstIntVal( i[0] );
         }
 
         // --------------------------------------------------------------------------
         // StrVal  ->  <STRVAL>
         // --------------------------------------------------------------------------
   
-        static /* final */ public StrVal StrVal() /* throws ParseException */
+        static /* final */ public AstStrVal StrVal() /* throws ParseException */
         {
             string s;
             jj_consume_token(MpRegExpId.STRVAL);
             s = token.image;
             //s = s.Substring(1, s.Length - 1);
             s = s.Substring(1, s.Length - 2);
-            return new StrVal(s);
+            return new AstStrVal(s);
         }
 
         // --------------------------------------------------------------------------
         // RelOp  ->  <EQ> | <NE> | <LT> | <LE> | <GT> | <GE>
         // --------------------------------------------------------------------------
         
-        static /* final */ public Relop.OP Relop() /* throws ParseException */ 
+        static /* final */ public AstRelop.OP Relop() /* throws ParseException */ 
         {
             switch ((jj_ntk == MpRegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk) 
             {
                 case MpRegExpId.EQ:
                     jj_consume_token(MpRegExpId.EQ);
-                    return ast.Relop.OP.EQ;
+                    return ast.AstRelop.OP.EQ;
 
                 case MpRegExpId.NE:
                     jj_consume_token(MpRegExpId.NE);
-                    return ast.Relop.OP.NE;
+                    return ast.AstRelop.OP.NE;
 
                 case MpRegExpId.LT:
                     jj_consume_token(MpRegExpId.LT);
-                    return ast.Relop.OP.LT;
+                    return ast.AstRelop.OP.LT;
 
                 case MpRegExpId.LE:
                     jj_consume_token(MpRegExpId.LE);
-                    return ast.Relop.OP.LE;
+                    return ast.AstRelop.OP.LE;
 
                 case MpRegExpId.GT:
                     jj_consume_token(MpRegExpId.GT);
-                    return ast.Relop.OP.GT;
+                    return ast.AstRelop.OP.GT;
 
                 case MpRegExpId.GE:
                     jj_consume_token(MpRegExpId.GE);
-                    return ast.Relop.OP.GE;
+                    return ast.AstRelop.OP.GE;
 
                 default:
                     jj_la1[43] = jj_gen;
                     jj_consume_token(MpRegExpId.UNDEFINED);
-                    throw new miniParseException();
+                    throw new MiniParseException();
             }
             throw new Error("Missing return statement in function");
         }
@@ -1856,45 +1877,45 @@ namespace DemiTasse.minipsr
         // Binop  ->  <ADD> | <SUB> | <MUL> | <DIV> | <AND> | <OR>
         // --------------------------------------------------------------------------
 
-        static /* final */ public Binop Binop(Exp e1, Exp e2) /* throws ParseException */
+        static /* final */ public AstBinop Binop(AstExp e1, AstExp e2) /* throws ParseException */
         {
-            ast.Binop.OP op;
+            ast.AstBinop.OP op;
             switch ((jj_ntk == MpRegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
             {
                 case MpRegExpId.ADD:
                     jj_consume_token(MpRegExpId.ADD);
-                    op = ast.Binop.OP.ADD;
+                    op = ast.AstBinop.OP.ADD;
                     break;
 
                 case MpRegExpId.SUB:
                     jj_consume_token(MpRegExpId.SUB);
-                    op = ast.Binop.OP.SUB;
+                    op = ast.AstBinop.OP.SUB;
                     break;
 
                 case MpRegExpId.MUL:
                     jj_consume_token(MpRegExpId.MUL);
-                    op = ast.Binop.OP.MUL;
+                    op = ast.AstBinop.OP.MUL;
                     break;
 
                 case MpRegExpId.DIV:
                     jj_consume_token(MpRegExpId.DIV);
-                    op = ast.Binop.OP.DIV;
+                    op = ast.AstBinop.OP.DIV;
                     break;
 
                 case MpRegExpId.AND:
                     jj_consume_token(MpRegExpId.AND);
-                    op = ast.Binop.OP.AND;
+                    op = ast.AstBinop.OP.AND;
                     break;
 
                 case MpRegExpId.OR:
                     jj_consume_token(MpRegExpId.OR);
-                    op = ast.Binop.OP.OR;
-                    return new Binop( op, e1, e2 );
+                    op = ast.AstBinop.OP.OR;
+                    return new AstBinop( op, e1, e2 );
 
                 default:
                     jj_la1[44] = jj_gen;
                     jj_consume_token(MpRegExpId.UNDEFINED);
-                    throw new miniParseException();
+                    throw new MiniParseException();
             }
             throw new Error("Missing return statement in function");
         }
@@ -1934,7 +1955,7 @@ namespace DemiTasse.minipsr
 
         static private bool jj_3R_16()
         {
-            PsrToken xsp;
+            MiniToken xsp;
             xsp = jj_scanpos;
             if (jj_3R_18()) {
             jj_scanpos = xsp;
@@ -1946,7 +1967,7 @@ namespace DemiTasse.minipsr
         static private bool jj_3R_18()
         {
             if (jj_3R_20()) return true;
-            PsrToken xsp;
+            MiniToken xsp;
             xsp = jj_scanpos;
             if (jj_3R_21()) jj_scanpos = xsp;
             return false;
@@ -1972,7 +1993,7 @@ namespace DemiTasse.minipsr
 
         static private bool jj_3R_20() 
         {
-            PsrToken xsp;
+            MiniToken xsp;
             xsp = jj_scanpos;
             if (jj_3R_22()) {
             jj_scanpos = xsp;
@@ -2027,20 +2048,20 @@ namespace DemiTasse.minipsr
 
         static private bool jj_initialized_once = false;
         /** Generated Token Manager. */
-        static public miniParserTokenManager token_source;
+        static public MiniParserTokenManager token_source;
         static SimpleCharStream jj_input_stream = null;
         /** Current token. */
-        static public PsrToken token;
+        static public MiniToken token;
         /** Next token. */
-        static public PsrToken jj_nt;
+        static public MiniToken jj_nt;
         static private MpRegExpId jj_ntk;
-        static private PsrToken jj_scanpos, jj_lastpos;
+        static private MiniToken jj_scanpos, jj_lastpos;
         static private int jj_la;
         static private int jj_gen;
         static readonly private int[] jj_la1 = new int[45];
         static private int[] jj_la1_0;
         static private int[] jj_la1_1;
-        static miniParser()
+        static MiniParser()
         {
             jj_la1_init_0();
             jj_la1_init_1();
@@ -2073,13 +2094,13 @@ namespace DemiTasse.minipsr
         static private int jj_gc = 0;
 
         /** Constructor with InputStream. */
-        public miniParser(Stream stream)
+        public MiniParser(Stream stream)
             : this(stream, Encoding.ASCII)
         {
         }
 
         /** Constructor with InputStream and supplied encoding */
-        public miniParser(Stream stream, Encoding encoding)
+        public MiniParser(Stream stream, Encoding encoding)
         {
             if (jj_initialized_once)
             {
@@ -2101,10 +2122,10 @@ namespace DemiTasse.minipsr
                 {
                     throw new RuntimeException(e);
                 }
-                token_source = new miniParserTokenManager(jj_input_stream);
+                token_source = new MiniParserTokenManager(jj_input_stream);
             }
 
-            token = new PsrToken();
+            token = new MiniToken();
             jj_ntk = MpRegExpId.UNDEFINED;
             jj_gen = 0;
             for (int i = 0; i < 45; i++) jj_la1[i] = -1;
@@ -2129,8 +2150,8 @@ namespace DemiTasse.minipsr
                 throw new RuntimeException(e);
             }
 
-            miniParserTokenManager.ReInit(jj_input_stream);
-            token = new PsrToken();
+            MiniParserTokenManager.ReInit(jj_input_stream);
+            token = new MiniToken();
             jj_ntk = MpRegExpId.UNDEFINED;
             jj_gen = 0;
             for (int i = 0; i < 45; i++) jj_la1[i] = -1;
@@ -2197,14 +2218,14 @@ namespace DemiTasse.minipsr
         }
 #endif
 
-        static private PsrToken jj_consume_token(MpRegExpId kind) /* throws ParseException */
+        static private MiniToken jj_consume_token(MpRegExpId kind) /* throws ParseException */
         {
-            PsrToken oldToken;
+            MiniToken oldToken;
 
             if ((oldToken = token).next != null) 
                 token = token.next;
             else
-                token = token.next = miniParserTokenManager.getNextToken();
+                token = token.next = MiniParserTokenManager.getNextToken();
             
             jj_ntk = MpRegExpId.UNDEFINED;
             
@@ -2244,7 +2265,7 @@ namespace DemiTasse.minipsr
                 jj_la--;
                 if (jj_scanpos.next == null)
                 {
-                    jj_lastpos = jj_scanpos = jj_scanpos.next = miniParserTokenManager.getNextToken();
+                    jj_lastpos = jj_scanpos = jj_scanpos.next = MiniParserTokenManager.getNextToken();
                 } 
                 else 
                 {
@@ -2257,7 +2278,7 @@ namespace DemiTasse.minipsr
             }
             if (jj_rescan)
             {
-                int i = 0; PsrToken tok = token;
+                int i = 0; MiniToken tok = token;
                 while (tok != null && tok != jj_scanpos)
                 { 
                     i++; tok = tok.next; 
@@ -2271,27 +2292,27 @@ namespace DemiTasse.minipsr
         }
 
         /** Get the next Token. */
-        static /* final */ public PsrToken getNextToken()
+        static /* final */ public MiniToken getNextToken()
         {
             if (token.next != null)
                 token = token.next;
             else
-                token = token.next = miniParserTokenManager.getNextToken();
+                token = token.next = MiniParserTokenManager.getNextToken();
             jj_ntk = MpRegExpId.UNDEFINED;
             jj_gen++;
             return token;
         }
 
         /** Get the specific Token. */
-        static /* final */ public PsrToken getToken(int index)
+        static /* final */ public MiniToken getToken(int index)
         {
-            PsrToken t = token;
+            MiniToken t = token;
             for (int i = 0; i < index; i++)
             {
                 if (t.next != null)
                     t = t.next;
                 else
-                    t = t.next = miniParserTokenManager.getNextToken();
+                    t = t.next = MiniParserTokenManager.getNextToken();
             }
             return t;
         }
@@ -2299,7 +2320,7 @@ namespace DemiTasse.minipsr
         static private MpRegExpId jj_ntk_fn()
         {
             if ((jj_nt = token.next) == null)
-                return (jj_ntk = (token.next = miniParserTokenManager.getNextToken()).kind);
+                return (jj_ntk = (token.next = MiniParserTokenManager.getNextToken()).kind);
             else
                 return (jj_ntk = jj_nt.kind);
         }
@@ -2361,7 +2382,7 @@ namespace DemiTasse.minipsr
         }
 
         /** Generate ParseException. */
-        static public miniParseException generateParseException()
+        static public MiniParseException generateParseException()
         {
             jj_expentries.Clear();
             bool[] la1tokens = new bool[53];
@@ -2402,7 +2423,7 @@ namespace DemiTasse.minipsr
             {
                 exptokseq[i] = jj_expentries[i];
             }
-            return new miniParseException(token, exptokseq, tokenImage);
+            return new MiniParseException(token, exptokseq, tokenImage);
         }
 
         /** Enable tracing. */
@@ -2464,7 +2485,7 @@ namespace DemiTasse.minipsr
         /*static*/ /* final */ public class JJCalls
         {
             public int gen;
-            public PsrToken first;
+            public MiniToken first;
             public int arg;
             public JJCalls next;
         }

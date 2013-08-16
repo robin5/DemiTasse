@@ -2,7 +2,7 @@
 // * Copyright (c) 2013 Robin Murray
 // **********************************************************************************
 // *
-// * File: irParserConstants.cs
+// * File: IrParserConstants.cs
 // *
 // * Description: Token literal values and constants.
 // *
@@ -47,7 +47,7 @@ using System.Text;
 
 namespace DemiTasse.irpsr
 {
-    public class irParserConstants
+    public class IrParserConstants
     {
         /** End of File. */
         public static readonly int EOF = 0;

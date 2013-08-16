@@ -42,7 +42,7 @@ using DemiTasse.psrutil;
 namespace DemiTasse.astpsr
 {
     /** Token Manager. */
-    public class astParserTokenManager : astParserConstants
+    public class AstParserTokenManager : AstParserConstants
     {
         private static int jjStopStringLiteralDfa_0(int pos, long active0, long active1)
         {
@@ -1040,77 +1040,77 @@ namespace DemiTasse.astpsr
 #else
         #region in_unicode
         public static readonly string[] jjstrLiteralImages = {
-"",
-null,
-null,
-null,
-null,
-null,
-"\u0041\u0072\u0072\u0061\u0079\u0045\u006C\u006D", // ArrayElm
-"\u0041\u0072\u0072\u0061\u0079\u004C\u0065\u006E", // ArrayLen
-"\u0041\u0072\u0072\u0061\u0079\u0054\u0079\u0070\u0065", // ArrayType
-"\u0041\u0073\u0073\u0069\u0067\u006E", // Assign
-"\u0042\u0061\u0073\u0069\u0063\u0054\u0079\u0070\u0065", // BasicType
-"\u0042\u0069\u006E\u006F\u0070", // Binop
-"\u0042\u006C\u006F\u0063\u006B", // Block
-"\u0062\u006F\u006F\u006C\u0065\u0061\u006E", // boolean
-"\u0042\u006F\u006F\u006C\u0056\u0061\u006C", // BoolVal
-"\u0043\u0061\u006C\u006C", // Call
-"\u0043\u0061\u006C\u006C\u0053\u0074\u006D\u0074", // CallStmt
-"\u0043\u006C\u0061\u0073\u0073\u0044\u0065\u0063\u006C", // ClassDecl
-"\u0043\u006C\u0061\u0073\u0073\u0044\u0065\u0063\u006C\u004C\u0069\u0073\u0074", // ClassDeclList
-"\u0045\u0078\u0070", // Exp
-"\u0045\u0078\u0070\u004C\u0069\u0073\u0074", // ExpList
-"\u0066\u0061\u006C\u0073\u0065", // false
-"\u0046\u0069\u0065\u006C\u0064", // Field
-"\u0046\u006F\u0072\u006D\u0061\u006C", // Formal
-"\u0046\u006F\u0072\u006D\u0061\u006C\u004C\u0069\u0073\u0074", // FormalList
-"\u0049\u0064", // Id
-"\u0049\u0066", // If
-"\u0069\u006E\u0074", // int
-"\u0049\u006E\u0074\u0056\u0061\u006C", // IntVal
-"\u004D\u0065\u0074\u0068\u006F\u0064\u0044\u0065\u0063\u006C", // MethodDecl
-"\u004D\u0065\u0074\u0068\u006F\u0064\u0044\u0065\u0063\u006C\u004C\u0069\u0073\u0074", // MethodDeclList
-"\u004E\u0065\u0077\u0041\u0072\u0072\u0061\u0079", // NewArray
-"\u004E\u0065\u0077\u004F\u0062\u006A", // NewObj
-"\u004F\u0062\u006A\u0054\u0079\u0070\u0065", // ObjType
-"\u0050\u0072\u0069\u006E\u0074", // Print
-"\u0050\u0072\u006F\u0067\u0072\u0061\u006D", // Program
-"\u0052\u0065\u006C\u006F\u0070", // Relop
-"\u0052\u0065\u0074\u0075\u0072\u006E", // Return
-"\u0053\u0074\u006D\u0074", // Stmt
-"\u0053\u0074\u006D\u0074\u004C\u0069\u0073\u0074", // StmtList
-"\u0053\u0074\u0072\u0056\u0061\u006C", // StrVal
-"\u0054\u0068\u0069\u0073", // This
-"\u0074\u0072\u0075\u0065", // true
-"\u0054\u0079\u0070\u0065", // Type
-"\u0055\u006E\u006F\u0070", // Unop
-"\u0056\u0061\u0072\u0044\u0065\u0063\u006C", // VarDecl
-"\u0056\u0061\u0072\u0044\u0065\u0063\u006C\u004C\u0069\u0073\u0074", // VarDeclList
-"\u0057\u0068\u0069\u006C\u0065", // While
-"\u004E\u0075\u006C\u006C\u0054\u0079\u0070\u0065", // NullType
-"\u004E\u0075\u006C\u006C\u0053\u0074\u006D\u0074", // NullStmt
-"\u004E\u0075\u006C\u006C\u0045\u0078\u0070", // NullExp
-null,
-null,
-null,
-null,
-null,
-"\u0028", // (
-"\u0029", // )
-"\u002B", // +
-"\u002D", // -
-"\u002A", // *
-"\u002F", // /
-"\u0026\u0026", // &&
-"\u007C\u007C", // ||
-"\u003D\u003D", // ==
-"\u0021\u003D", // !=
-"\u003C", // <
-"\u003C\u003D", // <=
-"\u003E", // >
-"\u003E\u003D", // >=
-"\u0021", // !
+            "",
+            null,
+            null,
+            null,
+            null,
+            null,
+            "\u0041\u0072\u0072\u0061\u0079\u0045\u006C\u006D", // ArrayElm
+            "\u0041\u0072\u0072\u0061\u0079\u004C\u0065\u006E", // ArrayLen
+            "\u0041\u0072\u0072\u0061\u0079\u0054\u0079\u0070\u0065", // ArrayType
+            "\u0041\u0073\u0073\u0069\u0067\u006E", // Assign
+            "\u0042\u0061\u0073\u0069\u0063\u0054\u0079\u0070\u0065", // BasicType
+            "\u0042\u0069\u006E\u006F\u0070", // Binop
+            "\u0042\u006C\u006F\u0063\u006B", // Block
+            "\u0062\u006F\u006F\u006C\u0065\u0061\u006E", // boolean
+            "\u0042\u006F\u006F\u006C\u0056\u0061\u006C", // BoolVal
+            "\u0043\u0061\u006C\u006C", // Call
+            "\u0043\u0061\u006C\u006C\u0053\u0074\u006D\u0074", // CallStmt
+            "\u0043\u006C\u0061\u0073\u0073\u0044\u0065\u0063\u006C", // ClassDecl
+            "\u0043\u006C\u0061\u0073\u0073\u0044\u0065\u0063\u006C\u004C\u0069\u0073\u0074", // ClassDeclList
+            "\u0045\u0078\u0070", // Exp
+            "\u0045\u0078\u0070\u004C\u0069\u0073\u0074", // ExpList
+            "\u0066\u0061\u006C\u0073\u0065", // false
+            "\u0046\u0069\u0065\u006C\u0064", // Field
+            "\u0046\u006F\u0072\u006D\u0061\u006C", // Formal
+            "\u0046\u006F\u0072\u006D\u0061\u006C\u004C\u0069\u0073\u0074", // FormalList
+            "\u0049\u0064", // Id
+            "\u0049\u0066", // If
+            "\u0069\u006E\u0074", // int
+            "\u0049\u006E\u0074\u0056\u0061\u006C", // IntVal
+            "\u004D\u0065\u0074\u0068\u006F\u0064\u0044\u0065\u0063\u006C", // MethodDecl
+            "\u004D\u0065\u0074\u0068\u006F\u0064\u0044\u0065\u0063\u006C\u004C\u0069\u0073\u0074", // MethodDeclList
+            "\u004E\u0065\u0077\u0041\u0072\u0072\u0061\u0079", // NewArray
+            "\u004E\u0065\u0077\u004F\u0062\u006A", // NewObj
+            "\u004F\u0062\u006A\u0054\u0079\u0070\u0065", // ObjType
+            "\u0050\u0072\u0069\u006E\u0074", // Print
+            "\u0050\u0072\u006F\u0067\u0072\u0061\u006D", // Program
+            "\u0052\u0065\u006C\u006F\u0070", // Relop
+            "\u0052\u0065\u0074\u0075\u0072\u006E", // Return
+            "\u0053\u0074\u006D\u0074", // Stmt
+            "\u0053\u0074\u006D\u0074\u004C\u0069\u0073\u0074", // StmtList
+            "\u0053\u0074\u0072\u0056\u0061\u006C", // StrVal
+            "\u0054\u0068\u0069\u0073", // This
+            "\u0074\u0072\u0075\u0065", // true
+            "\u0054\u0079\u0070\u0065", // Type
+            "\u0055\u006E\u006F\u0070", // Unop
+            "\u0056\u0061\u0072\u0044\u0065\u0063\u006C", // VarDecl
+            "\u0056\u0061\u0072\u0044\u0065\u0063\u006C\u004C\u0069\u0073\u0074", // VarDeclList
+            "\u0057\u0068\u0069\u006C\u0065", // While
+            "\u004E\u0075\u006C\u006C\u0054\u0079\u0070\u0065", // NullType
+            "\u004E\u0075\u006C\u006C\u0053\u0074\u006D\u0074", // NullStmt
+            "\u004E\u0075\u006C\u006C\u0045\u0078\u0070", // NullExp
+            null,
+            null,
+            null,
+            null,
+            null,
+            "\u0028", // (
+            "\u0029", // )
+            "\u002B", // +
+            "\u002D", // -
+            "\u002A", // *
+            "\u002F", // /
+            "\u0026\u0026", // &&
+            "\u007C\u007C", // ||
+            "\u003D\u003D", // ==
+            "\u0021\u003D", // !=
+            "\u003C", // <
+            "\u003C\u003D", // <=
+            "\u003E", // >
+            "\u003E\u003D", // >=
+            "\u0021", // !
                                                      };
 
 
@@ -1142,7 +1142,7 @@ null,
         static protected char curChar;
         
         /** Constructor. */
-        public astParserTokenManager(SimpleCharStream stream)
+        public AstParserTokenManager(SimpleCharStream stream)
         {
             if (input_stream != null)
                 throw new TokenMgrError("ERROR: Second call to constructor of static lexer. You must use ReInit() to initialize the static variables.", TokenMgrError.STATIC_LEXER_ERROR);
@@ -1150,7 +1150,7 @@ null,
         }
 
         /** Constructor. */
-        public astParserTokenManager(SimpleCharStream stream, int lexState)
+        public AstParserTokenManager(SimpleCharStream stream, int lexState)
             : this(stream)
         {
             // this(stream);

@@ -44,11 +44,11 @@ using DemiTasse.psrutil;
 
 namespace DemiTasse.astpsr
 {
-    public class astParser : astParserConstants
+    public class AstParser : AstParserConstants
     {
-        static /* final */ public DemiTasse.ast.Program Program() /* throws ParseException */
+        static /* final */ public AstProgram Program() /* throws ParseException */
         {
-            ClassDeclList cl;
+            AstClassDeclList cl;
             jj_consume_token(AstRegExpId.kw56);
             jj_consume_token(AstRegExpId.kwProgram);
             cl = astClassDeclList();
@@ -58,13 +58,13 @@ namespace DemiTasse.astpsr
             // {if (true) return new Program(cl);}
             // throw new Error("Missing return statement in function");
 
-            return new DemiTasse.ast.Program(cl);
+            return new AstProgram(cl);
         }
 
-        static /* final */ public ClassDeclList astClassDeclList() /* throws ParseException */
+        static /* final */ public AstClassDeclList astClassDeclList() /* throws ParseException */
         {
             bool done = false;
-            ClassDecl c; ClassDeclList cl = new ClassDeclList();
+            AstClassDecl c; AstClassDeclList cl = new AstClassDeclList();
             jj_consume_token(AstRegExpId.kw56);
             jj_consume_token(AstRegExpId.kwClassDeclList);
             // label_1:
@@ -86,7 +86,7 @@ namespace DemiTasse.astpsr
                 if (!done)
                 {
                     c = astClassDecl();
-                    cl.add(c);
+                    cl.Add(c);
                 }
             }
 
@@ -95,11 +95,11 @@ namespace DemiTasse.astpsr
             throw new Error("Missing return statement in function");
         }
 
-        static /* final */ public ClassDecl astClassDecl() /* throws ParseException */
+        static /* final */ public AstClassDecl astClassDecl() /* throws ParseException */
         {
-            Exp e1, e2; VarDeclList vl; MethodDeclList ml;
+            AstExp e1, e2; AstVarDeclList vl; AstMethodDeclList ml;
 
-            jj_consume_token(astParserConstants.AstRegExpId.kw56);
+            jj_consume_token(AstParserConstants.AstRegExpId.kw56);
             jj_consume_token(AstRegExpId.kwClassDecl);
 
             e1 = astExp();
@@ -108,14 +108,14 @@ namespace DemiTasse.astpsr
             ml = astMethodDeclList();
             jj_consume_token(AstRegExpId.kw57);
 
-            {if (true) return new ClassDecl((Id)e1,(Id)e2,vl,ml);}
+            {if (true) return new AstClassDecl((AstId)e1,(AstId)e2,vl,ml);}
             throw new Error("Missing return statement in function");
         }
 
-        static /* final */ public VarDeclList astVarDeclList() /* throws ParseException */
+        static /* final */ public AstVarDeclList astVarDeclList() /* throws ParseException */
         {
-            VarDecl v;
-            VarDeclList vl = new VarDeclList();
+            AstVarDecl v;
+            AstVarDeclList vl = new AstVarDeclList();
             bool done = false;
 
             jj_consume_token(AstRegExpId.kw56);
@@ -140,33 +140,33 @@ namespace DemiTasse.astpsr
                 if (!done)
                 {
                     v = astVarDecl();
-                    vl.add(v);
+                    vl.Add(v);
                 }
             }
 
 
-            jj_consume_token(astParserConstants.AstRegExpId.kw57);
+            jj_consume_token(AstParserConstants.AstRegExpId.kw57);
             {if (true) return vl;}
             throw new Error("Missing return statement in function");
         }
 
-        static /* final */ public VarDecl astVarDecl() /* throws ParseException */
+        static /* final */ public AstVarDecl astVarDecl() /* throws ParseException */
         {
-            ast.Type t; Exp e1, e2;
+            ast.AstType t; AstExp e1, e2;
             jj_consume_token(AstRegExpId.kw56);
             jj_consume_token(AstRegExpId.kwVarDecl);
             t = astType();
             e1 = astExp();
             e2 = astExp();
             jj_consume_token(AstRegExpId.kw57);
-            {if (true) return new VarDecl(t,(Id)e1,e2);}
+            {if (true) return new AstVarDecl(t,(AstId)e1,e2);}
             throw new Error("Missing return statement in function");
         }
 
-        static /* final */ public MethodDeclList astMethodDeclList() /* throws ParseException */
+        static /* final */ public AstMethodDeclList astMethodDeclList() /* throws ParseException */
         {
-            MethodDecl m; 
-            MethodDeclList ml = new MethodDeclList();
+            AstMethodDecl m; 
+            AstMethodDeclList ml = new AstMethodDeclList();
             bool done = false;
 
             jj_consume_token(AstRegExpId.kw56);
@@ -187,7 +187,7 @@ namespace DemiTasse.astpsr
                 if (!done)
                 {
                     m = astMethodDecl();
-                    ml.add(m);
+                    ml.Add(m);
                 }
             }
             jj_consume_token(AstRegExpId.kw57);
@@ -195,13 +195,13 @@ namespace DemiTasse.astpsr
             throw new Error("Missing return statement in function");
         }
 
-        static /* final */ public MethodDecl astMethodDecl() /* throws ParseException */
+        static /* final */ public AstMethodDecl astMethodDecl() /* throws ParseException */
         {
-            DemiTasse.ast.Type t; 
-            Exp e; 
-            FormalList fl; 
-            VarDeclList vl; 
-            StmtList sl;
+            AstType t; 
+            AstExp e; 
+            AstFormalList fl; 
+            AstVarDeclList vl; 
+            AstStmtList sl;
             
             jj_consume_token(AstRegExpId.kw56);
             jj_consume_token(AstRegExpId.kwMethodDecl);
@@ -212,13 +212,13 @@ namespace DemiTasse.astpsr
             vl = astVarDeclList();
             sl = astStmtList();
             jj_consume_token(AstRegExpId.kw57);
-            {if (true) return new MethodDecl(t,(Id)e,fl,vl,sl);}
+            {if (true) return new AstMethodDecl(t,(AstId)e,fl,vl,sl);}
             throw new Error("Missing return statement in function");
         }
 
-        static /* final */ public FormalList astFormalList() /* throws ParseException */
+        static /* final */ public AstFormalList astFormalList() /* throws ParseException */
         {
-            Formal f; FormalList fl = new FormalList();
+            AstFormal f; AstFormalList fl = new AstFormalList();
             bool done = false;
 
             jj_consume_token(AstRegExpId.kw56);
@@ -240,7 +240,7 @@ namespace DemiTasse.astpsr
                 if (!done)
                 {
                     f = astFormal();
-                    fl.add(f);
+                    fl.Add(f);
                 }
             }
 
@@ -249,21 +249,21 @@ namespace DemiTasse.astpsr
             throw new Error("Missing return statement in function");
         }
 
-        static /* final */ public Formal astFormal() /* throws ParseException */
+        static /* final */ public AstFormal astFormal() /* throws ParseException */
         {
-            ast.Type t; Exp e;
+            ast.AstType t; AstExp e;
             jj_consume_token(AstRegExpId.kw56);
             jj_consume_token(AstRegExpId.kwFormal);
             t = astType();
             e = astExp();
             jj_consume_token(AstRegExpId.kw57);
-            {if (true) return new Formal(t,(Id)e);}
+            {if (true) return new AstFormal(t,(AstId)e);}
             throw new Error("Missing return statement in function");
         }
 
-        static /* final */ public StmtList astStmtList() /* throws ParseException */
+        static /* final */ public AstStmtList astStmtList() /* throws ParseException */
         {
-            Stmt s; StmtList sl = new StmtList(); bool done = false;
+            AstStmt s; AstStmtList sl = new AstStmtList(); bool done = false;
 
             jj_consume_token(AstRegExpId.kw56);
             jj_consume_token(AstRegExpId.kwStmtList);
@@ -284,7 +284,7 @@ namespace DemiTasse.astpsr
                 if (!done)
                 {
                     s = astStmt();
-                    sl.add(s);
+                    sl.Add(s);
                 }
             }
             jj_consume_token(AstRegExpId.kw57);
@@ -292,9 +292,9 @@ namespace DemiTasse.astpsr
             throw new Error("Missing return statement in function");
         }
 
-        static /* final */ public ExpList astExpList() /* throws ParseException */
+        static /* final */ public AstExpList astExpList() /* throws ParseException */
         {
-            Exp e; ExpList el = new ExpList(); bool done = false;
+            AstExp e; AstExpList el = new AstExpList(); bool done = false;
 
             jj_consume_token(AstRegExpId.kw56);
             jj_consume_token(AstRegExpId.kwExpList);
@@ -314,7 +314,7 @@ namespace DemiTasse.astpsr
                 if (!done)
                 {
                     e = astExp();
-                    el.add(e);
+                    el.Add(e);
                 }
             }
 
@@ -323,9 +323,9 @@ namespace DemiTasse.astpsr
             //throw new Error("Missing return statement in function");
             }
 
-        static /* final */ public DemiTasse.ast.Type astType() /* throws ParseException */
+        static /* final */ public AstType astType() /* throws ParseException */
         {
-            ast.Type t; Exp e;
+            ast.AstType t; AstExp e;
 
             jj_consume_token(AstRegExpId.kw56);
             switch ((jj_ntk == AstRegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
@@ -337,18 +337,18 @@ namespace DemiTasse.astpsr
                     {
                         case AstRegExpId.kwInt:
                             jj_consume_token(AstRegExpId.kwInt);
-                            t = new BasicType(BasicType.Int);
+                            t = new AstBasicType(AstBasicType.Int);
                             break;
 
                         case AstRegExpId.kwBool:
                             jj_consume_token(AstRegExpId.kwBool);
-                            t = new BasicType(BasicType.Bool);
+                            t = new AstBasicType(AstBasicType.Bool);
                             break;
 
                         default:
                             jj_la1[6] = jj_gen;
                             jj_consume_token(AstRegExpId.UNDEFINED);
-                            throw new astParseException();
+                            throw new AstParseException();
                     }
                     break;
 
@@ -356,14 +356,14 @@ namespace DemiTasse.astpsr
 
                     jj_consume_token(AstRegExpId.kwObjType);
                     e = astExp();
-                    t = new ObjType((Id)e);
+                    t = new AstObjType((AstId)e);
                     break;
 
                 case AstRegExpId.kwArrayType:
 
                     jj_consume_token(AstRegExpId.kwArrayType);
                     t = astType();
-                    t = new ArrayType(t);
+                    t = new AstArrayType(t);
                     break;
 
                 case AstRegExpId.kwNullType:
@@ -375,57 +375,57 @@ namespace DemiTasse.astpsr
                 default:
                     jj_la1[7] = jj_gen;
                     jj_consume_token(AstRegExpId.UNDEFINED);
-                    throw new astParseException();
+                    throw new AstParseException();
             }
             jj_consume_token(AstRegExpId.kw57);
             {if (true) return t;}
             throw new Error("Missing return statement in function");
         }
 
-  static /* final */ public Stmt astStmt() /* throws ParseException */ {
-  Exp e1, e2; Stmt s, s1, s2; ExpList el; StmtList sl;
+  static /* final */ public AstStmt astStmt() /* throws ParseException */ {
+  AstExp e1, e2; AstStmt s, s1, s2; AstExpList el; AstStmtList sl;
     jj_consume_token(AstRegExpId.kw56);
     switch ((jj_ntk == AstRegExpId.UNDEFINED)?jj_ntk_fn():jj_ntk) {
     case AstRegExpId.kwBlock:
       jj_consume_token(AstRegExpId.kwBlock);
       sl = astStmtList();
-                                       s = new Block(sl);
+                                       s = new AstBlock(sl);
       break;
     case AstRegExpId.kwAssign:
       jj_consume_token(AstRegExpId.kwAssign);
       e1 = astExp();
       e2 = astExp();
-                                       s = new Assign(e1,e2);
+                                       s = new AstAssign(e1,e2);
       break;
     case AstRegExpId.kwCallStmt:
       jj_consume_token(AstRegExpId.kwCallStmt);
       e1 = astExp();
       e2 = astExp();
       el = astExpList();
-                                       s = new CallStmt(e1,(Id)e2,el);
+                                       s = new AstCallStmt(e1,(AstId)e2,el);
       break;
     case AstRegExpId.kwIf:
       jj_consume_token(AstRegExpId.kwIf);
       e1 = astExp();
       s1 = astStmt();
       s2 = astStmt();
-                                       s = new If(e1,s1,s2);
+                                       s = new AstIf(e1,s1,s2);
       break;
     case AstRegExpId.kwWhile:
       jj_consume_token(AstRegExpId.kwWhile);
       e1 = astExp();
       s1 = astStmt();
-                                       s = new While(e1,s1);
+                                       s = new AstWhile(e1,s1);
       break;
     case AstRegExpId.kwPrint:
       jj_consume_token(AstRegExpId.kwPrint);
       e1 = astExp();
-                                       s = new Print(e1);
+                                       s = new AstPrint(e1);
       break;
     case AstRegExpId.kwReturn:
       jj_consume_token(AstRegExpId.kwReturn);
       e1 = astExp();
-                                       s = new Return(e1);
+                                       s = new AstReturn(e1);
       break;
     case AstRegExpId.kwNullStmt:
       jj_consume_token(AstRegExpId.kwNullStmt);
@@ -434,108 +434,108 @@ namespace DemiTasse.astpsr
     default:
       jj_la1[8] = jj_gen;
       jj_consume_token(AstRegExpId.UNDEFINED);
-      throw new astParseException();
+      throw new AstParseException();
     }
     jj_consume_token(AstRegExpId.kw57);
     {if (true) return s;}
     throw new Error("Missing return statement in function");
   }
 
-        static /* final */ public Binop.OP binOp() /* throws ParseException */
+        static /* final */ public AstBinop.OP binOp() /* throws ParseException */
         {
             switch ((jj_ntk == AstRegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
             {
                 case AstRegExpId.kw58:
                     jj_consume_token(AstRegExpId.kw58);
-                    return ast.Binop.OP.ADD;
+                    return ast.AstBinop.OP.ADD;
 
                 case AstRegExpId.kw59:
                     jj_consume_token(AstRegExpId.kw59);
-                    return ast.Binop.OP.SUB;
+                    return ast.AstBinop.OP.SUB;
 
                 case AstRegExpId.kw60:
                     jj_consume_token(AstRegExpId.kw60);
-                    return ast.Binop.OP.MUL;
+                    return ast.AstBinop.OP.MUL;
 
                 case AstRegExpId.kw61:
                     jj_consume_token(AstRegExpId.kw61);
-                    return ast.Binop.OP.DIV;
+                    return ast.AstBinop.OP.DIV;
 
                 case AstRegExpId.kw62:
                     jj_consume_token(AstRegExpId.kw62);
-                    return ast.Binop.OP.AND;
+                    return ast.AstBinop.OP.AND;
 
                 case AstRegExpId.kw63:
                     jj_consume_token(AstRegExpId.kw63);
-                    return ast.Binop.OP.OR;
+                    return ast.AstBinop.OP.OR;
 
                 default:
                     jj_la1[9] = jj_gen;
                     jj_consume_token(AstRegExpId.UNDEFINED);
-                    throw new astParseException();
+                    throw new AstParseException();
             }
             throw new Error("Missing return statement in function");
             }
 
-        static /* final */ public Relop.OP relOp() /* throws ParseException */
+        static /* final */ public AstRelop.OP relOp() /* throws ParseException */
         {
             switch ((jj_ntk == AstRegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
             {
                 case AstRegExpId.kw64:
                     jj_consume_token(AstRegExpId.kw64);
-                    return ast.Relop.OP.EQ;
+                    return ast.AstRelop.OP.EQ;
                 case AstRegExpId.kw65:
                     jj_consume_token(AstRegExpId.kw65);
-                    return ast.Relop.OP.NE;
+                    return ast.AstRelop.OP.NE;
                 case AstRegExpId.kw66:
                     jj_consume_token(AstRegExpId.kw66);
-                    return ast.Relop.OP.LT;
+                    return ast.AstRelop.OP.LT;
                 case AstRegExpId.kw67:
                     jj_consume_token(AstRegExpId.kw67);
-                    return ast.Relop.OP.LE;
+                    return ast.AstRelop.OP.LE;
                 case AstRegExpId.kw68:
                     jj_consume_token(AstRegExpId.kw68);
-                    return ast.Relop.OP.GT;
+                    return ast.AstRelop.OP.GT;
                 case AstRegExpId.kw69:
                     jj_consume_token(AstRegExpId.kw69);
-                    return ast.Relop.OP.GE;
+                    return ast.AstRelop.OP.GE;
                 default:
                     jj_la1[10] = jj_gen;
                     jj_consume_token(AstRegExpId.UNDEFINED);
-                    throw new astParseException();
+                    throw new AstParseException();
             }
             throw new Error("Missing return statement in function");
         }
 
-        static /* final */ public ast.Unop.OP unOp() /* throws ParseException */
+        static /* final */ public ast.AstUnop.OP unOp() /* throws ParseException */
         {
             switch ((jj_ntk == AstRegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
             {
                 case AstRegExpId.kw59:
                     jj_consume_token(AstRegExpId.kw59);
-                    return ast.Unop.OP.NEG;
+                    return ast.AstUnop.OP.NEG;
                 
                 case AstRegExpId.kw70:
                     jj_consume_token(AstRegExpId.kw70);
-                    return ast.Unop.OP.NOT;
+                    return ast.AstUnop.OP.NOT;
                 
                 default:
                     jj_la1[11] = jj_gen;
                     jj_consume_token(AstRegExpId.UNDEFINED);
-                    throw new astParseException();
+                    throw new AstParseException();
             }
             throw new Error("Missing return statement in function");
         }
 
-        static /* final */ public Exp astExp() /* throws ParseException */
+        static /* final */ public AstExp astExp() /* throws ParseException */
         {
-            DemiTasse.ast.Type t; 
+            AstType t; 
             AstToken n;
-            Relop.OP relop;
-            Binop.OP binop;
-            Unop.OP unop;
-            Exp e, e1, e2; 
-            ExpList el;
+            AstRelop.OP relop;
+            AstBinop.OP binop;
+            AstUnop.OP unop;
+            AstExp e, e1, e2; 
+            AstExpList el;
             
             jj_consume_token(AstRegExpId.kw56);
     switch ((jj_ntk == AstRegExpId.UNDEFINED)?jj_ntk_fn():jj_ntk) {
@@ -543,35 +543,35 @@ namespace DemiTasse.astpsr
       jj_consume_token(AstRegExpId.kwArrayElm);
       e1 = astExp();
       e2 = astExp();
-                                  e = new ArrayElm(e1,e2);
+                                  e = new AstArrayElm(e1,e2);
       break;
     case AstRegExpId.kwArrayLen:
       jj_consume_token(AstRegExpId.kwArrayLen);
       e1 = astExp();
-                                  e = new ArrayLen(e1);
+                                  e = new AstArrayLen(e1);
       break;
     case AstRegExpId.kwBinop:
       jj_consume_token(AstRegExpId.kwBinop);
       binop = binOp();
       e1 = astExp();
       e2 = astExp();
-                                  e = new Binop(binop,e1,e2);
+                                  e = new AstBinop(binop,e1,e2);
       break;
     case AstRegExpId.kwBoolVal:
       jj_consume_token(AstRegExpId.kwBoolVal);
       switch ((jj_ntk == AstRegExpId.UNDEFINED)?jj_ntk_fn():jj_ntk) {
       case AstRegExpId.kwTrue:
         jj_consume_token(AstRegExpId.kwTrue);
-                                  e = new BoolVal(true);
+                                  e = new AstBoolVal(true);
         break;
       case AstRegExpId.kwFalse:
         jj_consume_token(AstRegExpId.kwFalse);
-                                  e = new BoolVal(false);
+                                  e = new AstBoolVal(false);
         break;
       default:
         jj_la1[12] = jj_gen;
         jj_consume_token(AstRegExpId.UNDEFINED);
-        throw new astParseException();
+        throw new AstParseException();
       }
       break;
     case AstRegExpId.kwCall:
@@ -579,58 +579,58 @@ namespace DemiTasse.astpsr
       e1 = astExp();
       e2 = astExp();
       el = astExpList();
-                                  e = new Call(e1,(Id)e2,el);
+                                  e = new AstCall(e1,(AstId)e2,el);
       break;
     case AstRegExpId.kwId:
       jj_consume_token(AstRegExpId.kwId);
       n = jj_consume_token(AstRegExpId.ID);
-                                  e = new Id(n.image);
+                                  e = new AstId(n.image);
       break;
     case AstRegExpId.kwIntVal:
       jj_consume_token(AstRegExpId.kwIntVal);
       n = jj_consume_token(AstRegExpId.INTVAL);
-                                  e = new IntVal(int.Parse(n.image));
+                                  e = new AstIntVal(int.Parse(n.image));
       break;
     case AstRegExpId.kwField:
       jj_consume_token(AstRegExpId.kwField);
       e1 = astExp();
       e2 = astExp();
-                                  e = new Field(e1,(Id)e2);
+                                  e = new AstField(e1,(AstId)e2);
       break;
     case AstRegExpId.kwNewArray:
       jj_consume_token(AstRegExpId.kwNewArray);
       t = astType();
       n = jj_consume_token(AstRegExpId.INTVAL);
-      e = new NewArray((DemiTasse.ast.Type)t, int.Parse(n.image));
+      e = new AstNewArray((AstType)t, int.Parse(n.image));
       break;
     case AstRegExpId.kwNewObj:
       jj_consume_token(AstRegExpId.kwNewObj);
       e1 = astExp();
       el = astExpList();
-                                  e = new NewObj((Id)e1,el);
+                                  e = new AstNewObj((AstId)e1,el);
       break;
     case AstRegExpId.kwRelop:
       jj_consume_token(AstRegExpId.kwRelop);
       relop = relOp();
       e1 = astExp();
       e2 = astExp();
-      e = new Relop(relop, e1, e2);
+      e = new AstRelop(relop, e1, e2);
       break;
     case AstRegExpId.kwStrVal:
       jj_consume_token(AstRegExpId.kwStrVal);
       n = jj_consume_token(AstRegExpId.STRVAL);
                                   String s = n.image;
-                                  e = new StrVal(s.Substring(1, s.Length-2));
+                                  e = new AstStrVal(s.Substring(1, s.Length-2));
       break;
     case AstRegExpId.kwThis:
       jj_consume_token(AstRegExpId.kwThis);
-                                  e = new This();
+                                  e = new AstThis();
       break;
     case AstRegExpId.kwUnop:
       jj_consume_token(AstRegExpId.kwUnop);
       unop = unOp();
       e1 = astExp();
-                                   e = new Unop(unop,e1);
+                                   e = new AstUnop(unop,e1);
       break;
     case AstRegExpId.kwNullExp:
       jj_consume_token(AstRegExpId.kwNullExp);
@@ -640,7 +640,7 @@ namespace DemiTasse.astpsr
     default:
       jj_la1[13] = jj_gen;
       jj_consume_token(AstRegExpId.UNDEFINED);
-      throw new astParseException();
+      throw new AstParseException();
     }
     jj_consume_token(AstRegExpId.kw57);
     {if (true) return e;}
@@ -649,7 +649,7 @@ namespace DemiTasse.astpsr
 
   static private bool jj_initialized_once = false;
   /** Generated Token Manager. */
-  static public astParserTokenManager token_source;
+  static public AstParserTokenManager token_source;
   static SimpleCharStream jj_input_stream = null;
   /** Current token. */
   static public AstToken token;
@@ -661,7 +661,7 @@ namespace DemiTasse.astpsr
   static private int[] jj_la1_0;
   static private int[] jj_la1_1;
   static private int[] jj_la1_2;
-  static astParser() {
+  static AstParser() {
       jj_la1_init_0();
       jj_la1_init_1();
       jj_la1_init_2();
@@ -677,13 +677,13 @@ namespace DemiTasse.astpsr
    }
 
   /** Constructor with InputStream. */
-  public astParser(Stream stream)
+  public AstParser(Stream stream)
        : this(stream, Encoding.ASCII)
     {
     }
   
         /** Constructor with InputStream and supplied encoding */
-        public astParser(Stream stream, Encoding encoding)
+        public AstParser(Stream stream, Encoding encoding)
         {
             if (jj_initialized_once)
             {
@@ -704,7 +704,7 @@ namespace DemiTasse.astpsr
                 { 
                     throw new RuntimeException(e); 
                 }
-                token_source = new astParserTokenManager(jj_input_stream);
+                token_source = new AstParserTokenManager(jj_input_stream);
             }
 
             token = new AstToken();
@@ -732,7 +732,7 @@ namespace DemiTasse.astpsr
             { 
                 throw new RuntimeException(e); 
             }
-            astParserTokenManager.ReInit(jj_input_stream);
+            AstParserTokenManager.ReInit(jj_input_stream);
             token = new AstToken();
             jj_ntk = AstRegExpId.UNDEFINED;
             jj_gen = 0;
@@ -796,13 +796,13 @@ namespace DemiTasse.astpsr
         }
 #endif
 
-        static private AstToken jj_consume_token(astParserConstants.AstRegExpId kind) /* throws ParseException */
+        static private AstToken jj_consume_token(AstParserConstants.AstRegExpId kind) /* throws ParseException */
         {
             AstToken oldToken;
             if ((oldToken = token).next != null) 
                 token = token.next;
             else
-                token = token.next = astParserTokenManager.getNextToken();
+                token = token.next = AstParserTokenManager.getNextToken();
             jj_ntk = AstRegExpId.UNDEFINED;
 
             if (token.kind == kind)
@@ -821,7 +821,7 @@ namespace DemiTasse.astpsr
             if (token.next != null) 
                 token = token.next;
             else
-                token = token.next = astParserTokenManager.getNextToken();
+                token = token.next = AstParserTokenManager.getNextToken();
             jj_ntk = AstRegExpId.UNDEFINED;
             jj_gen++;
             return token;
@@ -836,7 +836,7 @@ namespace DemiTasse.astpsr
                 if (t.next != null)
                     t = t.next;
                 else 
-                    t = t.next = astParserTokenManager.getNextToken();
+                    t = t.next = AstParserTokenManager.getNextToken();
             }
             return t;
         }
@@ -844,7 +844,7 @@ namespace DemiTasse.astpsr
         static private AstRegExpId jj_ntk_fn()
         {
             if ((jj_nt=token.next) == null)
-                return (jj_ntk = (token.next = astParserTokenManager.getNextToken()).kind);
+                return (jj_ntk = (token.next = AstParserTokenManager.getNextToken()).kind);
             else
                 return (jj_ntk = jj_nt.kind);
         }
@@ -855,7 +855,7 @@ namespace DemiTasse.astpsr
         static private AstRegExpId jj_kind = AstRegExpId.UNDEFINED;
 
         /** Generate ParseException. */
-        static public astParseException generateParseException()
+        static public AstParseException generateParseException()
         {
             jj_expentries.Clear();
             bool[] la1tokens = new bool[71];
@@ -899,7 +899,7 @@ namespace DemiTasse.astpsr
             {
                 exptokseq[i] = jj_expentries[i];
             }
-            return new astParseException(token, exptokseq, tokenImage);
+            return new AstParseException(token, exptokseq, tokenImage);
         }
 
         /** Enable tracing. */

@@ -4,7 +4,9 @@
 // *
 // * File: IIrVI.cs
 // *
-// * Author:  Jingke Li
+// * Author:  Jingke Li (Portland State University)
+// *
+// * C# Translation:  Robin Murray
 // *
 // **********************************************************************************
 // *
@@ -45,31 +47,31 @@ namespace DemiTasse.ir
 {
     public interface IIrVI
     {
-        PROG visit(PROG t);
-        FUNC visit(FUNC t);
-        FUNClist visit(FUNClist t);
+        IrProg visit(IrProg t);
+        IrFunc visit(IrFunc t);
+        IrFuncList visit(IrFuncList t);
         
         //STMT visit(STMT t);
-        STMT visit(STMTlist t);
-        STMT visit(MOVE t);
-        STMT visit(JUMP t);
-        STMT visit(CJUMP t);
-        STMT visit(LABEL t);
-        STMT visit(CALLST t);
-        STMT visit(RETURN t);
+        IrStmt visit(IrStmtList t);
+        IrStmt visit(IrMove t);
+        IrStmt visit(IrJump t);
+        IrStmt visit(IrCJump t);
+        IrStmt visit(IrLabel t);
+        IrStmt visit(IrCallst t);
+        IrStmt visit(IrReturn t);
         
         //EXP visit(EXP t);
-        EXP visit(EXPlist t);
-        EXP visit(ESEQ t);
-        EXP visit(MEM t);
-        EXP visit(CALL t);
-        EXP visit(BINOP t);
-        EXP visit(NAME t);
-        EXP visit(TEMP t);
-        EXP visit(FIELD t);
-        EXP visit(PARAM t);
-        EXP visit(VAR t);
-        EXP visit(CONST t);
-        EXP visit(STRING t);
+        IrExp visit(IrExpList t);
+        IrExp visit(IrEseq t);
+        IrExp visit(IrMem t);
+        IrExp visit(IrCall t);
+        IrExp visit(IrBinop t);
+        IrExp visit(IrName t);
+        IrExp visit(IrTemp t);
+        IrExp visit(IrField t);
+        IrExp visit(IrParam t);
+        IrExp visit(IrVar t);
+        IrExp visit(IrConst t);
+        IrExp visit(IrString t);
     }
 }

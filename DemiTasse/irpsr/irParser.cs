@@ -2,7 +2,7 @@
 // * Copyright (c) 2013 Robin Murray
 // **********************************************************************************
 // *
-// * File: irParser.cs
+// * File: IrParser.cs
 // *
 // * Description: 
 // *
@@ -49,15 +49,15 @@ using DemiTasse.psrutil;
 
 namespace DemiTasse.irpsr
 {
-    public class irParser : irParserConstants
+    public class IrParser : IrParserConstants
     {
         // *************************************************************************
         // * Static
         // *************************************************************************
 
-        public static FUNC FUNC() /* throws ParseException */ 
+        public static IrFunc FUNC() /* throws ParseException */ 
         {
-            IrToken t; int vc, tc, ac; STMTlist sl=new STMTlist(); STMT s;
+            IrToken t; int vc, tc, ac; IrStmtList sl=new IrStmtList(); IrStmt s;
             t = jj_consume_token(RegExpId.ID);
             jj_consume_token(RegExpId.kw32);
             jj_consume_token(RegExpId.kwVARCNT);
@@ -94,49 +94,49 @@ namespace DemiTasse.irpsr
             label_2a:
 
             jj_consume_token(RegExpId.kw37);
-            {if (true) return new FUNC(t.image,vc,tc,ac,sl);}
+            {if (true) return new IrFunc(t.image,vc,tc,ac,sl);}
             throw new Error("Missing return statement in function");
             }
 
-        public static CJUMP.OP relopCode() /* throws ParseException */
+        public static IrCJump.OP relopCode() /* throws ParseException */
             {
-                CJUMP.OP n;
+                IrCJump.OP n;
                 switch ((jj_ntk == RegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
                 {
                     case RegExpId.kw38:
                         jj_consume_token(RegExpId.kw38);
-                        n = ir.CJUMP.OP.EQ;
+                        n = ir.IrCJump.OP.EQ;
                         break;
 
                     case RegExpId.kw39:
                         jj_consume_token(RegExpId.kw39);
-                        n = ir.CJUMP.OP.NE;
+                        n = ir.IrCJump.OP.NE;
                         break;
 
                     case RegExpId.kw40:
                         jj_consume_token(RegExpId.kw40);
-                        n = ir.CJUMP.OP.LT;
+                        n = ir.IrCJump.OP.LT;
                         break;
 
                     case RegExpId.kw41:
                         jj_consume_token(RegExpId.kw41);
-                        n = ir.CJUMP.OP.LE;
+                        n = ir.IrCJump.OP.LE;
                         break;
 
                     case RegExpId.kw42:
                         jj_consume_token(RegExpId.kw42);
-                        n = ir.CJUMP.OP.GT;
+                        n = ir.IrCJump.OP.GT;
                         break;
 
                     case RegExpId.kw43:
                         jj_consume_token(RegExpId.kw43);
-                        n = ir.CJUMP.OP.GE;
+                        n = ir.IrCJump.OP.GE;
                         break;
 
                     default:
                         jj_la1[2] = jj_gen;
                         jj_consume_token(RegExpId.UNDEFINED);
-                        throw new irParseException();
+                        throw new IrParseException();
                 }
                 {
                     if (true) return n;
@@ -145,13 +145,13 @@ namespace DemiTasse.irpsr
                 throw new Exception("Missing return statement in function");
             }
 
-        public static STMT STMT() /* throws ParseException */
+        public static IrStmt STMT() /* throws ParseException */
         {
             IrToken t; 
-            CJUMP.OP n; 
-            STMT s; 
-            EXP e1 = null, e2, e3;
-            EXPlist el=new EXPlist();
+            IrCJump.OP n; 
+            IrStmt s; 
+            IrExp e1 = null, e2, e3;
+            IrExpList el=new IrExpList();
 
             jj_consume_token(RegExpId.kw44);
             switch ((jj_ntk == RegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
@@ -161,14 +161,14 @@ namespace DemiTasse.irpsr
                     jj_consume_token(RegExpId.kwMOVE);
                     e1 = EXP();
                     e2 = EXP();
-                    s = new MOVE(e1,e2);
+                    s = new IrMove(e1,e2);
                     break;
 
                 case RegExpId.kwJUMP:
 
                     jj_consume_token(RegExpId.kwJUMP);
                     e1 = EXP();
-                    s = new JUMP((NAME)e1);
+                    s = new IrJump((IrName)e1);
                     break;
 
                 case RegExpId.kwCJUMP:
@@ -178,14 +178,14 @@ namespace DemiTasse.irpsr
                     e1 = EXP();
                     e2 = EXP();
                     e3 = EXP();
-                    s = new CJUMP(n,e1,e2,(NAME)e3);
+                    s = new IrCJump(n,e1,e2,(IrName)e3);
                     break;
 
                 case RegExpId.kwLABEL:
                     
                     jj_consume_token(RegExpId.kwLABEL);
                     t = jj_consume_token(RegExpId.ID);
-                    s = new LABEL(t.image);
+                    s = new IrLabel(t.image);
                     break;
 
                 case RegExpId.kwCALLST:
@@ -216,7 +216,7 @@ namespace DemiTasse.irpsr
                     label_3a:
 
                     jj_consume_token(RegExpId.kw35);
-                    s = new CALLST((NAME)e1,el);
+                    s = new IrCallst((IrName)e1,el);
                     break;
 
                 case RegExpId.kwRETURN:
@@ -231,13 +231,13 @@ namespace DemiTasse.irpsr
                             jj_la1[4] = jj_gen;
                             break;
                     }
-                    s = new RETURN(e1);
+                    s = new IrReturn(e1);
                     break;
 
                     default:
                         jj_la1[5] = jj_gen;
                         jj_consume_token(RegExpId.UNDEFINED);
-                        throw new irParseException();
+                        throw new IrParseException();
                 }
 
             jj_consume_token(RegExpId.kw45);
@@ -247,51 +247,51 @@ namespace DemiTasse.irpsr
             //return s;
             }
 
-        public static BINOP.OP binopCode() /* throws ParseException */
+        public static IrBinop.OP binopCode() /* throws ParseException */
         {
-            BINOP.OP n;
+            IrBinop.OP n;
             switch ((jj_ntk == RegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
             {
                 case RegExpId.kw46:
 
                     jj_consume_token(RegExpId.kw46);
-                    n = ir.BINOP.OP.ADD;
+                    n = ir.IrBinop.OP.ADD;
                     break;
 
                     case RegExpId.kw47:
 
                         jj_consume_token(RegExpId.kw47);
-                        n = ir.BINOP.OP.SUB;
+                        n = ir.IrBinop.OP.SUB;
                         break;
 
                     case RegExpId.kw48:
 
                         jj_consume_token(RegExpId.kw48);
-                        n = ir.BINOP.OP.MUL;
+                        n = ir.IrBinop.OP.MUL;
                         break;
 
                     case RegExpId.kw49:
 
                         jj_consume_token(RegExpId.kw49);
-                        n = ir.BINOP.OP.DIV;
+                        n = ir.IrBinop.OP.DIV;
                         break;
 
                     case RegExpId.kw50:
 
                         jj_consume_token(RegExpId.kw50);
-                        n = ir.BINOP.OP.AND;
+                        n = ir.IrBinop.OP.AND;
                         break;
 
                     case RegExpId.kw51:
 
                         jj_consume_token(RegExpId.kw51);
-                        n = ir.BINOP.OP.OR;
+                        n = ir.IrBinop.OP.OR;
                         break;
 
                     default:
                         jj_la1[6] = jj_gen;
                         jj_consume_token(RegExpId.UNDEFINED);
-                        throw new irParseException();
+                        throw new IrParseException();
                     }
             #if false
                     {if (true) return n;}
@@ -300,14 +300,14 @@ namespace DemiTasse.irpsr
             return n;
         }
 
-        public static EXP EXP() /* throws ParseException */
+        public static IrExp EXP() /* throws ParseException */
         {
             IrToken t; 
             int n; 
             String str;
-            STMT s; 
-            EXP e, e2; 
-            EXPlist el = new EXPlist();
+            IrStmt s; 
+            IrExp e, e2; 
+            IrExpList el = new IrExpList();
             jj_consume_token(RegExpId.kw32);
 
             switch ((jj_ntk == RegExpId.UNDEFINED) ? jj_ntk_fn() : jj_ntk)
@@ -317,23 +317,23 @@ namespace DemiTasse.irpsr
                     jj_consume_token(RegExpId.kwESEQ);
                     s = STMT();
                     e = EXP();
-                    e = new ESEQ(s,e);
+                    e = new IrEseq(s,e);
                     break;
 
                 case RegExpId.kwMEM:
 
                     jj_consume_token(RegExpId.kwMEM);
                     e = EXP();
-                    e = new MEM(e);
+                    e = new IrMem(e);
                     break;
 
                 case RegExpId.kwBINOP:
 
                     jj_consume_token(RegExpId.kwBINOP);
-                    BINOP.OP op = binopCode();
+                    IrBinop.OP op = binopCode();
                     e = EXP();
                     e2 = EXP();
-                    e = new BINOP(op,e,e2);
+                    e = new IrBinop(op,e,e2);
                     break;
 
                 case RegExpId.kwCALL:
@@ -359,21 +359,21 @@ namespace DemiTasse.irpsr
                     label_4a:
 
                     jj_consume_token(RegExpId.kw35);
-                    e = new CALL((NAME)e,el);
+                    e = new IrCall((IrName)e,el);
                     break;
 
                 case RegExpId.kwTEMP:
 
                     jj_consume_token(RegExpId.kwTEMP);
                     n = INT();
-                    e = new TEMP(n);
+                    e = new IrTemp(n);
                     break;
 
                 case RegExpId.kwNAME:
 
                     jj_consume_token(RegExpId.kwNAME);
                     t = jj_consume_token(RegExpId.ID);
-                    e = new NAME(t.image);
+                    e = new IrName(t.image);
                     break;
 
                 case RegExpId.kwFIELD:
@@ -381,42 +381,42 @@ namespace DemiTasse.irpsr
                     jj_consume_token(RegExpId.kwFIELD);
                     e = EXP();
                     n = INT();
-                    e = new FIELD(e,n);
+                    e = new IrField(e,n);
                     break;
 
                 case RegExpId.kwPARAM:
 
                     jj_consume_token(RegExpId.kwPARAM);
                     n = INT();
-                    e = new PARAM(n);
+                    e = new IrParam(n);
                     break;
 
                 case RegExpId.kwVAR:
 
                     jj_consume_token(RegExpId.kwVAR);
                     n = INT();
-                    e = new VAR(n);
+                    e = new IrVar(n);
                     break;
 
                 case RegExpId.kwCONST:
 
                     jj_consume_token(RegExpId.kwCONST);
                     n = INT();
-                    e = new CONST(n);
+                    e = new IrConst(n);
                     break;
 
                 case RegExpId.kwSTRING:
 
                     jj_consume_token(RegExpId.kwSTRING);
                     str = STR();
-                    e = new STRING(str);
+                    e = new IrString(str);
                     break;
 
                 default:
 
                     jj_la1[8] = jj_gen;
                     jj_consume_token(RegExpId.UNDEFINED);
-                    throw new irParseException();
+                    throw new IrParseException();
             }
 
             jj_consume_token(RegExpId.kw35);
@@ -446,7 +446,7 @@ namespace DemiTasse.irpsr
         private static bool jj_initialized_once = false;
       
         /** Generated Token Manager. */
-        public static irParserTokenManager token_source = null;
+        public static IrParserTokenManager token_source = null;
         public static SimpleCharStream jj_input_stream = null;
 
         /** Current token. */
@@ -460,7 +460,7 @@ namespace DemiTasse.irpsr
         private static int[] jj_la1_0;
         private static int[] jj_la1_1;
       
-        static irParser()
+        static IrParser()
         {
             jj_la1_init_0();
             jj_la1_init_1();
@@ -495,7 +495,7 @@ namespace DemiTasse.irpsr
             }
 
             //token_source.ReInit(jj_input_stream);
-            irParserTokenManager.ReInit(jj_input_stream);
+            IrParserTokenManager.ReInit(jj_input_stream);
             token = new IrToken();
             jj_ntk = RegExpId.UNDEFINED;
             jj_gen = 0;
@@ -507,14 +507,14 @@ namespace DemiTasse.irpsr
         {
             jj_input_stream.ReInit(streamReader, 1, 1);
             //token_source.ReInit(jj_input_stream);
-            irParserTokenManager.ReInit(jj_input_stream);
+            IrParserTokenManager.ReInit(jj_input_stream);
             token = new IrToken();
             jj_ntk = RegExpId.UNDEFINED;
             jj_gen = 0;
             for (int i = 0; i < 9; i++) jj_la1[i] = -1;
         }
 
-        private static IrToken jj_consume_token(irParserConstants.RegExpId kind) /* throws ParseException */
+        private static IrToken jj_consume_token(IrParserConstants.RegExpId kind) /* throws ParseException */
         {
             IrToken oldToken;
             if ((oldToken = token).next != null)
@@ -522,7 +522,7 @@ namespace DemiTasse.irpsr
             else
             {
                 //token = token.next = token_source.getNextToken();
-                token.next = irParserTokenManager.getNextToken();
+                token.next = IrParserTokenManager.getNextToken();
                 token = token.next;
             }
             jj_ntk = RegExpId.UNDEFINED;
@@ -543,7 +543,7 @@ namespace DemiTasse.irpsr
                 token = token.next;
             else
                 //token = token.next = token_source.getNextToken();
-                token = token.next = irParserTokenManager.getNextToken();
+                token = token.next = IrParserTokenManager.getNextToken();
             jj_ntk = RegExpId.UNDEFINED;
             jj_gen++;
             return token;
@@ -559,7 +559,7 @@ namespace DemiTasse.irpsr
                     t = t.next;
                 else
                     //t = t.next = token_source.getNextToken();
-                    t = t.next = irParserTokenManager.getNextToken();
+                    t = t.next = IrParserTokenManager.getNextToken();
             }
             return t;
         }
@@ -568,7 +568,7 @@ namespace DemiTasse.irpsr
         {
             if ((jj_nt = token.next) == null)
                 //return (jj_ntk = (token.next = token_source.getNextToken()).kind);
-                return (jj_ntk = (token.next = irParserTokenManager.getNextToken()).kind);
+                return (jj_ntk = (token.next = IrParserTokenManager.getNextToken()).kind);
             else
                 return (jj_ntk = jj_nt.kind);
         }
@@ -576,10 +576,10 @@ namespace DemiTasse.irpsr
         //private static java.util.List<int[]> jj_expentries = new java.util.ArrayList<int[]>();
         private static List<int[]> jj_expentries = new List<int[]>();
         private static int[] jj_expentry;
-        private static irParserConstants.RegExpId jj_kind = irParserConstants.RegExpId.UNDEFINED;
+        private static IrParserConstants.RegExpId jj_kind = IrParserConstants.RegExpId.UNDEFINED;
 
         /** Generate ParseException. */
-        public static irParseException generateParseException()
+        public static IrParseException generateParseException()
         {
             jj_expentries.Clear();
             bool[] la1tokens = new bool[52];
@@ -587,7 +587,7 @@ namespace DemiTasse.irpsr
             if (jj_kind >= 0)
             {
                 la1tokens[(int)jj_kind] = true;
-                jj_kind = irParserConstants.RegExpId.UNDEFINED;
+                jj_kind = IrParserConstants.RegExpId.UNDEFINED;
             }
 
             for (int i = 0; i < 9; i++)
@@ -625,7 +625,7 @@ namespace DemiTasse.irpsr
                 exptokseq[i] = jj_expentries[i];
             }
 
-            return new irParseException(token, exptokseq, tokenImage);
+            return new IrParseException(token, exptokseq, tokenImage);
         }
 
         /** Enable tracing. */
@@ -643,14 +643,14 @@ namespace DemiTasse.irpsr
         // *************************************************************************
 
         /** Constructor with InputStream. */
-        public irParser(Stream stream)
+        public IrParser(Stream stream)
             : this(stream, Encoding.ASCII)
         {
             //this(stream, null);
         }
 
         /** Constructor with InputStream and supplied encoding */
-        public irParser(Stream stream, Encoding encoding)
+        public IrParser(Stream stream, Encoding encoding)
         {
             if (jj_initialized_once)
             {
@@ -672,7 +672,7 @@ namespace DemiTasse.irpsr
                     throw new RuntimeException(e);
                 }
 
-                token_source = new irParserTokenManager(jj_input_stream);
+                token_source = new IrParserTokenManager(jj_input_stream);
             }
 
             token = new IrToken();
@@ -733,10 +733,10 @@ namespace DemiTasse.irpsr
         }
 #endif
 
-        public PROG Program()
+        public IrProg Program()
         {
-            FUNClist funcs = new FUNClist();
-            FUNC seg;
+            IrFuncList funcs = new IrFuncList();
+            IrFunc seg;
             bool done = false;
 
             jj_consume_token(RegExpId.kwPROG);
@@ -760,7 +760,7 @@ namespace DemiTasse.irpsr
             }
 
             jj_consume_token(0);
-            return new PROG(funcs);
+            return new IrProg(funcs);
         }
     }
 }

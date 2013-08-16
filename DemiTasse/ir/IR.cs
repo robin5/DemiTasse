@@ -4,7 +4,9 @@
 // *
 // * File: IR.cs
 // *
-// * Author:  Jingke Li
+// * Author:  Jingke Li (Portland State University)
+// *
+// * C# Translation:  Robin Murray
 // *
 // **********************************************************************************
 // *
@@ -44,35 +46,44 @@ using System.Diagnostics;
 
 namespace DemiTasse.ir
 {
-    public abstract class IR
+    public abstract class Ir
     {
-        private static StringBuilder text = new StringBuilder();
+        private static StringBuilder _irData = new StringBuilder();
 
-        public static void DUMP(string s)
+        public static void Append(string s)
         {
-            text.Append(s); 
+            _irData.Append(s); 
         }
         
-        public static void DUMP(STMT s)
+        public static void Append(IrStmt irStmt)
         {
-            if (s != null) s.dump(); else DUMP(" [null]\n");
+            if (irStmt != null)
+                irStmt.GenerateIrData();
+            else 
+                Append(" [null]\n");
         }
         
-        public static void DUMP(EXP e)
+        public static void Append(IrExp irExp)
         {
-            if (e != null) e.dump(); else DUMP(" (null)");
+            if (irExp != null) 
+                irExp.GenerateIrData(); 
+            else 
+                Append(" (null)");
         }
 
-        public static string getIr()
+        public static string IrData
         {
-            return text.ToString();
+            get
+            {
+                return _irData.ToString();
+            }
         }
 
         public static void Clear()
         {
-            text.Length = 0;
+            _irData.Length = 0;
         }
 
-        public abstract void dump();
+        public abstract void GenerateIrData();
     }
 }

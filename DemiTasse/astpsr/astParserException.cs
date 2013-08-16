@@ -49,7 +49,7 @@ namespace DemiTasse.astpsr
      * You can modify this class to customize your error reporting
      * mechanisms so long as you retain the public fields.
      */
-    public class astParseException : Exception
+    public class AstParseException : Exception
     {
 
         /**
@@ -65,7 +65,7 @@ namespace DemiTasse.astpsr
          * a new object of this type with the fields "currentToken",
          * "expectedTokenSequences", and "tokenImage" set.
          */
-        public astParseException(AstToken currentTokenVal,
+        public AstParseException(AstToken currentTokenVal,
             int[][] expectedTokenSequencesVal,
             string[] tokenImageVal)
             : base(initialise(currentTokenVal, expectedTokenSequencesVal, tokenImageVal))
@@ -85,13 +85,13 @@ namespace DemiTasse.astpsr
          * these constructors.
          */
 
-        public astParseException()
+        public AstParseException()
             : base()
         {
         }
 
         /** Constructor with message. */
-        public astParseException(string message)
+        public AstParseException(string message)
             : base(message)
         {
         }
@@ -161,7 +161,7 @@ namespace DemiTasse.astpsr
                     retval += tokenImage[0];
                     break;
                 }
-                retval += " " + astParserConstants.tokenImage[(int)tok.kind];
+                retval += " " + AstParserConstants.tokenImage[(int)tok.kind];
                 retval += " \"";
                 retval += add_escapes(tok.image);
                 retval += " \"";

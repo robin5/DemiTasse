@@ -49,30 +49,30 @@ namespace DemiTasse.symbol
 {
     public class SymbolVisitor : TypeVI
     {
-        public Table symTable;         // the top-scope symbol table
+        public SymbolTable symTable;         // the top-scope symbol table
         private ClassRec currClass;    // the current class scope
         private MethodRec currMethod;  // the current method scope
 
         public SymbolVisitor()
         {
-            symTable = new symbol.Table();
+            symTable = new symbol.SymbolTable();
             currClass = null;
             currMethod = null;
         }
 
-        private void setupClassHierarchy(ClassDeclList cl) /* throws Exception */
+        private void setupClassHierarchy(AstClassDeclList cl)
         {
-            List<ClassDecl> work = new List<ClassDecl>();
+            List<AstClassDecl> work = new List<AstClassDecl>();
             List<String> done = new List<String>();
             
-            for (int i = 0; i < cl.size(); i++)
-                work.Add(cl.elementAt(i));
+            for (int i = 0; i < cl.Count(); i++)
+                work.Add(cl[i]);
 
             while (work.Count > 0)
             {
                 for (int i = 0; i < work.Count; i++)
                 {
-                    ClassDecl cd = (ClassDecl) work[i];
+                    AstClassDecl cd = (AstClassDecl) work[i];
                     if (cd.pid != null)
                     {
                         if (!done.Contains(cd.pid.s))
@@ -80,9 +80,9 @@ namespace DemiTasse.symbol
                             continue;
                         }
 
-                        ClassRec cr = symTable.getClass(cd.cid);
-                        ClassRec pr = symTable.getClass(cd.pid);
-                        cr.linkParent(pr);
+                        ClassRec cr = symTable.GetClass(cd.cid);
+                        ClassRec pr = symTable.GetClass(cd.pid);
+                        cr.LinkParent(pr);
                     }
                 done.Add(cd.cid.s);
                 work.Remove(cd);
@@ -92,7 +92,7 @@ namespace DemiTasse.symbol
 
         // Program ---
         // ClassDeclList cl;
-        public void visit(DemiTasse.ast.Program n) /* throws Exception */
+        public void visit(AstProgram n)
         {
             n.cl.accept(this);
             setupClassHierarchy(n.cl); // establish class hierarchy
@@ -100,32 +100,32 @@ namespace DemiTasse.symbol
 
         // LISTS --- use default traversal
   
-        public void visit(AstList n) /* throws Exception */
+        public void visit(AstList n)
         {
         }
 
-        public void visit(ClassDeclList n) /* throws Exception */
+        public void visit(AstClassDeclList n)
         {
-            for (int i = 0; i < n.size(); i++)
-                n.elementAt(i).accept(this);
+            for (int i = 0; i < n.Count(); i++)
+                n[i].accept(this);
         }
   
-        public void visit(VarDeclList n) /* throws Exception */
+        public void visit(AstVarDeclList n)
         {
-            for (int i = 0; i < n.size(); i++)
-                n.elementAt(i).accept(this);
+            for (int i = 0; i < n.Count(); i++)
+                n[i].accept(this);
         }
 
-        public void visit(MethodDeclList n) /* throws Exception */
+        public void visit(AstMethodDeclList n)
         {
-            for (int i = 0; i < n.size(); i++)
-                n.elementAt(i).accept(this);
+            for (int i = 0; i < n.Count(); i++)
+                n[i].accept(this);
         }
 
-        public void visit(FormalList n) /* throws Exception */
+        public void visit(AstFormalList n)
         {
-            for (int i = 0; i < n.size(); i++)
-                n.elementAt(i).accept(this);
+            for (int i = 0; i < n.Count(); i++)
+                n[i].accept(this);
         }
 
         // DECLARATIONS
@@ -134,10 +134,10 @@ namespace DemiTasse.symbol
         // Id cid, pid;
         // VarDeclList vl;
         // MethodDeclList ml;
-        public void visit(ClassDecl n) /* throws Exception */
+        public void visit(AstClassDecl n)
         {
-            symTable.addClass(n.cid);
-            currClass = symTable.getClass(n.cid);
+            symTable.AddClass(n.cid);
+            currClass = symTable.GetClass(n.cid);
             n.vl.accept(this);
             n.ml.accept(this);
             currClass = null;
@@ -149,10 +149,10 @@ namespace DemiTasse.symbol
         // FormalList fl;
         // VarDeclList vl;
         // StmtList sl;
-        public void visit(MethodDecl n) /* throws Exception */
+        public void visit(AstMethodDecl n)
         {
-            currClass.addMethod(n.mid, n.t);
-            currMethod = currClass.getMethod(n.mid);
+            currClass.AddMethod(n.mid, n.t);
+            currMethod = currClass.GetMethod(n.mid);
             n.fl.accept(this);
             n.vl.accept(this);
             currMethod = null;
@@ -162,62 +162,62 @@ namespace DemiTasse.symbol
         // Type t;
         // Id var;
         // Exp e;
-        public void visit(VarDecl n) /* throws Exception */
+        public void visit(AstVarDecl n)
         {
             if (currMethod != null)
             { 	// a local variable	
-                if (currMethod.getParam(n.var) != null)
+                if (currMethod.GetParam(n.var) != null)
                     throw new SymbolException(n.var.s + " already defined as a param");
-                currMethod.addLocal(n.var, n.t);
+                currMethod.AddLocal(n.var, n.t);
             } 
             else 
             {   // a class variable
-                currClass.addClassVar(n.var, n.t, n.e);
+                currClass.AddClassVar(n.var, n.t, n.e);
             }
         }
   
         // Formal ---
         // Type t;
         // Id id;
-        public void visit(Formal n) /* throws Exception */
+        public void visit(AstFormal n)
         {
             if (currMethod == null) 
                 throw new SymbolException("currMethod does not exits");
-            currMethod.addParam(n.id, n.t);
+            currMethod.AddParam(n.id, n.t);
         }
 
         // TYPES --- use the nodes themselves 
 
-        public DemiTasse.ast.Type visit(BasicType n) { return n; }
-        public DemiTasse.ast.Type visit(ObjType n) /* throws Exception */ { return n; }
-        public DemiTasse.ast.Type visit(ArrayType n) { return n; }
+        public AstType visit(AstBasicType n) { return n; }
+        public AstType visit(AstObjType n) { return n; }
+        public AstType visit(AstArrayType n) { return n; }
 
         // No need to implement statements or expressions nodes.
 
-        public void visit(StmtList n) /* throws Exception */ {}
-        public void visit(Block n) /* throws Exception */ {}
-        public void visit(Assign n) /* throws Exception */ {}
-        public void visit(CallStmt n) /* throws Exception */ {}
-        public void visit(If n) /* throws Exception */ {}
-        public void visit(While n) /* throws Exception */ {}
-        public void visit(Print n) /* throws Exception */ {}
-        public void visit(Return n) /* throws Exception */ {}
+        public void visit(AstStmtList n) {}
+        public void visit(AstBlock n) {}
+        public void visit(AstAssign n) {}
+        public void visit(AstCallStmt n) {}
+        public void visit(AstIf n) {}
+        public void visit(AstWhile n) {}
+        public void visit(AstPrint n) {}
+        public void visit(AstReturn n) {}
 
-        public void visit(ExpList n) /* throws Exception */ {}
-        public DemiTasse.ast.Type visit(Binop n) /* throws Exception */    { return null; }
-        public DemiTasse.ast.Type visit(Relop n) /* throws Exception */    { return null; }
-        public DemiTasse.ast.Type visit(Unop n) /* throws Exception */ 	   { return null; }
-        public DemiTasse.ast.Type visit(ArrayElm n) /* throws Exception */ { return null; }
-        public DemiTasse.ast.Type visit(ArrayLen n) /* throws Exception */ { return null; }
-        public DemiTasse.ast.Type visit(Field n) /* throws Exception */    { return null; }
-        public DemiTasse.ast.Type visit(Call n) /* throws Exception */     { return null; }
-        public DemiTasse.ast.Type visit(NewArray n) /* throws Exception */ { return null; }
-        public DemiTasse.ast.Type visit(NewObj n) /* throws Exception */   { return null; }
-        public DemiTasse.ast.Type visit(Id n) /* throws Exception */       { return null; }
-        public DemiTasse.ast.Type visit(This n) /* throws Exception */     { return null; }
+        public void visit(AstExpList n) {}
+        public AstType visit(AstBinop n)    { return null; }
+        public AstType visit(AstRelop n)    { return null; }
+        public AstType visit(AstUnop n) 	{ return null; }
+        public AstType visit(AstArrayElm n) { return null; }
+        public AstType visit(AstArrayLen n) { return null; }
+        public AstType visit(AstField n)    { return null; }
+        public AstType visit(AstCall n)     { return null; }
+        public AstType visit(AstNewArray n) { return null; }
+        public AstType visit(AstNewObj n)   { return null; }
+        public AstType visit(AstId n)       { return null; }
+        public AstType visit(AstThis n)     { return null; }
 
-        public DemiTasse.ast.Type visit(IntVal n) { return null; }
-        public DemiTasse.ast.Type visit(BoolVal n) { return null; }
-        public DemiTasse.ast.Type visit(StrVal n) { return null; }
+        public AstType visit(AstIntVal n)   { return null; }
+        public AstType visit(AstBoolVal n)  { return null; }
+        public AstType visit(AstStrVal n)   { return null; }
     }
 }

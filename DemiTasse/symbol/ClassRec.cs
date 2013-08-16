@@ -51,100 +51,106 @@ namespace DemiTasse.symbol
 {
     public class ClassRec
     {
-        private Id _id;
+        private AstId _id;
         private ClassRec _parent;
-        private List<VarRec> class_vars;
-        private Dictionary<String, MethodRec> methods;
+        private List<VarRec> _vars;
+        private Dictionary<String, MethodRec> _methods;
     
-        public ClassRec(Id cid)
+        public ClassRec(AstId cid)
         {
             _id = cid;
             _parent = null;
-            class_vars = new List<VarRec>();
-            methods = new Dictionary<String, MethodRec>();
+            _vars = new List<VarRec>();
+            _methods = new Dictionary<String, MethodRec>();
         }
 
-        public Id id() { return _id; }
+        public AstId Id() 
+        { 
+            return _id; 
+        }
         
-        public ClassRec parent()
+        public ClassRec Parent()
         {
             return _parent; 
         }
   
-        public int varCnt()
+        public int VarCnt()
         {
-            return class_vars.Count; 
+            return _vars.Count; 
         }
 
-        public VarRec getClassVar(Id vid)
+        public VarRec GetClassVar(AstId vid)
         {
-            for (int i=0; i<class_vars.Count; i++)
+            for (int i = 0; i < _vars.Count; i++)
             {
-                VarRec v = class_vars[i];
-                if (v.id().s.Equals(vid.s)) return v;
+                VarRec v = _vars[i];
+                if (v.Id().s.Equals(vid.s)) return v;
             }
-            return null;
-        }
-    
-        public VarRec getClassVarAt(int i)
-        {
-            if (i<class_vars.Count) 
-                return class_vars[i];
+
             return null;
         }
 
-        public void addClassVar(Id vid, DemiTasse.ast.Type type, Exp e) /* throws SymbolException */
+        public VarRec GetClassVarAt(int i)
         {
-            if(getClassVar(vid) != null) 
+            if (i < _vars.Count)
+                return _vars[i];
+            
+            return null;
+        }
+
+        public void AddClassVar(AstId vid, DemiTasse.ast.AstType type, AstExp e)
+        {
+            if(GetClassVar(vid) != null) 
                 throw new SymbolException("ClassVar " + vid.s + " already defined");
 
-            class_vars.Add(new VarRec(vid, type, VarRec.CLASS, class_vars.Count+1, e));
+            _vars.Add(new VarRec(vid, type, VarRec.CLASS, _vars.Count+1, e));
         }
   
-        private int ancestorVarCnt()
+        private int AncestorVarCnt()
         {
             if (_parent != null) 
-                return _parent.ancestorVarCnt() + _parent.varCnt();
+                return _parent.AncestorVarCnt() + _parent.VarCnt();
+
             return 0;
         }      
 
-        public void linkParent(ClassRec p)
+        public void LinkParent(ClassRec p)
         {
             _parent = p;
-            int start_idx = ancestorVarCnt() + 1;
-            for (int i = 0; i < class_vars.Count; i++) 
-                class_vars[i].setIdx(start_idx + i);
+            int start_idx = AncestorVarCnt() + 1;
+            for (int i = 0; i < _vars.Count; i++) 
+                _vars[i].Idx = (start_idx + i);
         }
 
-        public MethodRec getMethod(Id mid)
+        public MethodRec GetMethod(AstId mid)
         {
-            if (!methods.ContainsKey(mid.s))
+            if (!_methods.ContainsKey(mid.s))
                 return null;
 
-            return methods[mid.s]; // may return null
+            return _methods[mid.s]; // may return null
         }
 
-        public void addMethod(Id mid, DemiTasse.ast.Type rtype) /* throws SymbolException */
+        public void AddMethod(AstId mid, DemiTasse.ast.AstType rtype)
         {
-            if (methods.ContainsKey(mid.s))
+            if (_methods.ContainsKey(mid.s))
                 throw new SymbolException("Method " + mid.s + " already defined");
 
             MethodRec m = new MethodRec(mid, rtype);
 
-            methods.Add(mid.s, m);
+            _methods.Add(mid.s, m);
         }
   
-        public void show()
+        public void Show()
         {
-            Debug.WriteLine("Class " + _id.s + " (pid=" + (_parent==null ? "null" : _parent.id().s) + "):");
-            for (int i = 0; i < class_vars.Count; i++)
+            Debug.WriteLine("Class " + _id.s + " (pid=" + (_parent==null ? "null" : _parent.Id().s) + "):");
+            for (int i = 0; i < _vars.Count; i++)
             {
                 Debug.Write("  [cl var] ");
-                class_vars[i].show();
+                _vars[i].Show();
             }
-            foreach (MethodRec rec in methods.Values)
+            foreach (MethodRec rec in _methods.Values)
             {
-                rec.show();
+                rec.Show();
             }
         }
     }

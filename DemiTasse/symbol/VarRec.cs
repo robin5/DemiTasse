@@ -52,45 +52,63 @@ namespace DemiTasse.symbol
         public static readonly int LOCAL = 1;
         public static readonly int PARAM = 2;
 
-        private Id _id;
-        private Type _type;
+        private AstId _id;
+        private AstType _type;
         private int _kind;  // one of the three categories
         private int _idx;   // position in its scope
-        private Exp _init;  // initial value
+        private AstExp _init;  // initial value
   
-        public VarRec(Id vid, Type vtype, int vkind, int vidx)
+        public VarRec(AstId id, AstType type, int kind, int idx)
         {
-            _id = vid;
-            _type = vtype;
-            _kind = vkind;
-            _idx = vidx;
+            _id = id;
+            _type = type;
+            _kind = kind;
+            _idx = idx;
             _init = null;
         }
 
-        public VarRec(Id vid, Type vtype, int vkind, int vidx, Exp e)
+        public VarRec(AstId id, AstType type, int kind, int idx, AstExp e)
         {
-            _id = vid;
-            _type = vtype;
-            _kind = vkind;
-            _idx = vidx;
+            _id = id;
+            _type = type;
+            _kind = kind;
+            _idx = idx;
             _init = e;
         }
 
-        public Id id()     { return _id; }
-        public Type type() { return _type; }
-        public int kind()  { return _kind; }
-        public int idx()   { return _idx; }
-        public Exp init()  { return _init; }
+        public AstId Id()
+        { 
+            return _id; 
+        }
 
-        public void setIdx(int vidx) { _idx = vidx; }
+        public AstType Type()
+        { 
+            return _type; 
+        }
 
-        public void show()
+        public int Kind()
+        { 
+            return _kind; 
+        }
+
+        public AstExp Init()
+        { 
+            return _init; 
+        }
+
+        public int Idx
+        {
+            get { return _idx; }
+            set { _idx = value; }
+        }
+
+        public void Show()
         {
             Debug.Write("(" + _idx + ") " + _id.s + " " + _type.toString());
             if (_init != null)
             {
                 Debug.Write(" ");
-                _init.dump();
+                _init.GenerateAstData();
             }
             Debug.WriteLine("");
         }	

@@ -1,10 +1,12 @@
 // **********************************************************************************
-// * Copyright (c) 2013 Robin Murray
+// * Copyright (c) 2013 Jingke Li, Robin Murray
 // **********************************************************************************
 // *
 // * File: Ast.cs
 // *
-// * Author:  Jingke Li
+// * Author:  Jingke Li (Portland State University)
+// *
+// * C# Translation:  Robin Murray
 // *
 // **********************************************************************************
 // *
@@ -40,61 +42,61 @@ namespace DemiTasse.ast
 {
     public abstract class Ast
     {
-        private static StringBuilder text = new StringBuilder();
+        private static StringBuilder _astData = new StringBuilder();
 
-        public static void DUMP(string s) 
+        public static void Append(string s) 
         { 
-            text.Append(s); 
+            _astData.Append(s);
         }
         
-        public static void DUMP(int i) 
+        public static void Append(int i) 
         { 
-            text.Append(i.ToString()); 
+            _astData.Append(i.ToString()); 
         }
 
-        public static void DUMP(string name, AstList l)
+        public static void Append(string name, AstList l)
         {
-            text.Append("(" + name + " ");
+            _astData.Append("(" + name + " ");
             if (l != null)
-                l.dump();
-            text.Append(") ");
+                l.GenerateAstData();
+            _astData.Append(") ");
         }
 
-        public static void DUMP(DemiTasse.ast.Type t)
+        public static void Append(AstType t)
         {
             if (t == null) 
-                text.Append("(NullType) ");
+                _astData.Append("(NullType) ");
             else 
-                t.dump();
+                t.GenerateAstData();
         }
 
-        public static void DUMP(Stmt s)
+        public static void Append(AstStmt s)
         {
             if (s == null) 
-                text.Append("(NullStmt) ");
+                _astData.Append("(NullStmt) ");
             else 
-                s.dump();
+                s.GenerateAstData();
         }
 
-        public static void DUMP(Exp e)
+        public static void Append(AstExp e)
         {
             if (e == null) 
-                text.Append("(NullExp) ");
+                _astData.Append("(NullExp) ");
             else 
-                e.dump();
+                e.GenerateAstData();
         }
 
-        public static string getAst()
+        public static string AstData
         {
-            return text.ToString();
+            get { return _astData.ToString(); }
         }
 
-        public static void Clear()
+        public static void ResetAstData()
         {
-            text.Length = 0;
+            _astData.Length = 0;
         }
 
-        public abstract void dump();
+        public abstract void GenerateAstData();
         
         public abstract void accept(VoidVI v);
     }

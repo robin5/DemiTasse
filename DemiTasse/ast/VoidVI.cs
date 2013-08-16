@@ -1,12 +1,14 @@
 // **********************************************************************************
-// * Copyright (c) 2013 Robin Murray
+// * Copyright (c) 2013 Jingke Li, Robin Murray
 // **********************************************************************************
 // *
 // * File: VoidVI.cs
 // *
 // * Description:  A simple visitor interface for MINI v1.6
 // *
-// * Author:  Jingke Li
+// * Author:  Jingke Li (Portland State University)
+// *
+// * C# Translation:  Robin Murray
 // *
 // **********************************************************************************
 // *
@@ -34,53 +36,53 @@ namespace DemiTasse.ast
 {
     public interface VoidVI
     {
-        void visit(Program n);
+        void visit(AstProgram n);
 
         // Lists
         void visit(AstList n);
-        void visit(ClassDeclList n);
-        void visit(MethodDeclList n);
-        void visit(VarDeclList n);
-        void visit(FormalList n);
-        void visit(StmtList n);
-        void visit(ExpList n);
+        void visit(AstClassDeclList n);
+        void visit(AstMethodDeclList n);
+        void visit(AstVarDeclList n);
+        void visit(AstFormalList n);
+        void visit(AstStmtList n);
+        void visit(AstExpList n);
 
         // Declarations
-        void visit(ClassDecl n);
-        void visit(MethodDecl n);
-        void visit(VarDecl n);
-        void visit(Formal n);
+        void visit(AstClassDecl n);
+        void visit(AstMethodDecl n);
+        void visit(AstVarDecl n);
+        void visit(AstFormal n);
 
         // Types
-        void visit(BasicType n);
-        void visit(ObjType n);
-        void visit(ArrayType n);
+        void visit(AstBasicType n);
+        void visit(AstObjType n);
+        void visit(AstArrayType n);
 
         // Statements
-        void visit(Block n);
-        void visit(Assign n);
-        void visit(CallStmt n);
-        void visit(If n);
-        void visit(While n);
-        void visit(Print n);
-        void visit(Return n);
+        void visit(AstBlock n);
+        void visit(AstAssign n);
+        void visit(AstCallStmt n);
+        void visit(AstIf n);
+        void visit(AstWhile n);
+        void visit(AstPrint n);
+        void visit(AstReturn n);
 
         // Expressions
-        void visit(Binop n);
-        void visit(Relop n);
-        void visit(Unop n);
-        void visit(ArrayElm n);
-        void visit(ArrayLen n);
-        void visit(Field n);
-        void visit(Call n);
-        void visit(NewArray n);
-        void visit(NewObj n);
+        void visit(AstBinop n);
+        void visit(AstRelop n);
+        void visit(AstUnop n);
+        void visit(AstArrayElm n);
+        void visit(AstArrayLen n);
+        void visit(AstField n);
+        void visit(AstCall n);
+        void visit(AstNewArray n);
+        void visit(AstNewObj n);
 
         // Base values
-        void visit(Id n);
-        void visit(This n);
-        void visit(IntVal n);
-        void visit(BoolVal n);
-        void visit(StrVal n);
+        void visit(AstId n);
+        void visit(AstThis n);
+        void visit(AstIntVal n);
+        void visit(AstBoolVal n);
+        void visit(AstStrVal n);
     }
 }

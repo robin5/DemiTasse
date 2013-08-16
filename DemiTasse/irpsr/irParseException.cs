@@ -2,7 +2,7 @@
 // * Copyright (c) 2013 Robin Murray
 // **********************************************************************************
 // *
-// * File: irParseException.cs
+// * File: IrParseException.cs
 // *
 // * Description: 
 // *
@@ -60,7 +60,7 @@ namespace DemiTasse.irpsr
      * You can modify this class to customize your error reporting
      * mechanisms so long as you retain the public fields.
      */
-    public class irParseException : Exception
+    public class IrParseException : Exception
     {
 
         /**
@@ -76,7 +76,7 @@ namespace DemiTasse.irpsr
          * a new object of this type with the fields "currentToken",
          * "expectedTokenSequences", and "tokenImage" set.
          */
-        public irParseException(IrToken currentTokenVal, int[][] expectedTokenSequencesVal, string[] tokenImageVal)
+        public IrParseException(IrToken currentTokenVal, int[][] expectedTokenSequencesVal, string[] tokenImageVal)
             : base(initialise(currentTokenVal, expectedTokenSequencesVal, tokenImageVal))
         {
             currentToken = currentTokenVal;
@@ -94,13 +94,13 @@ namespace DemiTasse.irpsr
          * these constructors.
          */
 
-        public irParseException()
+        public IrParseException()
             : base()
         {
         }
 
         /** Constructor with message. */
-        public irParseException(string message)
+        public IrParseException(string message)
             : base(message)
         {
         }
@@ -170,7 +170,7 @@ namespace DemiTasse.irpsr
                     retval += tokenImage[0];
                     break;
                 }
-                retval += " " + irParserConstants.tokenImage[(int)tok.kind];
+                retval += " " + IrParserConstants.tokenImage[(int)tok.kind];
                 retval += " \"";
                 retval += add_escapes(tok.image);
                 retval += " \"";

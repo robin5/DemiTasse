@@ -2,7 +2,7 @@
 // * Copyright (c) 2013 Robin Murray
 // **********************************************************************************
 // *
-// * File: irParseException.cs
+// * File: IrgenVisitor.cs
 // *
 // * Description: 
 // *
@@ -54,34 +54,34 @@ namespace DemiTasse.irgen
 {
     class IrgenVisitor : TransVI
     {
-        private CONST cZero, cOne;
-        private NAME cWordSize;
-        private Table symTable;         // the top-scope symbol table
+        private IrConst cZero, cOne;
+        private IrName cWordSize;
+        private SymbolTable symTable;         // the top-scope symbol table
         private TypeVisitor tv;
         private ClassRec currClass;    // the current class scope
         private MethodRec currMethod;  // the current method scope
         private int maxArgCnt = -1;
 
-        public IrgenVisitor(Table symTable_, TypeVisitor tv_)
+        public IrgenVisitor(SymbolTable symTable_, TypeVisitor tv_)
         {
-            cOne = new CONST(1);
-            cZero = new CONST(0);
-            cWordSize = new NAME("wSZ");
+            cOne = new IrConst(1);
+            cZero = new IrConst(0);
+            cWordSize = new IrName("wSZ");
             symTable = symTable_;
             tv = tv_;
             currClass = null;
             currMethod = null;
         }
 
-        private STMTlist flattern(STMTlist list)
+        private IrStmtList flattern(IrStmtList list)
         {
-            STMTlist sl = new STMTlist();
+            IrStmtList sl = new IrStmtList();
             for (int i = 0; i < list.size(); i++)
             {
-                STMT s = (STMT)list.elementAt(i);
-                if (null != (s as STMTlist))
+                IrStmt s = (IrStmt)list.elementAt(i);
+                if (null != (s as IrStmtList))
                 {
-                    sl.add(flattern((STMTlist)s));
+                    sl.add(flattern((IrStmtList)s));
                 }
                 else
                 {
@@ -91,36 +91,36 @@ namespace DemiTasse.irgen
             return sl;
         }
 
-        private bool trivialEXP(EXP e)
+        private bool trivialEXP(IrExp e)
         {
-            return ((null != (e as NAME)) ||
-                    (null != (e as CONST)) ||
-                    (null != (e as TEMP)));
+            return ((null != (e as IrName)) ||
+                    (null != (e as IrConst)) ||
+                    (null != (e as IrTemp)));
         }
 
-        private bool nullSTMT(STMT s)
+        private bool nullSTMT(IrStmt s)
         {
-            if (null != (s as STMTlist))
-                return ((STMTlist)s).size() == 0;
+            if (null != (s as IrStmtList))
+                return ((IrStmtList)s).size() == 0;
             else
                 return s == null;
         }
 
-        private STMT mergeSTMTs(STMT s1, STMT s2)
+        private IrStmt mergeSTMTs(IrStmt s1, IrStmt s2)
         {
             if (nullSTMT(s1)) return s2;
             if (nullSTMT(s2)) return s1;
-            STMTlist sl = new STMTlist();
+            IrStmtList sl = new IrStmtList();
             sl.add(s1);
             sl.add(s2);
             return sl;
         }
 
-        private STMT mergeSTMTs(STMT s1, STMT s2, STMT s3)
+        private IrStmt mergeSTMTs(IrStmt s1, IrStmt s2, IrStmt s3)
         {
             if (nullSTMT(s1)) return mergeSTMTs(s2, s3);
             if (nullSTMT(s2)) return mergeSTMTs(s1, s3);
-            STMTlist sl = new STMTlist();
+            IrStmtList sl = new IrStmtList();
             sl.add(s1);
             sl.add(mergeSTMTs(s2, s3));
             return sl;
@@ -128,38 +128,39 @@ namespace DemiTasse.irgen
 
         // Program ---
         // ClassDeclList cl;
-        public PROG visit(DemiTasse.ast.Program n) /* throws Exception */
+        public IrProg visit(AstProgram n) /* throws Exception */
         {
-            FUNClist funcs = n.cl.accept(this);
-            return new PROG(funcs);
+            IrFuncList funcs = n.cl.accept(this);
+            return new IrProg(funcs);
         }
 
         // DECLARATIONS
 
         // *** partial implementation, will be fixed in proj2 **** 
         // ClassDeclList ---
-        public FUNClist visit(ClassDeclList n) /* throws Exception */ {
-            FUNClist funcs = new FUNClist();
-            for (int i = 0; i < n.size(); i++)
-                funcs.AddRange(n.elementAt(i).accept(this));
+        public IrFuncList visit(AstClassDeclList n) {
+            IrFuncList funcs = new IrFuncList();
+            for (int i = 0; i < n.Count(); i++)
+                funcs.AddRange(n[i].accept(this));
             return funcs;
         }
 
         // MethodDeclList ---
-        public FUNClist visit(MethodDeclList n) /* throws Exception */ {
-            FUNClist funcs = new FUNClist();
-            for (int i = 0; i < n.size(); i++)
-                funcs.Add(n.elementAt(i).accept(this));
+        public IrFuncList visit(AstMethodDeclList n)
+        {
+            IrFuncList funcs = new IrFuncList();
+            for (int i = 0; i < n.Count(); i++)
+                funcs.Add(n[i].accept(this));
             return funcs;
         }
 
         // VarDeclList ---
-        public STMTlist visit(VarDeclList n) /* throws Exception */ {
-            STMTlist sl = new STMTlist();
-            STMT s;
-            for (int i = 0; i < n.size(); i++)
+        public IrStmtList visit(AstVarDeclList n) {
+            IrStmtList sl = new IrStmtList();
+            IrStmt s;
+            for (int i = 0; i < n.Count(); i++)
             {
-                s = n.elementAt(i).accept(this);
+                s = n[i].accept(this);
                 if (s != null)
                     sl.add(s);
             }
@@ -173,11 +174,11 @@ namespace DemiTasse.irgen
         // Id cid, pid;
         // VarDeclList vl;
         // MethodDeclList ml;
-        public FUNClist visit(ClassDecl n) /* throws Exception */ {
+        public IrFuncList visit(AstClassDecl n) {
 
-            currClass = symTable.getClass(n.cid);
+            currClass = symTable.GetClass(n.cid);
 
-            FUNClist funcs = n.ml.accept(this);
+            IrFuncList funcs = n.ml.accept(this);
             currClass = null;
             return funcs;
         }
@@ -189,18 +190,18 @@ namespace DemiTasse.irgen
         // FormalList fl;
         // VarDeclList vl;
         // StmtList sl;
-        public FUNC visit(MethodDecl n) /* throws Exception */ {
+        public IrFunc visit(AstMethodDecl n) {
             string label;
             int varCnt = 0;
             int tmpCnt = 0;
             maxArgCnt = 0;       // note this is a class variable
 
             // Look up the corresponding MethodRec in the symbol table
-            currMethod = currClass.getMethod(n.mid);
+            currMethod = currClass.GetMethod(n.mid);
 
-            TEMP.reset();
+            IrTemp.Reset();
 
-            STMTlist stmts = n.vl.accept(this);
+            IrStmtList stmts = n.vl.accept(this);
             if (stmts == null)
                 stmts = n.sl.accept(this);
             else
@@ -209,28 +210,28 @@ namespace DemiTasse.irgen
             // Create an unique label for the method by concatenating class name
             //  and method name together, with an underscore ( ) in between.
 
-            if (currMethod.id().s.CompareTo("main") == 0)
+            if (currMethod.Id().s.CompareTo("main") == 0)
                 label = "main";
             else
-                label = symTable.uniqueMethodName(currClass, currMethod.id());
+                label = symTable.UniqueMethodName(currClass, currMethod.Id());
 
-            varCnt = currMethod.localCnt();
-            tmpCnt = TEMP.getCount();
+            varCnt = currMethod.LocalCnt();
+            tmpCnt = IrTemp.Count;
 
             currMethod = null;
-            return new FUNC(label, varCnt, tmpCnt, maxArgCnt, stmts);
+            return new IrFunc(label, varCnt, tmpCnt, maxArgCnt, stmts);
         }
 
         // VarDecl ---
         // Type t;
         // Id var;
         // Exp e;
-        public STMT visit(VarDecl n) /* throws Exception */ {
+        public IrStmt visit(AstVarDecl n) {
             if (n.e != null)
             {
-                EXP id = n.var.accept(this);
-                EXP e = n.e.accept(this);
-                return new MOVE(id, e);
+                IrExp id = n.var.accept(this);
+                IrExp e = n.e.accept(this);
+                return new IrMove(id, e);
             }
             return null;
         }
@@ -238,25 +239,25 @@ namespace DemiTasse.irgen
         // STATEMENTS
 
         // StmtList ---
-        public STMTlist visit(StmtList n) /* throws Exception */ {
-            STMTlist sl = new STMTlist();
-            for (int i = 0; i < n.size(); i++)
-                sl.add(n.elementAt(i).accept(this));
+        public IrStmtList visit(AstStmtList n) {
+            IrStmtList sl = new IrStmtList();
+            for (int i = 0; i < n.Count(); i++)
+                sl.add(n[i].accept(this));
             return sl;
         }
 
         // Block ---
         // StmtList sl;
-        public STMT visit(Block n) /* throws Exception */ {
+        public IrStmt visit(AstBlock n) {
             return n.sl.accept(this);
         }
 
         // Assign ---
         // Exp lhs, rhs;
-        public STMT visit(Assign n) /* throws Exception */ {
-            EXP lhs = n.lhs.accept(this);
-            EXP rhs = n.rhs.accept(this);
-            return new MOVE(lhs, rhs);
+        public IrStmt visit(AstAssign n) {
+            IrExp lhs = n.lhs.accept(this);
+            IrExp rhs = n.rhs.accept(this);
+            return new IrMove(lhs, rhs);
         }
 
         // *** partial implementation, will be fixed in proj2 **** 
@@ -264,7 +265,7 @@ namespace DemiTasse.irgen
         // Exp obj; 
         // Id mid;
         // ExpList args;
-        public STMT visit(CallStmt n) /* throws Exception */ {
+        public IrStmt visit(AstCallStmt n) {
 
             string label;
 
@@ -278,48 +279,48 @@ namespace DemiTasse.irgen
             // 1. Perform typechecking on the obj component of the Call/CallStmt
             // node, which should return an ObjType representing the obj's class.
 
-            ObjType t = (ObjType)n.obj.accept(tv);
+            AstObjType t = (AstObjType)n.obj.accept(tv);
 
             // 2. Look up the MethodRec with the class info.
-            ClassRec classRec = symTable.getClass(t.cid);
-            MethodRec methodRec = symTable.getMethod(classRec, n.mid);
+            ClassRec classRec = symTable.GetClass(t.cid);
+            MethodRec methodRec = symTable.GetMethod(classRec, n.mid);
 
-            EXP accessLink = n.obj.accept(this);
-            EXPlist el = new EXPlist(accessLink);
+            IrExp accessLink = n.obj.accept(this);
+            IrExpList el = new IrExpList(accessLink);
             el.addAll(n.args.accept(this));
 
-            if (maxArgCnt <= n.args.size())
-                maxArgCnt = n.args.size() + 1;
+            if (maxArgCnt <= n.args.Count())
+                maxArgCnt = n.args.Count() + 1;
 
-            if (methodRec.id().s.CompareTo("main") == 0)
+            if (methodRec.Id().s.CompareTo("main") == 0)
                 label = "main";
             else
-                label = symTable.uniqueMethodName(classRec, methodRec.id());
+                label = symTable.UniqueMethodName(classRec, methodRec.Id());
 
-            return new CALLST(new NAME(label), el);
+            return new IrCallst(new IrName(label), el);
             //return new CALLST(new NAME(n.mid.s), el);
         }
 
         // If ---
         // Exp e;
         // Stmt s1, s2;
-        public STMT visit(If n) /* throws Exception */ {
-            NAME alt = new NAME();
-            STMTlist sl = new STMTlist();
-            EXP exp = n.e.accept(this);
-            sl.add(new CJUMP(CJUMP.OP.EQ, exp, cZero, alt));
+        public IrStmt visit(AstIf n) {
+            IrName alt = new IrName();
+            IrStmtList sl = new IrStmtList();
+            IrExp exp = n.e.accept(this);
+            sl.add(new IrCJump(IrCJump.OP.EQ, exp, cZero, alt));
             sl.add(n.s1.accept(this));
             if (n.s2 == null)
             {
-                sl.add(new LABEL(alt));
+                sl.add(new IrLabel(alt));
             }
             else
             {
-                NAME done = new NAME();
-                sl.add(new JUMP(done));
-                sl.add(new LABEL(alt));
+                IrName done = new IrName();
+                sl.add(new IrJump(done));
+                sl.add(new IrLabel(alt));
                 sl.add(n.s2.accept(this));
-                sl.add(new LABEL(done));
+                sl.add(new IrLabel(done));
             }
             return sl;
         }
@@ -327,126 +328,126 @@ namespace DemiTasse.irgen
         // While ---
         // Exp e;
         // Stmt s;
-        public STMT visit(While n) /* throws Exception */ {
-            NAME test = new NAME();
-            NAME done = new NAME();
-            STMTlist sl = new STMTlist();
-            sl.add(new LABEL(test));
-            EXP exp = n.e.accept(this);
-            sl.add(new CJUMP(CJUMP.OP.EQ, exp, cZero, done));
+        public IrStmt visit(AstWhile n) {
+            IrName test = new IrName();
+            IrName done = new IrName();
+            IrStmtList sl = new IrStmtList();
+            sl.add(new IrLabel(test));
+            IrExp exp = n.e.accept(this);
+            sl.add(new IrCJump(IrCJump.OP.EQ, exp, cZero, done));
             sl.add(n.s.accept(this));
-            sl.add(new JUMP(test));
-            sl.add(new LABEL(done));
+            sl.add(new IrJump(test));
+            sl.add(new IrLabel(done));
             return sl;
         }
 
         // Print ---
         // Exp e;
-        public STMT visit(Print n) /* throws Exception */ {
+        public IrStmt visit(AstPrint n) {
 
-            NAME func = new NAME("print");
+            IrName func = new IrName("print");
 
-            EXPlist args = new EXPlist();
+            IrExpList args = new IrExpList();
 
             if (n.e != null)
                 args.add(n.e.accept(this));
 
-            return new CALLST(func, args);
+            return new IrCallst(func, args);
         }
 
         // Return ---  
         // Exp e;
-        public STMT visit(Return n) /* throws Exception */ {
+        public IrStmt visit(AstReturn n) {
             if (n.e == null)
-                return new RETURN();
+                return new IrReturn();
             else
-                return new RETURN(n.e.accept(this));
+                return new IrReturn(n.e.accept(this));
         }
 
         // EXPRESSIONS
 
-        public EXPlist visit(ExpList n) /* throws Exception */ {
-            EXPlist el = new EXPlist();
-            for (int i = 0; i < n.size(); i++)
-                el.add(n.elementAt(i).accept(this));
+        public IrExpList visit(AstExpList n) {
+            IrExpList el = new IrExpList();
+            for (int i = 0; i < n.Count(); i++)
+                el.add(n[i].accept(this));
             return el;
         }
 
         // Binop ---
         // int op;
         // Exp e1, e2;
-        public EXP visit(Binop n) /* throws Exception */ {
-            EXP l = n.e1.accept(this);
-            EXP r = n.e2.accept(this);
-            return new BINOP(n.op, l, r);
+        public IrExp visit(AstBinop n) {
+            IrExp l = n.e1.accept(this);
+            IrExp r = n.e2.accept(this);
+            return new IrBinop(n.op, l, r);
         }
 
         // Relop ---
         // int op;
         // Exp e1, e2;
-        public EXP visit(Relop n) /* throws Exception */ {
-            EXP l = n.e1.accept(this);
-            EXP r = n.e2.accept(this);
-            STMTlist sl = new STMTlist();
-            TEMP tmp = new TEMP();
-            NAME done = new NAME();
-            sl.add(new MOVE(tmp, cOne));
-            sl.add(new CJUMP(n.op, l, r, done));
-            sl.add(new MOVE(tmp, cZero));
-            sl.add(new LABEL(done));
-            return new ESEQ(sl, tmp);
+        public IrExp visit(AstRelop n) {
+            IrExp l = n.e1.accept(this);
+            IrExp r = n.e2.accept(this);
+            IrStmtList sl = new IrStmtList();
+            IrTemp tmp = new IrTemp();
+            IrName done = new IrName();
+            sl.add(new IrMove(tmp, cOne));
+            sl.add(new IrCJump(n.op, l, r, done));
+            sl.add(new IrMove(tmp, cZero));
+            sl.add(new IrLabel(done));
+            return new IrEseq(sl, tmp);
         }
 
         // Unop ---
         // Exp e;
-        public EXP visit(Unop n) /* throws Exception */ {
-            EXP e = n.e.accept(this);
-            if (n.op == Unop.OP.NEG)
-                return new BINOP(BINOP.OP.SUB, cZero, e);
+        public IrExp visit(AstUnop n) {
+            IrExp e = n.e.accept(this);
+            if (n.op == AstUnop.OP.NEG)
+                return new IrBinop(IrBinop.OP.SUB, cZero, e);
             else // n.op == Unop.NOT
-                return new BINOP(BINOP.OP.SUB, cOne, e);
+                return new IrBinop(IrBinop.OP.SUB, cOne, e);
         }
 
         // NewArray ---
         // int size;
-        public EXP visit(NewArray n) /* throws Exception */ {
-            EXP size = new CONST(n.size);
-            STMTlist sl = new STMTlist();
-            NAME top = new NAME();
-            TEMP array = new TEMP();
-            TEMP cnt = new TEMP();
-            EXP bound = new BINOP(BINOP.OP.MUL, new CONST(n.size + 1), cWordSize);
-            sl.add(new MOVE(array, new CALL(new NAME("malloc"), new EXPlist(bound))));
-            sl.add(new MOVE(new MEM(array), size));
-            sl.add(new MOVE(cnt, new BINOP(BINOP.OP.ADD, array,
-                           new BINOP(BINOP.OP.MUL, size, cWordSize))));
-            sl.add(new LABEL(top));
-            sl.add(new MOVE(new MEM(cnt), cZero));
-            sl.add(new MOVE(cnt, new BINOP(BINOP.OP.SUB, cnt, cWordSize)));
-            sl.add(new CJUMP(CJUMP.OP.GT, cnt, array, top));
-            return new ESEQ(sl, array);
+        public IrExp visit(AstNewArray n) {
+            IrExp size = new IrConst(n.size);
+            IrStmtList sl = new IrStmtList();
+            IrName top = new IrName();
+            IrTemp array = new IrTemp();
+            IrTemp cnt = new IrTemp();
+            IrExp bound = new IrBinop(IrBinop.OP.MUL, new IrConst(n.size + 1), cWordSize);
+            sl.add(new IrMove(array, new IrCall(new IrName("malloc"), new IrExpList(bound))));
+            sl.add(new IrMove(new IrMem(array), size));
+            sl.add(new IrMove(cnt, new IrBinop(IrBinop.OP.ADD, array,
+                           new IrBinop(IrBinop.OP.MUL, size, cWordSize))));
+            sl.add(new IrLabel(top));
+            sl.add(new IrMove(new IrMem(cnt), cZero));
+            sl.add(new IrMove(cnt, new IrBinop(IrBinop.OP.SUB, cnt, cWordSize)));
+            sl.add(new IrCJump(IrCJump.OP.GT, cnt, array, top));
+            return new IrEseq(sl, array);
         }
 
         // ArrayElm ---
         // Exp array, idx;
         // BasicType et;
-        public EXP visit(ArrayElm n) /* throws Exception */ {
-            EXP array = n.array.accept(this);
-            EXP idx = n.idx.accept(this);
-            return new MEM(new BINOP(BINOP.OP.ADD, array, new BINOP(BINOP.OP.MUL,
-                     new BINOP(BINOP.OP.ADD, idx, cOne), cWordSize)));
+        public IrExp visit(AstArrayElm n) {
+            IrExp array = n.array.accept(this);
+            IrExp idx = n.idx.accept(this);
+            return new IrMem(new IrBinop(IrBinop.OP.ADD, array, new IrBinop(IrBinop.OP.MUL,
+                     new IrBinop(IrBinop.OP.ADD, idx, cOne), cWordSize)));
         }
 
         // ArrayLen ---
         // Exp array;
-        public EXP visit(ArrayLen n) /* throws Exception */ {
-            return new MEM(n.array.accept(this));
+        public IrExp visit(AstArrayLen n) {
+            return new IrMem(n.array.accept(this));
         }
 
         // *** partial implementation, will be fixed in proj2 **** 
         // NewObj ---
         // Id cid;
-        public EXP visit(NewObj n) /* throws Exception */ {
+        public IrExp visit(AstNewObj n) {
 
             // A NewObj node should be translated into a CALL to "malloc" with a single argument representing the size
             // of the object, followed by a sequence of statements for initializing the objectâ€™s class variables.
@@ -455,22 +456,22 @@ namespace DemiTasse.irgen
             // conducted in the proper scope environment â€” the IrgenVisitor variable currClass needs to point to the
             // objectâ€™s class.
 
-            STMTlist stmts = new STMTlist();
+            IrStmtList stmts = new IrStmtList();
 
             // Calculate the size of the object
-            ClassRec classRec = symTable.getClass(n.cid);              // <get the object's ClassRec from symbol table>;
+            ClassRec classRec = symTable.GetClass(n.cid);              // <get the object's ClassRec from symbol table>;
             int numVars = GetNumObjVars(classRec);
 
             // Construct malloc call node
-            EXP size = new BINOP(BINOP.OP.MUL, new CONST(numVars > 0 ? numVars : 1), cWordSize);
-            CALL call = new CALL(new NAME("malloc"), new EXPlist(size));
+            IrExp size = new IrBinop(IrBinop.OP.MUL, new IrConst(numVars > 0 ? numVars : 1), cWordSize);
+            IrCall call = new IrCall(new IrName("malloc"), new IrExpList(size));
 
-            TEMP tmp = new TEMP();                // This TEMP will contain the location of the object variables
-            stmts.add(new MOVE(tmp, call));       // Move the results of the malloc call into the temp
+            IrTemp tmp = new IrTemp();                // This TEMP will contain the location of the object variables
+            stmts.add(new IrMove(tmp, call));       // Move the results of the malloc call into the temp
 
             GetInitStmts(classRec, stmts, tmp);   // Recursively get object's variable initialization statements
 
-            return new ESEQ(stmts, tmp);          // Construct resulting statement
+            return new IrEseq(stmts, tmp);          // Construct resulting statement
         }
 
         private int GetNumObjVars(ClassRec c)
@@ -480,54 +481,54 @@ namespace DemiTasse.irgen
 
             while (null != c)
             {
-                numVars += c.varCnt();
-                c = c.parent();
+                numVars += c.VarCnt();
+                c = c.Parent();
             }
             return numVars;
         }
 
-        private int GetInitStmts(ClassRec c, STMTlist stmts, TEMP tmp)  /* throws Exception */ {
+        private int GetInitStmts(ClassRec c, IrStmtList stmts, IrTemp tmp)  {
 
             ClassRec saveCurrClass;
             VarRec v;
             int varCnt = 0;
 
             // Get init STMTs from inherited class
-            if (null != c.parent())
+            if (null != c.Parent())
             {
-                varCnt = GetInitStmts(c.parent(), stmts, tmp);
+                varCnt = GetInitStmts(c.Parent(), stmts, tmp);
             }
 
             // Add init STMTs from this class
-            for (int i = 0; i < c.varCnt(); i++)
+            for (int i = 0; i < c.VarCnt(); i++)
             {
 
-                v = c.getClassVarAt(i);
+                v = c.GetClassVarAt(i);
 
-                if (null == v.init())
+                if (null == v.Init())
                 {
-                    stmts.add(ObjVarInitStmt(tmp, varCnt + i, v.idx() - 1, cZero));
+                    stmts.add(ObjVarInitStmt(tmp, varCnt + i, v.Idx - 1, cZero));
                 }
                 else
                 {
                     saveCurrClass = currClass;
                     currClass = c;
-                    EXP e = v.init().accept(this);
+                    IrExp e = v.Init().accept(this);
                     currClass = saveCurrClass;
 
-                    stmts.add(ObjVarInitStmt(tmp, varCnt + i, v.idx() - 1, e));
+                    stmts.add(ObjVarInitStmt(tmp, varCnt + i, v.Idx - 1, e));
                 }
             }
-            return varCnt + c.varCnt();
+            return varCnt + c.VarCnt();
         }
 
 
-        private STMT ObjVarInitStmt(EXP varLoc, int varOffset, int varIndex, EXP e)
+        private IrStmt ObjVarInitStmt(IrExp varLoc, int varOffset, int varIndex, IrExp e)
         {
             if (0 == (varOffset))
-                return (new MOVE(new MEM(varLoc), e));
+                return (new IrMove(new IrMem(varLoc), e));
             else
-                return (new MOVE(new MEM(new BINOP(BINOP.OP.ADD, varLoc, (new BINOP(BINOP.OP.MUL, new CONST(varIndex), cWordSize)))), e));
+                return (new IrMove(new IrMem(new IrBinop(IrBinop.OP.ADD, varLoc, (new IrBinop(IrBinop.OP.MUL, new IrConst(varIndex), cWordSize)))), e));
         }
 
 
@@ -536,22 +537,22 @@ namespace DemiTasse.irgen
         // Field ---
         // Exp obj; 
         // Id var;
-        public EXP visit(Field n) /* throws Exception */ {
+        public IrExp visit(AstField n) {
 
             //return new NAME(n.var.s);
             tv.setClass(currClass);
             tv.setMethod(currMethod);
 
-            ObjType t = (ObjType)n.obj.accept(tv);
+            AstObjType t = (AstObjType)n.obj.accept(tv);
 
 
-            ClassRec classRec = symTable.getClass(t.cid);
+            ClassRec classRec = symTable.GetClass(t.cid);
 
-            VarRec v = symTable.getVar(classRec, n.var);
+            VarRec v = symTable.GetVar(classRec, n.var);
 
-            EXP field = n.obj.accept(this);
+            IrExp field = n.obj.accept(this);
 
-            return new FIELD(field, v.idx() - 1);
+            return new IrField(field, v.Idx - 1);
 
         }
 
@@ -560,7 +561,7 @@ namespace DemiTasse.irgen
         // Exp obj; 
         // Id cid, mid;
         // ExpList args;
-        public EXP visit(Call n) /* throws Exception */ {
+        public IrExp visit(AstCall n) {
 
             string label;
 
@@ -574,75 +575,75 @@ namespace DemiTasse.irgen
             // 1. Perform typechecking on the obj component of the Call/CallStmt
             // node, which should return an ObjType representing the obj's class.
 
-            ObjType t = (ObjType)n.obj.accept(tv);
+            AstObjType t = (AstObjType)n.obj.accept(tv);
 
             // 2. Look up the MethodRec with the class info.
-            ClassRec classRec = symTable.getClass(t.cid);
-            MethodRec methodRec = symTable.getMethod(classRec, n.mid);
+            ClassRec classRec = symTable.GetClass(t.cid);
+            MethodRec methodRec = symTable.GetMethod(classRec, n.mid);
 
-            EXP accessLink = n.obj.accept(this);
-            EXPlist el = new EXPlist(accessLink);
+            IrExp accessLink = n.obj.accept(this);
+            IrExpList el = new IrExpList(accessLink);
             el.addAll(n.args.accept(this));
 
-            if (maxArgCnt <= n.args.size())
-                maxArgCnt = n.args.size() + 1;
+            if (maxArgCnt <= n.args.Count())
+                maxArgCnt = n.args.Count() + 1;
 
-            if (methodRec.id().s.CompareTo("main") == 0)
+            if (methodRec.Id().s.CompareTo("main") == 0)
                 label = "main";
             else
-                label = symTable.uniqueMethodName(classRec, methodRec.id());
+                label = symTable.UniqueMethodName(classRec, methodRec.Id());
 
-            return new CALL(new NAME(label), el);
+            return new IrCall(new IrName(label), el);
         }
 
         // *** partial implementation, will be fixed in proj2 **** 
         // Id ---
         // string s;
-        public EXP visit(Id n) /* throws Exception */ {
+        public IrExp visit(AstId n) {
 
             VarRec v;
 
             if (currMethod != null)
             {
 
-                if ((v = currMethod.getLocal(n)) != null)
-                    return new VAR(v.idx());
+                if ((v = currMethod.GetLocal(n)) != null)
+                    return new IrVar(v.Idx);
 
-                if ((v = currMethod.getParam(n)) != null)
-                    return new PARAM(v.idx());
+                if ((v = currMethod.GetParam(n)) != null)
+                    return new IrParam(v.Idx);
             }
 
-            v = symTable.getVar(currClass, n);
+            v = symTable.GetVar(currClass, n);
 
-            return new FIELD(new PARAM(0), v.idx() - 1);
+            return new IrField(new IrParam(0), v.Idx - 1);
         }
 
         // *** partial implementation, will be fixed in proj2 **** 
         // This ---
-        public EXP visit(This n)
+        public IrExp visit(AstThis n)
         {
-            return new PARAM(0);
+            return new IrParam(0);
         }
 
         // IntVal ---
         // int i;
-        public EXP visit(IntVal n)
+        public IrExp visit(AstIntVal n)
         {
-            return new CONST(n.i);
+            return new IrConst(n.i);
         }
 
         // BoolVal ---
         // bool b;
-        public EXP visit(BoolVal n)
+        public IrExp visit(AstBoolVal n)
         {
-            return new CONST(n.b ? 1 : 0);
+            return new IrConst(n.b ? 1 : 0);
         }
 
         // StrVal ---
         // string s;
-        public EXP visit(StrVal n)
+        public IrExp visit(AstStrVal n)
         {
-            return new STRING(n.s);
+            return new IrString(n.s);
         }
     }
 }

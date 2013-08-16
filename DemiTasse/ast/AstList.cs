@@ -1,10 +1,12 @@
 // **********************************************************************************
-// * Copyright (c) 2013 Robin Murray
+// * Copyright (c) 2013 Jingke Li, Robin Murray
 // **********************************************************************************
 // *
 // * File: AstList.cs
 // *
-// * Author:  Jingke Li
+// * Author:  Jingke Li (Portland State University)
+// *
+// * C# Translation:  Robin Murray
 // *
 // **********************************************************************************
 // *
@@ -41,47 +43,36 @@ namespace DemiTasse.ast
 {
     public class AstList : Ast
     {
-        private List<Ast> list;
+        private List<Ast> _list;
 
         public AstList()
         { 
-            list = new List<Ast>(); 
+            _list = new List<Ast>(); 
         }
 
-        public void add(Ast n)
+        public void Add(Ast n)
         { 
-            list.Add(n); 
+            _list.Add(n); 
         }
 
-        public void addAll(AstList l)
+        public int Count()
         { 
-            list.AddRange(l.list); 
+            return _list.Count(); 
         }
 
-        public Ast elementAt(int i)
-        { 
-            return list[i]; 
-        }
-
-        public int size()
-        { 
-            return list.Count(); 
-        }
-
-        public override void dump() 
+        public override void GenerateAstData()
         {
-            for (int i=0; i<size(); i++) 
-            elementAt(i).dump();
+            for (int i = 0; i < Count(); i++)
+                this[i].GenerateAstData();
         }
 
         public Ast this[int i]
         {
-            get { return list[i]; }
-            set { list[i] = value; }
+            get { return _list[i]; }
+            set { _list[i] = value; }
         }
 
         public override void accept(VoidVI v) { v.visit(this); }
-        //public void accept(TypeVI v) { v.visit(this); } /* throws Exception */
     }
 
 }

@@ -2,7 +2,7 @@
 // * Copyright (c) 2013 Robin Murray
 // **********************************************************************************
 // *
-// * File: irParserTokenManager.cs
+// * File: IrParserTokenManager.cs
 // *
 // * Description: 
 // *
@@ -53,7 +53,7 @@ namespace DemiTasse.irpsr
     /* import ir.*; */
 
     /** Token Manager. */
-    public class irParserTokenManager : irParserConstants
+    public class IrParserTokenManager : IrParserConstants
     {
         static private /* final */ int jjStopStringLiteralDfa_0(int pos, long active0)
         {
@@ -797,14 +797,14 @@ namespace DemiTasse.irpsr
         static protected char curChar;
 
         /** Constructor. */
-        public irParserTokenManager(SimpleCharStream stream){
+        public IrParserTokenManager(SimpleCharStream stream){
             if (input_stream != null)
                 throw new TokenMgrError("ERROR: Second call to constructor of static lexer. You must use ReInit() to initialize the static variables.", TokenMgrError.STATIC_LEXER_ERROR);
             input_stream = stream;
         }
 
         /** Constructor. */
-        public irParserTokenManager(SimpleCharStream stream, int lexState)
+        public IrParserTokenManager(SimpleCharStream stream, int lexState)
             :this(stream)
         {
             // this(stream);

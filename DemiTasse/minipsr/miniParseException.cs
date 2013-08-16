@@ -61,7 +61,7 @@ namespace DemiTasse.minipsr
      * You can modify this class to customize your error reporting
      * mechanisms so long as you retain the public fields.
      */
-    public class miniParseException : Exception
+    public class MiniParseException : Exception
     {
         /**
          * The version identifier for this Serializable class.
@@ -76,7 +76,7 @@ namespace DemiTasse.minipsr
          * a new object of this type with the fields "currentToken",
          * "expectedTokenSequences", and "tokenImage" set.
          */
-        public miniParseException(PsrToken currentTokenVal, int[][] expectedTokenSequencesVal, string[] tokenImageVal)
+        public MiniParseException(MiniToken currentTokenVal, int[][] expectedTokenSequencesVal, string[] tokenImageVal)
             : base(initialise(currentTokenVal, expectedTokenSequencesVal, tokenImageVal))
         {
             currentToken = currentTokenVal;
@@ -94,13 +94,13 @@ namespace DemiTasse.minipsr
          * these constructors.
          */
 
-        public miniParseException()
+        public MiniParseException()
             : base()
         {
         }
 
         /** Constructor with message. */
-        public miniParseException(string message)
+        public MiniParseException(string message)
             : base(message)
         {
         }
@@ -110,7 +110,7 @@ namespace DemiTasse.minipsr
          * this object has been created due to a parse error, the token
          * followng this token will (therefore) be the first error token.
          */
-        private PsrToken currentToken;
+        private MiniToken currentToken;
 
         /**
          * Each entry in this array is an array of integers.  Each array
@@ -133,7 +133,7 @@ namespace DemiTasse.minipsr
         * from the parser) the correct error message
         * gets displayed.
         */
-        private static string initialise(PsrToken currentToken,
+        private static string initialise(MiniToken currentToken,
             int[][] expectedTokenSequences,
             string[] tokenImage)
         {
@@ -159,7 +159,7 @@ namespace DemiTasse.minipsr
             }
 
             string retval = "Encountered \"";
-            PsrToken tok = currentToken.next;
+            MiniToken tok = currentToken.next;
             for (int i = 0; i < maxSize; i++)
             {
                 if (i != 0) retval += " ";

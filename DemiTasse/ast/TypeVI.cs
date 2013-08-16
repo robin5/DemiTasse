@@ -1,10 +1,12 @@
 // **********************************************************************************
-// * Copyright (c) 2013 Robin Murray
+// * Copyright (c) 2013 Jingke Li, Robin Murray
 // **********************************************************************************
 // *
 // * File: TypeVI.cs
 // *
-// * Author:  Jingke Li
+// * Author:  Jingke Li (Portland State University)
+// *
+// * C# Translation:  Robin Murray
 // *
 // **********************************************************************************
 // *
@@ -32,53 +34,53 @@ namespace DemiTasse.ast
 {
     public interface TypeVI
     {
-        void visit(Program n) /* throws Exception */;
+        void visit(AstProgram n) /* throws Exception */;
 
         // Lists
         void visit(AstList n) /* throws Exception */;
-        void visit(ClassDeclList n) /* throws Exception */;
-        void visit(MethodDeclList n) /* throws Exception */;
-        void visit(VarDeclList n) /* throws Exception */;
-        void visit(FormalList n) /* throws Exception */;
-        void visit(StmtList n) /* throws Exception */;
-        void visit(ExpList n) /* throws Exception */;
+        void visit(AstClassDeclList n) /* throws Exception */;
+        void visit(AstMethodDeclList n) /* throws Exception */;
+        void visit(AstVarDeclList n) /* throws Exception */;
+        void visit(AstFormalList n) /* throws Exception */;
+        void visit(AstStmtList n) /* throws Exception */;
+        void visit(AstExpList n) /* throws Exception */;
 
         // Declarations
-        void visit(ClassDecl n) /* throws Exception */;
-        void visit(MethodDecl n) /* throws Exception */;
-        void visit(VarDecl n) /* throws Exception */;
-        void visit(Formal n) /* throws Exception */;
+        void visit(AstClassDecl n) /* throws Exception */;
+        void visit(AstMethodDecl n) /* throws Exception */;
+        void visit(AstVarDecl n) /* throws Exception */;
+        void visit(AstFormal n) /* throws Exception */;
 
         // Types
-        Type visit(BasicType n);
-        Type visit(ObjType n) /* throws Exception */;
-        Type visit(ArrayType n);
+        AstType visit(AstBasicType n);
+        AstType visit(AstObjType n) /* throws Exception */;
+        AstType visit(AstArrayType n);
 
         // Statements
-        void visit(Block n) /* throws Exception */;
-        void visit(Assign n) /* throws Exception */;
-        void visit(CallStmt n) /* throws Exception */;
-        void visit(If n) /* throws Exception */;
-        void visit(While n) /* throws Exception */;
-        void visit(Print n) /* throws Exception */;
-        void visit(Return n) /* throws Exception */;
+        void visit(AstBlock n) /* throws Exception */;
+        void visit(AstAssign n) /* throws Exception */;
+        void visit(AstCallStmt n) /* throws Exception */;
+        void visit(AstIf n) /* throws Exception */;
+        void visit(AstWhile n) /* throws Exception */;
+        void visit(AstPrint n) /* throws Exception */;
+        void visit(AstReturn n) /* throws Exception */;
 
         // Expressions
-        Type visit(Binop n) /* throws Exception */;
-        Type visit(Relop n) /* throws Exception */;
-        Type visit(Unop n) /* throws Exception */;
-        Type visit(ArrayElm n) /* throws Exception */;
-        Type visit(ArrayLen n) /* throws Exception */;
-        Type visit(Field n) /* throws Exception */;
-        Type visit(Call n) /* throws Exception */;
-        Type visit(NewArray n) /* throws Exception */;
-        Type visit(NewObj n) /* throws Exception */;
-        Type visit(Id n) /* throws Exception */;
-        Type visit(This n) /* throws Exception */;
+        AstType visit(AstBinop n) /* throws Exception */;
+        AstType visit(AstRelop n) /* throws Exception */;
+        AstType visit(AstUnop n) /* throws Exception */;
+        AstType visit(AstArrayElm n) /* throws Exception */;
+        AstType visit(AstArrayLen n) /* throws Exception */;
+        AstType visit(AstField n) /* throws Exception */;
+        AstType visit(AstCall n) /* throws Exception */;
+        AstType visit(AstNewArray n) /* throws Exception */;
+        AstType visit(AstNewObj n) /* throws Exception */;
+        AstType visit(AstId n) /* throws Exception */;
+        AstType visit(AstThis n) /* throws Exception */;
 
         // Base values
-        Type visit(IntVal n);
-        Type visit(BoolVal n);
-        Type visit(StrVal n);
+        AstType visit(AstIntVal n);
+        AstType visit(AstBoolVal n);
+        AstType visit(AstStrVal n);
     }
 }

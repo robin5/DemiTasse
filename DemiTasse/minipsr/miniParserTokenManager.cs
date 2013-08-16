@@ -52,7 +52,7 @@ using DemiTasse.psrutil;
 namespace DemiTasse.minipsr
 {
     /** Token Manager. */
-    public class miniParserTokenManager : miniParserConstants
+    public class MiniParserTokenManager : MiniParserConstants
     {
         /** Debug output. */
         // public static  java.io.PrintStream debugStream = System.out;
@@ -1140,7 +1140,7 @@ namespace DemiTasse.minipsr
         static protected char curChar;
 
         /** Constructor. */
-        public miniParserTokenManager(SimpleCharStream stream)
+        public MiniParserTokenManager(SimpleCharStream stream)
         {
             if (input_stream != null)
                 throw new TokenMgrError("ERROR: Second call to constructor of static lexer. You must use ReInit() to initialize the static variables.", TokenMgrError.STATIC_LEXER_ERROR);
@@ -1148,7 +1148,7 @@ namespace DemiTasse.minipsr
         }
 
         /** Constructor. */
-        public miniParserTokenManager(SimpleCharStream stream, int lexState)
+        public MiniParserTokenManager(SimpleCharStream stream, int lexState)
             : this(stream)
         {
             SwitchTo(lexState);
@@ -1187,10 +1187,10 @@ namespace DemiTasse.minipsr
               curLexState = lexState;
         }
 
-        static protected PsrToken jjFillToken()
+        static protected MiniToken jjFillToken()
         {
             /* final */
-            PsrToken t;
+            MiniToken t;
             /* final */ string curTokenImage;
             /* final */ int beginLine;
             /* final */ int endLine;
@@ -1202,7 +1202,7 @@ namespace DemiTasse.minipsr
             beginColumn = input_stream.getBeginColumn();
             endLine = input_stream.getEndLine();
             endColumn = input_stream.getEndColumn();
-            t = PsrToken.newToken((MpRegExpId)jjmatchedKind, curTokenImage);
+            t = MiniToken.newToken((MpRegExpId)jjmatchedKind, curTokenImage);
 
             t.beginLine = beginLine;
             t.endLine = endLine;
@@ -1220,10 +1220,10 @@ namespace DemiTasse.minipsr
         static int jjmatchedKind;
 
         /** Get the next Token. */
-        public static PsrToken getNextToken() 
+        public static MiniToken getNextToken() 
         {
-            PsrToken specialToken = null;
-            PsrToken matchedToken;
+            MiniToken specialToken = null;
+            MiniToken matchedToken;
             int curPos = 0;
             bool skip_to_next_token;
 

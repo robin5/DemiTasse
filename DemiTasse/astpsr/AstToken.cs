@@ -59,7 +59,7 @@ namespace DemiTasse.astpsr
          * system is determined by JavaCCParser, and a table of these numbers is
          * stored in the file ...Constants.java.
          */
-        public astParserConstants.AstRegExpId kind;
+        public AstParserConstants.AstRegExpId kind;
 
         /**
          * A reference to the next regular (non-special) token from the input
@@ -95,7 +95,7 @@ namespace DemiTasse.astpsr
         /**
          * Constructs a new token for the specified Image.
          */
-        public AstToken(astParserConstants.AstRegExpId kind)
+        public AstToken(AstParserConstants.AstRegExpId kind)
             : this(kind, null)
         {
         }
@@ -103,7 +103,7 @@ namespace DemiTasse.astpsr
         /**
          * Constructs a new token for the specified Image and Kind.
          */
-        public AstToken(astParserConstants.AstRegExpId kind, string image)
+        public AstToken(AstParserConstants.AstRegExpId kind, string image)
         {
             this.kind = kind;
             this.image = image;
@@ -121,7 +121,7 @@ namespace DemiTasse.astpsr
          * to the following switch statement. Then you can cast matchedToken
          * variable to the appropriate type and use sit in your lexical actions.
          */
-        public static AstToken newToken(astParserConstants.AstRegExpId ofKind, String image)
+        public static AstToken newToken(AstParserConstants.AstRegExpId ofKind, String image)
         {
             switch (ofKind)
             {
@@ -129,7 +129,7 @@ namespace DemiTasse.astpsr
             }
         }
 
-        public static AstToken newToken(astParserConstants.AstRegExpId ofKind)
+        public static AstToken newToken(AstParserConstants.AstRegExpId ofKind)
         {
             return newToken(ofKind, null);
         }

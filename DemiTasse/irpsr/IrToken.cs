@@ -63,7 +63,7 @@ namespace DemiTasse.irpsr
         * system is determined by JavaCCParser, and a table of these numbers is
         * stored in the file ...Constants.java.
         */
-        public irParserConstants.RegExpId kind;
+        public IrParserConstants.RegExpId kind;
 
         /**
         * A reference to the next regular (non-special) token from the input
@@ -99,7 +99,7 @@ namespace DemiTasse.irpsr
         /**
         * Constructs a new token for the specified Image.
         */
-        public IrToken(irParserConstants.RegExpId kind)
+        public IrToken(IrParserConstants.RegExpId kind)
             : this(kind, null)
         {
         }
@@ -107,7 +107,7 @@ namespace DemiTasse.irpsr
         /**
         * Constructs a new token for the specified Image and Kind.
         */
-        public IrToken(irParserConstants.RegExpId kind, String image)
+        public IrToken(IrParserConstants.RegExpId kind, String image)
         {
             this.kind = kind;
             this.image = image;
@@ -125,7 +125,7 @@ namespace DemiTasse.irpsr
         * to the following switch statement. Then you can cast matchedToken
         * variable to the appropriate type and use sit in your lexical actions.
         */
-        public static IrToken newToken(irParserConstants.RegExpId ofKind, String image)
+        public static IrToken newToken(IrParserConstants.RegExpId ofKind, String image)
         {
             switch (ofKind)
             {
@@ -133,7 +133,7 @@ namespace DemiTasse.irpsr
             }
         }
 
-        public static IrToken newToken(irParserConstants.RegExpId ofKind)
+        public static IrToken newToken(IrParserConstants.RegExpId ofKind)
         {
             return newToken(ofKind, null);
         }

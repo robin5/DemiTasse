@@ -47,14 +47,23 @@ namespace DemiTasse.typechk
 {
     public class TypeVisitor : TypeVI 
     {
-        private Table symTable;
+        private SymbolTable symTable;
         private ClassRec currClass;
         private MethodRec currMethod;
         private bool hasReturn;
-        private BasicType IntType = new BasicType(BasicType.Int);    
-        private BasicType BoolType = new BasicType(BasicType.Bool);    
 
-        public TypeVisitor(DemiTasse.symbol.Table symtab)
+        // ************************************************
+        // * define the basic type nodes only once ...
+        // ************************************************
+
+        private AstBasicType IntType = new AstBasicType(AstBasicType.Int);    
+        private AstBasicType BoolType = new AstBasicType(AstBasicType.Bool);
+
+        // ***********************************************************
+        // * constructor -- a symbol table is passed in as a parameter
+        // ***********************************************************
+
+        public TypeVisitor(SymbolTable symtab)
         {
             symTable = symtab;
             currClass = null;
@@ -62,7 +71,7 @@ namespace DemiTasse.typechk
             hasReturn = false;
         }
 
-        public TypeVisitor(DemiTasse.symbol.Table symtab, ClassRec c, MethodRec m)
+        public TypeVisitor(DemiTasse.symbol.SymbolTable symtab, ClassRec c, MethodRec m)
         {
             symTable = symtab;
             currClass = c;
@@ -80,60 +89,60 @@ namespace DemiTasse.typechk
             currMethod = m;
         }
 
-        private bool isIntType(Type t)
+        private bool isIntType(AstType t)
         {
-            return (null != (t as BasicType)) && (((BasicType)t).typ == BasicType.Int);
+            return (null != (t as AstBasicType)) && (((AstBasicType)t).typ == AstBasicType.Int);
         }
 
-        private bool isBoolType(Type t)
+        private bool isBoolType(AstType t)
         {
-            return (null != (t as BasicType)) && (((BasicType)t).typ == BasicType.Bool);
+            return (null != (t as AstBasicType)) && (((AstBasicType)t).typ == AstBasicType.Bool);
         }
 
-        private bool isArithOp(Binop.OP op)
+        private bool isArithOp(AstBinop.OP op)
         {
-            return (Binop.OP.ADD <= op) && (op <= Binop.OP.DIV);
+            return (AstBinop.OP.ADD <= op) && (op <= AstBinop.OP.DIV);
         }
 
-        private bool compatible(Type t1, Type t2) /* throws Exception */
+        private bool compatible(AstType t1, AstType t2) /* throws Exception */
         {
             if (t1 == t2) 
                 return true;
-            else if ((null != (t1 as BasicType)) && (null != (t2 as BasicType)))
+            else if ((null != (t1 as AstBasicType)) && (null != (t2 as AstBasicType)))
             {
-                int bt1 = ((BasicType)t1).typ;
-                int bt2 = ((BasicType)t2).typ;
+                int bt1 = ((AstBasicType)t1).typ;
+                int bt2 = ((AstBasicType)t2).typ;
                 if (bt1 == bt2)
                 return true;
             }
-            else if ((null != (t1 as ObjType)) && (null != (t2 as ObjType)))
+            else if ((null != (t1 as AstObjType)) && (null != (t2 as AstObjType)))
             {
-                Id cid1 = ((ObjType) t1).cid;
-                Id cid2 = ((ObjType) t2).cid;
+                AstId cid1 = ((AstObjType) t1).cid;
+                AstId cid2 = ((AstObjType) t2).cid;
                 if (cid1.s.Equals(cid2.s))
                 {
                     return true;
                 } 
                 else 
                 {
-                    ClassRec c = symTable.getClass(cid2);
-                    while ((c = c.parent()) != null)
+                    ClassRec c = symTable.GetClass(cid2);
+                    while ((c = c.Parent()) != null)
                     {
-                        if (cid1.s.Equals(c.id().s))
+                        if (cid1.s.Equals(c.Id().s))
                         return true; 
                     }
                 }
             }
-            else if ((null != (t1 as ArrayType)) && (null != (t2 as ArrayType)))
+            else if ((null != (t1 as AstArrayType)) && (null != (t2 as AstArrayType)))
             {
-                return compatible(((ArrayType) t1).et, ((ArrayType) t2).et);
+                return compatible(((AstArrayType) t1).et, ((AstArrayType) t2).et);
             }
             return false;	
         }
   
         // Program ---
         // ClassDeclList cl;
-        public void visit(DemiTasse.ast.Program n) /* throws Exception */
+        public void visit(AstProgram n) /* throws Exception */
         {
             n.cl.accept(this);
         }
@@ -144,40 +153,40 @@ namespace DemiTasse.typechk
         {
         }
 
-        public void visit(ClassDeclList n) /* throws Exception */ 
+        public void visit(AstClassDeclList n) /* throws Exception */ 
         {
-            for (int i = 0; i < n.size(); i++)
-                n.elementAt(i).accept(this);
+            for (int i = 0; i < n.Count(); i++)
+                n[i].accept(this);
         }
   
-        public void visit(VarDeclList n) /* throws Exception */ 
+        public void visit(AstVarDeclList n) /* throws Exception */ 
         {
-            for (int i = 0; i < n.size(); i++)
-                n.elementAt(i).accept(this);
+            for (int i = 0; i < n.Count(); i++)
+                n[i].accept(this);
         }
 
-        public void visit(MethodDeclList n) /* throws Exception */ 
+        public void visit(AstMethodDeclList n) /* throws Exception */ 
         {
-            for (int i = 0; i < n.size(); i++)
-                n.elementAt(i).accept(this);
+            for (int i = 0; i < n.Count(); i++)
+                n[i].accept(this);
         }
 
-        public void visit(FormalList n) /* throws Exception */ 
+        public void visit(AstFormalList n) /* throws Exception */ 
         {
-            for (int i = 0; i < n.size(); i++)
-                n.elementAt(i).accept(this);
+            for (int i = 0; i < n.Count(); i++)
+                n[i].accept(this);
         }
 
-        public void visit(StmtList n) /* throws Exception */ 
+        public void visit(AstStmtList n) /* throws Exception */ 
         {
-            for (int i = 0; i < n.size(); i++)
-                n.elementAt(i).accept(this);
+            for (int i = 0; i < n.Count(); i++)
+                n[i].accept(this);
         }
 
-        public void visit(ExpList n) /* throws Exception */ 
+        public void visit(AstExpList n) /* throws Exception */ 
         {
-            for (int i = 0; i < n.size(); i++)
-                n.elementAt(i).accept(this);
+            for (int i = 0; i < n.Count(); i++)
+                n[i].accept(this);
         }
 
         #endregion LISTS
@@ -188,15 +197,15 @@ namespace DemiTasse.typechk
         // Type t;
         // Id var;
         // Exp e;
-        public void visit(VarDecl n) /* throws Exception */ 
+        public void visit(AstVarDecl n) /* throws Exception */ 
         {
-            if (null != (n.t as ObjType))
+            if (null != (n.t as AstObjType))
                 // make sure type is defined
-                symTable.getClass(((ObjType) n.t).cid);
+                symTable.GetClass(((AstObjType) n.t).cid);
 
             if (n.e != null)
             {
-                Type t2 = n.e.accept(this);
+                AstType t2 = n.e.accept(this);
                 if (!compatible(n.t,t2))
                     throw new TypeException("Incompatible types in VarDecl: " + n.t + " <- " + t2);
             }
@@ -205,19 +214,19 @@ namespace DemiTasse.typechk
         // Formal ---
         // Type t;
         // Id id;
-        public void visit(Formal n) /* throws Exception */ 
+        public void visit(AstFormal n) /* throws Exception */ 
         { 
-            if (null != (n.t as ObjType)) // make sure type is defined
-                symTable.getClass(((ObjType) n.t).cid);
+            if (null != (n.t as AstObjType)) // make sure type is defined
+                symTable.GetClass(((AstObjType) n.t).cid);
         }
 
         // ClassDecl ---
         // Id cid, pid;
         // VarDeclList vl;
         // MethodDeclList ml;
-        public void visit(ClassDecl n) /* throws Exception */ 
+        public void visit(AstClassDecl n) /* throws Exception */ 
         {
-            currClass = symTable.getClass(n.cid);
+            currClass = symTable.GetClass(n.cid);
             n.vl.accept(this);
             n.ml.accept(this);
             currClass = null;
@@ -229,17 +238,17 @@ namespace DemiTasse.typechk
         // FormalList fl;
         // VarDeclList vl;
         // StmtList sl;
-        public void visit(MethodDecl n) /* throws Exception */ 
+        public void visit(AstMethodDecl n) /* throws Exception */ 
         {
-            currMethod = currClass.getMethod(n.mid);
+            currMethod = currClass.GetMethod(n.mid);
             hasReturn = false;
             n.fl.accept(this);
             n.vl.accept(this);
             n.sl.accept(this);
 
             // make sure return type is defined
-            if (null != (n.t as ObjType))
-                symTable.getClass(((ObjType) n.t).cid);
+            if (null != (n.t as AstObjType))
+                symTable.GetClass(((AstObjType) n.t).cid);
 
             if ((n.t != null) && !hasReturn)
                 throw new TypeException("Method " + n.mid.s + " is missing a Return statment");
@@ -250,14 +259,14 @@ namespace DemiTasse.typechk
 
         #region TYPES
 
-        public Type visit(BasicType n) { return n; }
-        public Type visit(ArrayType n) { return n; }
+        public AstType visit(AstBasicType n) { return n; }
+        public AstType visit(AstArrayType n) { return n; }
 
         // ObjType ---
         // Id cid;
-        public Type visit(ObjType n) /* throws Exception */ 
+        public AstType visit(AstObjType n) /* throws Exception */ 
         { 
-            symTable.getClass(n.cid); // verify that the class exits
+            symTable.GetClass(n.cid); // verify that the class exits
             return n; 
         }
 
@@ -267,21 +276,21 @@ namespace DemiTasse.typechk
 
         // Block ---
         // StmtList sl;
-        public void visit(Block n) /* throws Exception */ 
+        public void visit(AstBlock n) /* throws Exception */ 
         {
             n.sl.accept(this);
         }
 
         // Assign ---
         // Exp lhs, rhs;
-        public void visit(Assign n) /* throws Exception */ 
+        public void visit(AstAssign n) /* throws Exception */ 
         {
-            Type t1 = n.lhs.accept(this);
-            Type t2 = n.rhs.accept(this);
+            AstType t1 = n.lhs.accept(this);
+            AstType t2 = n.rhs.accept(this);
 
-            if (! ((null != (n.lhs as Id) )
-                || (null != (n.lhs as Field) )
-                || (null != (n.lhs as ArrayElm))))
+            if (! ((null != (n.lhs as AstId) )
+                || (null != (n.lhs as AstField) )
+                || (null != (n.lhs as AstArrayElm))))
                 throw new TypeException("Invalid LHS in Assign: " + n.lhs);
             
             if (!compatible(t1,t2))
@@ -292,17 +301,17 @@ namespace DemiTasse.typechk
         // Exp obj;
         // Id mid;
         // ExpList args;
-        public void visit(CallStmt n) /* throws Exception */ 
+        public void visit(AstCallStmt n) /* throws Exception */ 
         {
-            Type t = n.obj.accept(this);
+            AstType t = n.obj.accept(this);
             
-            if ((null == (t as ObjType)))
+            if ((null == (t as AstObjType)))
                 throw new TypeException("Object in CallStmt is not ObjType: " + t);
 
-            ClassRec c = symTable.getClass(((ObjType) t).cid);
-            MethodRec m = symTable.getMethod(c, n.mid);
-            int paramCnt = m.paramCnt();
-            int argCnt = (n.args == null) ? 0 : n.args.size();
+            ClassRec c = symTable.GetClass(((AstObjType) t).cid);
+            MethodRec m = symTable.GetMethod(c, n.mid);
+            int paramCnt = m.ParamCnt();
+            int argCnt = (n.args == null) ? 0 : n.args.Count();
             
             if (paramCnt != argCnt)
             {
@@ -311,8 +320,8 @@ namespace DemiTasse.typechk
 
             for (int i=0; i<paramCnt; i++)
             {
-                Type t1 = m.getParamAt(i).type();
-                Type t2 = n.args.elementAt(i).accept(this);
+                AstType t1 = m.GetParamAt(i).Type();
+                AstType t2 = n.args[i].accept(this);
                 if (!compatible(t1,t2))
                 throw new TypeException("Formal's and actual's types not compatible: " + t1 + " vs. " + t2);
             }
@@ -321,9 +330,9 @@ namespace DemiTasse.typechk
         // If ---
         // Exp e;
         // Stmt s1, s2;
-        public void visit(If n) /* throws Exception */ 
+        public void visit(AstIf n) /* throws Exception */ 
         {
-            Type t = n.e.accept(this);
+            AstType t = n.e.accept(this);
             if (!isBoolType(t))
                 throw new TypeException("Test of If is not of bool type: " + t);
             n.s1.accept(this);
@@ -334,9 +343,9 @@ namespace DemiTasse.typechk
         // While ---
         // Exp e;
         // Stmt s;
-        public void visit(While n) /* throws Exception */ 
+        public void visit(AstWhile n) /* throws Exception */ 
         {
-            Type t = n.e.accept(this);
+            AstType t = n.e.accept(this);
 
             if (!isBoolType(t))
                 throw new TypeException("Test of While is not of bool type: " + t);
@@ -346,25 +355,25 @@ namespace DemiTasse.typechk
 
         // Print ---
         // Exp e;
-        public void visit(Print n) /* throws Exception */ 
+        public void visit(AstPrint n) /* throws Exception */ 
         {
             if (n.e != null)
             {
-                Type t = n.e.accept(this);
-                if ((null == (t as BasicType)))
+                AstType t = n.e.accept(this);
+                if ((null == (t as AstBasicType)))
                     throw new TypeException("Argument to Print must be of a basic type" + " or a string literal: " + t);
             }
         }
   
         // Return ---
         // Exp e;
-        public void visit(Return n) /* throws Exception */ 
+        public void visit(AstReturn n) /* throws Exception */ 
         {
             if (currMethod == null)
                 throw new TypeException("Return is outside a method scope");
 
-            Type rt = currMethod.rtype();
-            Type t = (n.e==null) ? null : n.e.accept(this);
+            AstType rt = currMethod.RType();
+            AstType t = (n.e==null) ? null : n.e.accept(this);
             
             if (t==null)
             {
@@ -377,7 +386,7 @@ namespace DemiTasse.typechk
             } 
             else if (!compatible(rt, t))
             {
-                throw new TypeException("Wrong return type for method " + currMethod.id().s + ": " + t);
+                throw new TypeException("Wrong return type for method " + currMethod.Id().s + ": " + t);
             }
             hasReturn = true;
         }
@@ -389,10 +398,10 @@ namespace DemiTasse.typechk
         // Binop ---
         // int op;
         // Exp e1, e2;
-        public Type visit(Binop n) /* throws Exception */ 
+        public AstType visit(AstBinop n) /* throws Exception */ 
         {
-            Type t1 = n.e1.accept(this);
-            Type t2 = n.e2.accept(this);
+            AstType t1 = n.e1.accept(this);
+            AstType t2 = n.e2.accept(this);
 
             if (isArithOp(n.op))
             {
@@ -410,12 +419,12 @@ namespace DemiTasse.typechk
         // Relop ---
         // int op;
         // Exp e1, e2;
-        public Type visit(Relop n) /* throws Exception */ 
+        public AstType visit(AstRelop n) /* throws Exception */ 
         {
-            Type t1 = n.e1.accept(this);
-            Type t2 = n.e2.accept(this);
+            AstType t1 = n.e1.accept(this);
+            AstType t2 = n.e2.accept(this);
 
-            if (n.op == Relop.OP.EQ || n.op == Relop.OP.NE) 
+            if (n.op == AstRelop.OP.EQ || n.op == AstRelop.OP.NE) 
             {
                 if (compatible(t1,t2) || compatible(t2,t1)) 
                     return BoolType;
@@ -431,11 +440,11 @@ namespace DemiTasse.typechk
         // Unop ---
         // int op;
         // Exp e;
-        public Type visit(Unop n) /* throws Exception */ 
+        public AstType visit(AstUnop n) /* throws Exception */ 
         {
-            Type t = n.e.accept(this);
+            AstType t = n.e.accept(this);
             
-            if ((n.op == Unop.OP.NEG && isIntType(t)) || (n.op == Unop.OP.NOT && isBoolType(t)))
+            if ((n.op == AstUnop.OP.NEG && isIntType(t)) || (n.op == AstUnop.OP.NOT && isBoolType(t)))
                 return t;
 
             throw new TypeException("Unop type mismatch: " + n.opName(n.op) + t);
@@ -444,27 +453,27 @@ namespace DemiTasse.typechk
         // ArrayElm ---
         // Exp array, idx;
         // Type et;
-        public Type visit(ArrayElm n) /* throws Exception */ 
+        public AstType visit(AstArrayElm n) /* throws Exception */ 
         {
-            Type t1 = n.array.accept(this);
-            Type t2 = n.idx.accept(this);
+            AstType t1 = n.array.accept(this);
+            AstType t2 = n.idx.accept(this);
 
-            if (null == (t1 as ArrayType))
+            if (null == (t1 as AstArrayType))
                 throw new TypeException("ArrayElm object is not an array: " + t1);
 
             if (!isIntType(t2))
                 throw new TypeException("ArrayElm index is not integer: " + t2);
 
-            return ((ArrayType) t1).et;
+            return ((AstArrayType) t1).et;
         }
 
         // ArrayLen ---
         // Exp array;
-        public Type visit(ArrayLen n) /* throws Exception */ 
+        public AstType visit(AstArrayLen n) /* throws Exception */ 
         {
-            Type t = n.array.accept(this);
+            AstType t = n.array.accept(this);
 
-            if (null == (t as ArrayType))
+            if (null == (t as AstArrayType))
                 throw new TypeException("ArrayLen object is not an array: " + t);
             
             return IntType;
@@ -473,85 +482,85 @@ namespace DemiTasse.typechk
         // NewArray ---
         // Type et;
         // int size;
-        public Type visit(NewArray n) /* throws Exception */ 
+        public AstType visit(AstNewArray n) /* throws Exception */ 
         {
-            return new ArrayType(n.et);
+            return new AstArrayType(n.et);
         }
 
         // NewObj ---
         // Id cid;
         // ExpList args;
-        public Type visit(NewObj n) /* throws Exception */ 
+        public AstType visit(AstNewObj n) /* throws Exception */ 
         {
-            symTable.getClass(n.cid);
-            return new ObjType(n.cid);
+            symTable.GetClass(n.cid);
+            return new AstObjType(n.cid);
         }
 
         // Field ---
         // Exp obj;
         // Id var;
-        public Type visit(Field n) /* throws Exception */ 
+        public AstType visit(AstField n) /* throws Exception */ 
         {
-            Type t = n.obj.accept(this);
+            AstType t = n.obj.accept(this);
 
-            if (null == (t as ObjType))
+            if (null == (t as AstObjType))
                 throw new TypeException("Object in Field is not ObjType: " + t);
 
-            ClassRec c = symTable.getClass(((ObjType) t).cid);
-            VarRec v = symTable.getVar(c, n.var);
+            ClassRec c = symTable.GetClass(((AstObjType) t).cid);
+            VarRec v = symTable.GetVar(c, n.var);
             
-            return v.type();
+            return v.Type();
         }
 
         // Call ---
         // Exp obj;
         // Id mid;
         // ExpList args;
-        public Type visit(Call n) /* throws Exception */ 
+        public AstType visit(AstCall n) /* throws Exception */ 
         {
-            Type t = n.obj.accept(this);
+            AstType t = n.obj.accept(this);
 
-            if (null == (t as ObjType))
+            if (null == (t as AstObjType))
                 throw new TypeException("Object in Call is not ObjType: " + t);
     
-            ClassRec c = symTable.getClass(((ObjType) t).cid);
-            MethodRec m = symTable.getMethod(c, n.mid);
-            int paramCnt = m.paramCnt();
-            int argCnt = (n.args == null) ? 0 : n.args.size();
+            ClassRec c = symTable.GetClass(((AstObjType) t).cid);
+            MethodRec m = symTable.GetMethod(c, n.mid);
+            int paramCnt = m.ParamCnt();
+            int argCnt = (n.args == null) ? 0 : n.args.Count();
             
             if (paramCnt != argCnt)
                 throw new TypeException("Formals' and actuals' counts don't match: " + paramCnt + " vs. " + argCnt);
 
             for (int i=0; i<paramCnt; i++)
             {
-                Type t1 = m.getParamAt(i).type();
-                Type t2 = n.args.elementAt(i).accept(this);
+                AstType t1 = m.GetParamAt(i).Type();
+                AstType t2 = n.args[i].accept(this);
 
                 if (!compatible(t1,t2))
                     throw new TypeException("Formal's and actual's types not compatible: " + t1 + " vs. " + t2);
             }
 
-            return m.rtype();
+            return m.RType();
         }
 
         // Id ---
         // String s;
-        public Type visit(Id n) /* throws Exception */ 
+        public AstType visit(AstId n) /* throws Exception */ 
         {      
-            VarRec id = symTable.getVar(currClass, currMethod, n);
-            return id.type();
+            VarRec id = symTable.GetVar(currClass, currMethod, n);
+            return id.Type();
         }
 
         // This ---
-        public Type visit(This n) 
+        public AstType visit(AstThis n) 
         {
-            Id cid = new Id(currClass.id().s);
-            return new ObjType(cid);
+            AstId cid = new AstId(currClass.Id().s);
+            return new AstObjType(cid);
         }
 
-        public Type visit(IntVal n)   { return IntType; }
-        public Type visit(BoolVal n)  { return BoolType; }
-        public Type visit(StrVal n)   { return IntType; }
+        public AstType visit(AstIntVal n)   { return IntType; }
+        public AstType visit(AstBoolVal n)  { return BoolType; }
+        public AstType visit(AstStrVal n)   { return IntType; }
     
         #endregion EXPRESSIONS
     }

@@ -498,7 +498,7 @@ namespace DemiTasse.AppIDE
             }
             else if (fileName.EndsWith(".java", StringComparison.OrdinalIgnoreCase))
             {
-                ExecuteParserTest(stream, fileName);
+                ExecuteTest(stream, fileName);
             }
             else 
                 throw new AppUserErrorException("Attempt to execute unknown file type: " + fileName);
@@ -518,7 +518,7 @@ namespace DemiTasse.AppIDE
             }
             else if (fileName.EndsWith(".java", StringComparison.OrdinalIgnoreCase))
             {
-                ExecuteParserTest(stream, fileName);
+                ExecuteTest(stream, fileName);
             }
             else
                 throw new AppUserErrorException("Attempt to execute unknown file type: " + fileName);
@@ -526,11 +526,11 @@ namespace DemiTasse.AppIDE
 
         private void ExecuteIrTest(Stream stream, string fileName)
         {
-            PROG p = null;
+            IrProg p = null;
 
             try
             {
-                p = (new irParser(stream)).Program();
+                p = (new IrParser(stream)).Program();
             }
             catch (InterpException ex)
             {
@@ -566,10 +566,10 @@ namespace DemiTasse.AppIDE
             try 
             {
                 // create AST parser
-                astParser psr = new astParser(stream);
+                AstParser psr = new AstParser(stream);
 
                 // Parse AST file and return pointer to program at root of tree
-                DemiTasse.ast.Program p = astParser.Program();
+                AstProgram p = AstParser.Program();
                 stream.Close();
 
                 //  Create a symbol table visitor
@@ -585,12 +585,12 @@ namespace DemiTasse.AppIDE
 
                 // Generate intermediate language
                 IrgenVisitor iv = new IrgenVisitor(sv.symTable, tv);
-                PROG ir0 = iv.visit(p);
+                IrProg ir0 = iv.visit(p);
                 Canon cv = new Canon();
-                IR.Clear();
-                PROG ir = cv.visit(ir0);
-                ir.dump();
-                IR.Clear();
+                Ir.Clear();
+                IrProg ir = cv.visit(ir0);
+                ir.GenerateIrData();
+                Ir.Clear();
             }
             catch (TypeException ex) 
             {
@@ -606,7 +606,7 @@ namespace DemiTasse.AppIDE
             }
         }
 
-        private void ExecuteParserTest(Stream stream, string fileName)
+        private void ExecuteTest(Stream stream, string fileName)
         {
             string astData;
             Stream astDataStream = null;
@@ -616,19 +616,18 @@ namespace DemiTasse.AppIDE
 
             try
             {
-                Ast.Clear();
-                miniParser MiniPsr = new miniParser(stream);
-                DemiTasse.ast.Program astProgram = miniParser.Program();
+                MiniParser miniParser = new MiniParser(stream);
+                AstProgram astProgram = miniParser.ParseProgram();
                 stream.Close();
-                astProgram.dump();
+                astProgram.GenerateAstData(true);
 
                 // Output AST data to UI
-                OnAstOut(new AstOutEventArgs(astData = Ast.getAst()));
-                Ast.Clear();
+                OnAstOut(new AstOutEventArgs(astProgram.AstData));
+                Ast.ResetAstData();
 
                 // Present AST data to AST parser as a stream
-                astParser astPsr = new astParser(astDataStream = CreateMemoryStream(astData));
-                DemiTasse.ast.Program p2 = astParser.Program();
+                AstParser astPsr = new AstParser(astDataStream = CreateMemoryStream(astProgram.AstData));
+                AstProgram p2 = AstParser.Program();
                 astDataStream.Close();
 
                 // -------------------------------------------------------
@@ -640,24 +639,24 @@ namespace DemiTasse.AppIDE
                 tv.visit(p2);
                 
                 IrgenVisitor iv = new IrgenVisitor(sv.symTable, tv);
-                PROG ir0 = iv.visit(p2);
+                IrProg ir0 = iv.visit(p2);
                 Canon cv = new Canon();
-                IR.Clear();
+                Ir.Clear();
 
-                PROG ir = cv.visit(ir0);
-                ir.dump();
+                IrProg irProg = cv.visit(ir0);
+                irProg.GenerateIrData();
 
                 // Output AST data to UI
-                OnIrOut(new IrOutEventArgs(irData = IR.getIr()));
-                IR.Clear();
+                OnIrOut(new IrOutEventArgs(irData = Ir.IrData));
+                Ir.Clear();
 
                 // -------------------------------------------------------
 
-                PROG irProgram = null;
+                IrProg irProgram = null;
                 try
                 {
                     //stream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read);
-                    irProgram = (new irParser(irDataStream = CreateMemoryStream(irData))).Program();
+                    irProgram = (new IrParser(irDataStream = CreateMemoryStream(irData))).Program();
                 }
                 catch (InterpException ex)
                 {

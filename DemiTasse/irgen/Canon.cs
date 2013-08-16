@@ -6,7 +6,7 @@
 // *
 // * Description: 
 // *
-// * Author: Jingke Li
+// * Author: Jingke Li (Portland State University)
 // *
 // * Java to C# Translator: Robin Murray
 // *
@@ -51,156 +51,156 @@ namespace DemiTasse.irgen
 {
     class Canon : IIrVI
     {
-        private STMT getStmt(EXP e)
+        private IrStmt getStmt(IrExp e)
         {
-            if (null != (e as ESEQ))
-                return ((ESEQ) e).stmt;
+            if (null != (e as IrEseq))
+                return ((IrEseq) e).stmt;
             return null;
         }
 
-        private EXP getExp(EXP e)
+        private IrExp getExp(IrExp e)
         {
-            if (null != (e as ESEQ))
-                return ((ESEQ) e).exp;
+            if (null != (e as IrEseq))
+                return ((IrEseq) e).exp;
             return e;
         }
 
-        private STMT mergeStmts(STMT s1, STMT s2)
+        private IrStmt mergeStmts(IrStmt s1, IrStmt s2)
         {
             if (s1 == null) return s2;
             if (s2 == null) return s1;
-            STMTlist sl = new STMTlist();
+            IrStmtList sl = new IrStmtList();
             sl.add(s1);
             sl.add(s2);
             return sl;
         }
 
-        public PROG visit(PROG t)
+        public IrProg visit(IrProg t)
         {
-            return new PROG(t.funcs.accept(this));
+            return new IrProg(t.funcs.accept(this));
         }
 
-        public FUNClist visit(FUNClist t)
+        public IrFuncList visit(IrFuncList t)
         {
-            FUNClist funcs = new FUNClist();
+            IrFuncList funcs = new IrFuncList();
             for (int i = 0; i < t.Count(); i++)
             {
-                FUNC s = ((FUNC)t[i]).accept(this);
+                IrFunc s = ((IrFunc)t[i]).accept(this);
                 funcs.Add(s);
             }
             return funcs;
         }
 
-        public FUNC visit(FUNC t)
+        public IrFunc visit(IrFunc t)
         {
-            TEMP.reset(t.tmpCnt);
-            STMTlist sl = (STMTlist)t.stmts.accept(this);
-            int newTmpCnt = t.tmpCnt + TEMP.getCount();
-            return new FUNC(t.label, t.varCnt, newTmpCnt, t.argCnt, sl);
+            IrTemp.Reset(t.tmpCnt);
+            IrStmtList sl = (IrStmtList)t.stmts.accept(this);
+            int newTmpCnt = t.tmpCnt + IrTemp.Count;
+            return new IrFunc(t.label, t.varCnt, newTmpCnt, t.argCnt, sl);
         }
 
-        public STMT visit(STMTlist t)
+        public IrStmt visit(IrStmtList t)
         {
-            STMTlist stmts = new STMTlist();
+            IrStmtList stmts = new IrStmtList();
             for (int i = 0; i < t.size(); i++)
             {
-                STMT s = ((STMT)t.elementAt(i)).accept(this);
+                IrStmt s = ((IrStmt)t.elementAt(i)).accept(this);
                 stmts.add(s);
             }
             return stmts;
         }
 
-        public STMT visit(MOVE t)
+        public IrStmt visit(IrMove t)
         {
-            EXP dst = t.dst.accept(this);
-            EXP src = t.src.accept(this);
-            STMT s = mergeStmts(getStmt(dst), getStmt(src));
+            IrExp dst = t.dst.accept(this);
+            IrExp src = t.src.accept(this);
+            IrStmt s = mergeStmts(getStmt(dst), getStmt(src));
             if (s != null)
-                return mergeStmts(s, new MOVE(getExp(dst), getExp(src)));
+                return mergeStmts(s, new IrMove(getExp(dst), getExp(src)));
             return t;
         }
 
-        public STMT visit(JUMP t) { return t; }
+        public IrStmt visit(IrJump t) { return t; }
 
-        public STMT visit(CJUMP t)
+        public IrStmt visit(IrCJump t)
         {
-            EXP left = t.left.accept(this);
-            EXP right = t.right.accept(this);
-            STMT s = mergeStmts(getStmt(left), getStmt(right));
+            IrExp left = t.left.accept(this);
+            IrExp right = t.right.accept(this);
+            IrStmt s = mergeStmts(getStmt(left), getStmt(right));
             if (s != null)
-                return mergeStmts(s, new CJUMP(t.op, getExp(left),
+                return mergeStmts(s, new IrCJump(t.op, getExp(left),
                                getExp(right), t.target));
             return t;
         }
 
-        public STMT visit(LABEL t) { return t; }
+        public IrStmt visit(IrLabel t) { return t; }
 
-        public STMT visit(CALLST t)
+        public IrStmt visit(IrCallst t)
         {
-            EXP args = t.args.accept(this);
-            STMT s = getStmt(args);
+            IrExp args = t.args.accept(this);
+            IrStmt s = getStmt(args);
             if (s != null)
-                return mergeStmts(s, new CALLST(t.func, (EXPlist)getExp(args)));
+                return mergeStmts(s, new IrCallst(t.func, (IrExpList)getExp(args)));
             return t;
         }
 
-        public STMT visit(RETURN t)
+        public IrStmt visit(IrReturn t)
         {
-            EXP exp = t.exp.accept(this);
-            STMT s = getStmt(exp);
+            IrExp exp = t.exp.accept(this);
+            IrStmt s = getStmt(exp);
             if (s != null)
-                return mergeStmts(s, new RETURN(getExp(exp)));
+                return mergeStmts(s, new IrReturn(getExp(exp)));
             return t;
         }
 
-        public EXP visit(EXPlist t)
+        public IrExp visit(IrExpList t)
         {
-            STMT s = null;
-            EXPlist args = new EXPlist();
+            IrStmt s = null;
+            IrExpList args = new IrExpList();
             for (int i = 0; i < t.size(); i++)
             {
-                EXP e = ((EXP)t.elementAt(i)).accept(this);
-                STMT s1 = getStmt(e);
+                IrExp e = ((IrExp)t.elementAt(i)).accept(this);
+                IrStmt s1 = getStmt(e);
                 if (s1 != null) s = mergeStmts(s, s1);
                 args.add(getExp(e));
             }
             if (s != null)
-                return new ESEQ(s, args);
+                return new IrEseq(s, args);
             return t;
         }
 
-        public EXP visit(ESEQ t)
+        public IrExp visit(IrEseq t)
         {
-            STMT stmt = t.stmt.accept(this);
-            EXP exp = t.exp.accept(this);
-            STMT s = mergeStmts(stmt, getStmt(exp));
+            IrStmt stmt = t.stmt.accept(this);
+            IrExp exp = t.exp.accept(this);
+            IrStmt s = mergeStmts(stmt, getStmt(exp));
             if (s != null)
-                return new ESEQ(s, getExp(exp));
+                return new IrEseq(s, getExp(exp));
             return t;
         }
 
-        public EXP visit(MEM t)
+        public IrExp visit(IrMem t)
         {
-            EXP exp = t.exp.accept(this);
-            STMT s = getStmt(exp);
+            IrExp exp = t.exp.accept(this);
+            IrStmt s = getStmt(exp);
             if (s != null)
-                return new ESEQ(s, new MEM(getExp(exp)));
+                return new IrEseq(s, new IrMem(getExp(exp)));
             return t;
         }
 
-        public EXP visit(CALL t)
+        public IrExp visit(IrCall t)
         {
-            EXP args = t.args.accept(this);
-            STMT s = getStmt(args);
+            IrExp args = t.args.accept(this);
+            IrStmt s = getStmt(args);
             if (t.func.id != "malloc")
             {
-                TEMP tmp = new TEMP();
-                STMT s1 = new MOVE(tmp, new CALL(t.func, (EXPlist)getExp(args)));
-                return new ESEQ(mergeStmts(s, s1), tmp);
+                IrTemp tmp = new IrTemp();
+                IrStmt s1 = new IrMove(tmp, new IrCall(t.func, (IrExpList)getExp(args)));
+                return new IrEseq(mergeStmts(s, s1), tmp);
             }
             else if (s != null)
             {
-                return new ESEQ(s, new CALL(t.func, (EXPlist)getExp(args)));
+                return new IrEseq(s, new IrCall(t.func, (IrExpList)getExp(args)));
             }
             else
             {
@@ -208,30 +208,30 @@ namespace DemiTasse.irgen
             }
         }
 
-        public EXP visit(BINOP t)
+        public IrExp visit(IrBinop t)
         {
-            EXP left = t.left.accept(this);
-            EXP right = t.right.accept(this);
-            STMT s = mergeStmts(getStmt(left), getStmt(right));
+            IrExp left = t.left.accept(this);
+            IrExp right = t.right.accept(this);
+            IrStmt s = mergeStmts(getStmt(left), getStmt(right));
             if (s != null)
-                return new ESEQ(s, new BINOP(t.op, getExp(left), getExp(right)));
+                return new IrEseq(s, new IrBinop(t.op, getExp(left), getExp(right)));
             return t;
         }
 
-        public EXP visit(FIELD t)
+        public IrExp visit(IrField t)
         {
-            EXP obj = t.obj.accept(this);
-            STMT s = getStmt(obj);
+            IrExp obj = t.obj.accept(this);
+            IrStmt s = getStmt(obj);
             if (s != null)
-                return new ESEQ(s, new FIELD(getExp(obj), t.idx));
+                return new IrEseq(s, new IrField(getExp(obj), t.idx));
             return t;
         }
 
-        public EXP visit(NAME t) { return t; }
-        public EXP visit(TEMP t) { return t; }
-        public EXP visit(PARAM t) { return t; }
-        public EXP visit(VAR t) { return t; }
-        public EXP visit(CONST t) { return t; }
-        public EXP visit(STRING t) { return t; }
+        public IrExp visit(IrName t) { return t; }
+        public IrExp visit(IrTemp t) { return t; }
+        public IrExp visit(IrParam t) { return t; }
+        public IrExp visit(IrVar t) { return t; }
+        public IrExp visit(IrConst t) { return t; }
+        public IrExp visit(IrString t) { return t; }
     }
 }

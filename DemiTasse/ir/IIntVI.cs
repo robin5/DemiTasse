@@ -4,7 +4,9 @@
 // *
 // * File: IIntVI.cs
 // *
-// * Author:  Jingke Li
+// * Author:  Jingke Li (Portland State University)
+// *
+// * C# Translation:  Robin Murray
 // *
 // **********************************************************************************
 // *
@@ -46,29 +48,31 @@ namespace DemiTasse.ir
     public interface IIntVI 
     {
         // Program and functions
-        void visit(PROG t);
-        void visit(FUNC t);
-        void visit(FUNClist t);
+        void visit(IrProg t);
+        void visit(IrFunc t);
+        void visit(IrFuncList t);
+
         // Statements
-        int visit(STMTlist t);
-        int visit(MOVE t);
-        int visit(JUMP t);
-        int visit(CJUMP t);
-        int visit(LABEL t);
-        int visit(CALLST t);
-        int visit(RETURN t);
+        int visit(IrStmtList t);
+        int visit(IrMove t);
+        int visit(IrJump t);
+        int visit(IrCJump t);
+        int visit(IrLabel t);
+        int visit(IrCallst t);
+        int visit(IrReturn t);
+
         // Expressions
-        int visit(EXPlist t);
-        int visit(ESEQ t);
-        int visit(MEM t);
-        int visit(CALL t);
-        int visit(BINOP t);
-        int visit(NAME t);
-        int visit(TEMP t);
-        int visit(FIELD t);
-        int visit(PARAM t);
-        int visit(VAR t);
-        int visit(CONST t);
-        int visit(STRING t);
+        int visit(IrExpList t);
+        int visit(IrEseq t);
+        int visit(IrMem t);
+        int visit(IrCall t);
+        int visit(IrBinop t);
+        int visit(IrName t);
+        int visit(IrTemp t);
+        int visit(IrField t);
+        int visit(IrParam t);
+        int visit(IrVar t);
+        int visit(IrConst t);
+        int visit(IrString t);
     }
 }
