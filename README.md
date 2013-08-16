@@ -15,7 +15,8 @@ and library which developers can use to provide scripting abilities to applicati
 DemiTasse is being developed with Visual Studio 2010.  No additioanl libraries are necessary outside
 of those delivered with Visual Studio.  Use the GitHub tools to download the source code onto
 your machine.  Once the project is downloaded, double-click the DemiTasse.sln solution file to open 
-the DemiTasse project.
+the DemiTasse project into the IDE.  From the Build menu, select Rebuild All (Note: this step is important to 
+assure that all files have been synced to your machine).
 
 Mini-Java sample files can be found at the following web site: [http://www.cambridge.org/resources/052182060X/#programs](http://www.cambridge.org/resources/052182060X/#programs).
 * [Factorial.java](http://www.cambridge.org/resources/052182060X/MCIIJ2e/programs/Factorial.java)
